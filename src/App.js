@@ -4,17 +4,16 @@ import "./App.css";
 import Box from "3box";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-const getThreeBox = async (address) => {
+const getThreeBox = async address => {
   const profile = await Box.getProfile(address);
   console.log(profile);
   return profile;
 };
 
 export default class App extends Component {
-
   state = {
-    needToAWeb3Browser : false,
-  }
+    needToAWeb3Browser: false
+  };
   async getAddressFromMetaMask() {
     if (typeof window.ethereum == "undefined") {
       this.setState({ needToAWeb3Browser: true });
@@ -32,9 +31,8 @@ export default class App extends Component {
     }
   }
   render() {
-
-    if(this.state.needToAWeb3Browser){
-      return <h1>Please install metamask</h1>
+    if (this.state.needToAWeb3Browser) {
+      return <h1>Please install metamask</h1>;
     }
 
     return (
@@ -67,7 +65,9 @@ export default class App extends Component {
               <Messenger />
             </Route>
             <Route path="/photos">
-              <Photos />
+              {this.state.accounts && (
+                <Photos account={this.state.accounts[0]} />
+              )}
             </Route>
             <Route path="/">
               <Home />
@@ -90,8 +90,30 @@ class Profile extends Component {
 }
 
 class Photos extends Component {
+
+  state = {
+    thread : false,
+  }
+  async componentDidMount() {
+    const box = await Box.openBox(this.props.account, window.ethereum);
+    this.setState({box})
+    const space = await this.state.box.openSpace("my-photos");
+    this.setState({space})
+    const thread = await this.state.space.joinThread("myThread", {
+      members: true
+    });
+    this.setState({thread})
+    const posts = await this.state.thread.getPosts();
+    console.log(posts);
+    this.setState({ posts });
+  }
   render() {
-    return <h2>Photos</h2>;
+    return (
+      <div>
+        <h2>Photos</h2>;
+        {this.state.thread && <button onClick={async()=>(await this.state.thread.post('hello cat'))}>add post</button>}
+      </div>
+    );
   }
 }
 
