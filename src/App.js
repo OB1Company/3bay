@@ -103,15 +103,29 @@ class Photos extends Component {
       members: true
     });
     this.setState({thread})
-    const posts = await this.state.thread.getPosts();
-    console.log(posts);
-    this.setState({ posts });
+    this.getPosts()
+    return;
+  }
+
+  getPosts = async () => {
+    if(this.state.thread){
+      const posts = await this.state.thread.getPosts();
+      this.setState({ posts });
+    } else {
+      console.error("thread not in react state")
+    }
+  }
+
+  addPost = async() => {
+    await this.state.thread.post('hello cat');
+    await this.getPosts();
+
   }
   render() {
     return (
       <div>
         <h2>Photos</h2>;
-        {this.state.thread && <button onClick={async()=>(await this.state.thread.post('hello cat'))}>add post</button>}
+        {this.state.thread && <button onClick={this.addPost}>add post</button>}
       </div>
     );
   }
