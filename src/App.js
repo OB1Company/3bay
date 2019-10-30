@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import "./App.css";
 import Box from "3box";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import ImageUploader from "react-images-upload";
+import * as blobUtil from 'blob-util';
 
 const getThreeBox = async address => {
   const profile = await Box.getProfile(address);
@@ -90,42 +92,67 @@ class Profile extends Component {
 }
 
 class Photos extends Component {
-
   state = {
-    thread : false,
-  }
+    thread: false,
+    pictures: []
+  };
   async componentDidMount() {
     const box = await Box.openBox(this.props.account, window.ethereum);
-    this.setState({box})
+    this.setState({ box });
     const space = await this.state.box.openSpace("my-photos");
-    this.setState({space})
+    this.setState({ space });
     const thread = await this.state.space.joinThread("myThread", {
       members: true
     });
-    this.setState({thread})
-    this.getPosts()
+    this.setState({ thread });
+    this.getPosts();
     return;
   }
 
   getPosts = async () => {
-    if(this.state.thread){
+    if (this.state.thread) {
       const posts = await this.state.thread.getPosts();
       this.setState({ posts });
     } else {
-      console.error("thread not in react state")
+      console.error("thread not in react state");
     }
-  }
+  };
 
-  addPost = async() => {
-    await this.state.thread.post('hello cat');
+  addPost = async () => {
+    await this.state.thread.post("hello cat");
     await this.getPosts();
+  };
 
-  }
+  onDrop = picture => {
+    console.log("picture", picture);
+    const blob = new Blob(picture);
+    console.log("blog", blob);
+
+    blobUtil.blobToBase64String(blob).then( (base64String)=> {
+      // success
+      this.setState({bin : base64String})
+    }).catch(function (err) {
+      // error
+    });
+
+    
+    this.setState({
+      pictures: this.state.pictures.concat(picture)
+    });
+  };
   render() {
     return (
       <div>
         <h2>Photos</h2>;
         {this.state.thread && <button onClick={this.addPost}>add post</button>}
+        <ImageUploader
+          withIcon={true}
+          buttonText="Choose images"
+          onChange={this.onDrop}
+          imgExtension={[".jpg", ".gif", ".png", ".gif"]}
+          maxFileSize={5242880}
+        />
+        {this.state.bin && <img src={`data:image/jpeg;base64,${this.state.bin}`} />}
       </div>
     );
   }

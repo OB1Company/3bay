@@ -4,8 +4,10 @@
   "private": true,
   "dependencies": {
     "3box": "^1.13.1",
+    "blob-util": "^2.0.2",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
+    "react-images-upload": "^1.2.7",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0"
   },
