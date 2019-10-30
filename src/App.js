@@ -124,20 +124,13 @@ class Photos extends Component {
   };
 
   onDrop = picture => {
-    console.log("picture", picture);
-    const blob = new Blob(picture);
-    console.log("blog", blob);
-
+    var blob = new Blob([picture.pop()]);
     blobUtil.blobToBase64String(blob).then( (base64String)=> {
       // success
       this.setState({bin : base64String})
     }).catch(function (err) {
       // error
-    });
-
-    
-    this.setState({
-      pictures: this.state.pictures.concat(picture)
+      console.error("could not convert image to base64Sting")
     });
   };
   render() {
