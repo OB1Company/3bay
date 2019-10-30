@@ -99,7 +99,7 @@ class Photos extends Component {
   async componentDidMount() {
     const box = await Box.openBox(this.props.account, window.ethereum);
     this.setState({ box });
-    const space = await this.state.box.openSpace("my-photos");
+    const space = await this.state.box.openSpace("photos");
     this.setState({ space });
     const thread = await this.state.space.joinThread("myThread", {
       members: true
@@ -113,14 +113,15 @@ class Photos extends Component {
     if (this.state.thread) {
       const posts = await this.state.thread.getPosts();
       this.setState({ posts });
+      return posts
     } else {
       console.error("thread not in react state");
     }
   };
 
-  addPost = async () => {
-    await this.state.thread.post("hello cat");
-    await this.getPosts();
+  addPost = async (item) => {
+    await this.state.thread.post(item);
+    this.getPosts();
   };
 
   onDrop = picture => {
@@ -145,7 +146,10 @@ class Photos extends Component {
           imgExtension={[".jpg", ".gif", ".png", ".gif"]}
           maxFileSize={5242880}
         />
-        {this.state.bin && <img src={`data:image/jpeg;base64,${this.state.bin}`} />}
+        {this.state.bin && <div>
+          <img src={`data:image/jpeg;base64,${this.state.bin}`} />
+        <button onClick={()=>(this.addPost(this.state.bin))}>Add Image</button>
+        </div>}
       </div>
     );
   }
