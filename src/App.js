@@ -4,7 +4,7 @@ import "./App.css";
 import Box from "3box";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import ImageUploader from "react-images-upload";
-import * as blobUtil from 'blob-util';
+import * as blobUtil from "blob-util";
 
 const getThreeBox = async address => {
   const profile = await Box.getProfile(address);
@@ -113,26 +113,27 @@ class Photos extends Component {
     if (this.state.thread) {
       const posts = await this.state.thread.getPosts();
       this.setState({ posts });
-      return posts
+      return posts;
     } else {
       console.error("thread not in react state");
     }
   };
 
-  addPost = async (item) => {
+  addPost = async item => {
     await this.state.thread.post(item);
     this.getPosts();
   };
 
   onDrop = picture => {
     var blob = new Blob([picture.pop()]);
-    blobUtil.blobToBase64String(blob).then( (base64String)=> {
-      // success
-      this.setState({bin : base64String})
-    }).catch(function (err) {
-      // error
-      console.error("could not convert image to base64Sting")
-    });
+    blobUtil
+      .blobToBase64String(blob)
+      .then(base64String => {
+        this.setState({ bin: base64String });
+      })
+      .catch(function(err) {
+        console.error("could not convert image to base64Sting");
+      });
   };
   render() {
     return (
@@ -146,10 +147,14 @@ class Photos extends Component {
           imgExtension={[".jpg", ".gif", ".png", ".gif"]}
           maxFileSize={5242880}
         />
-        {this.state.bin && <div>
-          <img src={`data:image/jpeg;base64,${this.state.bin}`} />
-        <button onClick={()=>(this.addPost(this.state.bin))}>Add Image</button>
-        </div>}
+        {this.state.bin && this.state.thread && (
+          <div>
+            <img src={`data:image/jpeg;base64,${this.state.bin}`} />
+            <button onClick={() => this.addPost(this.state.bin)}>
+              Add Image
+            </button>
+          </div>
+        )}
       </div>
     );
   }
