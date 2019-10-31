@@ -5,6 +5,7 @@ import Box from "3box";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import ImageUploader from "react-images-upload";
 import * as blobUtil from "blob-util";
+import { BounceLoader } from "react-spinners";
 
 const getThreeBox = async address => {
   const profile = await Box.getProfile(address);
@@ -138,15 +139,23 @@ class Photos extends Component {
   render() {
     return (
       <div>
-        <h2>Photos</h2>;
-        {this.state.thread && <button onClick={this.addPost}>add post</button>}
-        {this.state.thread && <ImageUploader
-          withIcon={true}
-          buttonText="Choose images"
-          onChange={this.onDrop}
-          imgExtension={[".jpg", ".gif", ".png", ".gif"]}
-          maxFileSize={5242880}
-        />}
+        <div style={{ maxWidth: "300px", margin: "auto", textAlign: "center" }}>
+          <h2>Photos</h2>
+          {!this.state.thread && (
+            <div style={{width : '60px', margin : 'auto'}}>
+              <BounceLoader color={"#85CDCB"} />
+            </div>
+          )}
+          {this.state.thread && (
+            <ImageUploader
+              withIcon={true}
+              buttonText="Choose images"
+              onChange={this.onDrop}
+              imgExtension={[".jpg", ".gif", ".png", ".gif"]}
+              maxFileSize={5242880}
+            />
+          )}
+        </div>
         {this.state.bin && this.state.thread && (
           <div>
             <img src={`data:image/jpeg;base64,${this.state.bin}`} />
@@ -155,7 +164,13 @@ class Photos extends Component {
             </button>
           </div>
         )}
-        {this.state.posts && this.state.posts.map(post => (<img src={`data:image/jpeg;base64,${post.message}`} style={{maxWidth : '80px'}}/>))}
+        {this.state.posts &&
+          this.state.posts.map(post => (
+            <img
+              src={`data:image/jpeg;base64,${post.message}`}
+              style={{ maxWidth: "80px" }}
+            />
+          ))}
       </div>
     );
   }
