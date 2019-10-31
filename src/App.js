@@ -140,13 +140,13 @@ class Photos extends Component {
       <div>
         <h2>Photos</h2>;
         {this.state.thread && <button onClick={this.addPost}>add post</button>}
-        <ImageUploader
+        {this.state.thread && <ImageUploader
           withIcon={true}
           buttonText="Choose images"
           onChange={this.onDrop}
           imgExtension={[".jpg", ".gif", ".png", ".gif"]}
           maxFileSize={5242880}
-        />
+        />}
         {this.state.bin && this.state.thread && (
           <div>
             <img src={`data:image/jpeg;base64,${this.state.bin}`} />
@@ -155,6 +155,7 @@ class Photos extends Component {
             </button>
           </div>
         )}
+        {this.state.posts && this.state.posts.map(post => (<img src={`data:image/jpeg;base64,${post.message}`} style={{maxWidth : '80px'}}/>))}
       </div>
     );
   }
