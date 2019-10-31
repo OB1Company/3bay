@@ -142,7 +142,7 @@ class Photos extends Component {
         <div style={{ maxWidth: "300px", margin: "auto", textAlign: "center" }}>
           <h2>Photos</h2>
           {!this.state.thread && (
-            <div style={{width : '60px', margin : 'auto'}}>
+            <div style={{ width: "60px", margin: "auto" }}>
               <BounceLoader color={"#85CDCB"} />
             </div>
           )}
@@ -159,7 +159,12 @@ class Photos extends Component {
         {this.state.bin && this.state.thread && (
           <div>
             <img src={`data:image/jpeg;base64,${this.state.bin}`} />
-            <button onClick={() => this.addPost(this.state.bin)}>
+            <button
+              onClick={async () => {
+                await this.addPost(this.state.bin);
+                this.setState({bin : null})
+              }}
+            >
               Add Image
             </button>
           </div>
