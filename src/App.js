@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import ImageUploader from "react-images-upload";
 import * as blobUtil from "blob-util";
 import { BounceLoader } from "react-spinners";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const getThreeBox = async address => {
   const profile = await Box.getProfile(address);
@@ -93,40 +94,62 @@ class Profile extends Component {
 }
 
 class AppForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { formData: { name : ""} };
+  state = { name: "", url: "" };
+  // constructor(props) {
+  //   super(props);
+  //   this.setState({ formData: { name: "", url : "" } })
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+  //   // this.handleChange = this.handleChange.bind(this);
+  //   // this.handleSubmit = this.handleSubmit.bind(this);
+  // }
 
-  handleChange(event) {
-    
-    this.setState({formData :{ [event.target.name]: event.target.value }});
+  handleChange = event => {
+    this.setState(Object.assign({ [event.target.name]: event.target.value }));
     console.log("value ", event.target.name);
-  }
+  };
 
-  handleSubmit(event) {
+  handleSubmit = event => {
+    this.props.savePost({ name: this.state.name, url: this.state.url });
+    console.log(
+      "A name was submitted: " + { name: this.state.name, url: this.state.url }
+    );
     event.preventDefault();
-    this.props.savePost(this.state.formData);
-    console.log("A name was submitted: " + this.state.formData);
-  }
+  };
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Name:
-          <input
-            type="text"
-            name="name"
-            value={this.state.formData.name}
-            onChange={this.handleChange}
-          />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+      <div style={{ maxWidth: "500px", margin: "auto" }}>
+        <form onSubmit={this.handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="name">
+              Name:
+              <input
+                type="text"
+                name="name"
+                className="form-control"
+                aria-describedby="appName"
+                placeholder="Enter App Name"
+                value={this.state.name}
+                onChange={this.handleChange}
+              />
+            </label>
+            <br />
+            <label htmlFor="url">
+              URL:
+              <input
+                type="text"
+                name="url"
+                className="form-control"
+                aria-describedby="url"
+                placeholder="Add url"
+                value={this.state.url}
+                onChange={this.handleChange}
+              />
+            </label>
+          </div>
+          <input type="submit" value="Submit" className="btn btn-primary" />
+        </form>
+      </div>
     );
   }
 }
@@ -156,14 +179,15 @@ class AppStore extends Component {
     console.log("get posts ", posts);
   }
 
-   savePost = async (formData)=> {
+  savePost = async formData => {
     await this.state.thread.post(formData);
-  }
+  };
   render() {
     return (
       <div>
         <h1>App Store</h1>
-        {this.state.thread && <AppForm savePost={this.savePost} />}
+        {/* this.state.thread */}
+        {true && <AppForm savePost={this.savePost} />}
         {/* <button >Add an App</button> */}
         <button
           onClick={async () => {
