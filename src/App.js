@@ -50,14 +50,13 @@ export default class App extends Component {
                 <Link to="/profile">Profile</Link>
               </li>
               <li>
-                <Link to="/photos">Photos</Link>
+                <Link to="/messager">Messenger</Link>
               </li>
               <li>
-                <Link to="/messager">Messenger</Link>
+                <Link to="/apps">App Store</Link>
               </li>
             </ul>
           </nav>
-
           {/* A <Switch> looks through its children <Route>s and
               renders the first one that matches the current URL. */}
           <Switch>
@@ -67,10 +66,11 @@ export default class App extends Component {
             <Route path="/messenger">
               <Messenger />
             </Route>
-            <Route path="/photos">
+            <Route path="/apps">
               {this.state.accounts && (
-                <Photos account={this.state.accounts[0]} />
+                <AppStore accounts={this.state.accounts} />
               )}
+              {!this.state.accounts && <h1>Login with metamask</h1>}
             </Route>
             <Route path="/">
               <Home />
@@ -92,90 +92,85 @@ class Profile extends Component {
   }
 }
 
-class Photos extends Component {
-  state = {
-    thread: false,
-    pictures: []
-  };
-  async componentDidMount() {
-    const box = await Box.openBox(this.props.account, window.ethereum);
-    this.setState({ box });
-    const space = await this.state.box.openSpace("photos");
-    this.setState({ space });
-    const thread = await this.state.space.joinThread("myThread", {
-      members: true
-    });
-    this.setState({ thread });
-    this.getPosts();
-    return;
+class AppForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { value: "" };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  getPosts = async () => {
-    if (this.state.thread) {
-      const posts = await this.state.thread.getPosts();
-      this.setState({ posts });
-      return posts;
-    } else {
-      console.error("thread not in react state");
-    }
+  handleChange(event) {
+    this.setState({ value: event.target.value });
+    console.log("value ", this.state.value);
+  }
+
+  handleSubmit(event) {
+    this.props.savePost(this.state.value);
+    console.log("A name was submitted: " + this.state.value);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Name:
+          <input
+            type="text"
+            value={this.state.value}
+            onChange={this.handleChange}
+          />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    );
+  }
+}
+
+class AppStore extends Component {
+  state = {
+    thread: null
   };
 
-  addPost = async item => {
-    await this.state.thread.post(item);
-    this.getPosts();
-  };
+  async componentDidMount() {
+    const rach = "0x2f4cE4f714C68A3fC871d1f543FFC24b9b3c2386";
 
-  onDrop = picture => {
-    var blob = new Blob([picture.pop()]);
-    blobUtil
-      .blobToBase64String(blob)
-      .then(base64String => {
-        this.setState({ bin: base64String });
-      })
-      .catch(function(err) {
-        console.error("could not convert image to base64Sting");
-      });
-  };
+    const rachEth = "0x2f4cE4f714C68A3fC871d1f543FFC24b9b3c2386";
+    const box = await Box.openBox(this.props.accounts[0], window.ethereum);
+    const space = await box.openSpace("test-app-store");
+    console.log("space ", space);
+
+    const thread = await space.joinThread("myThread", {
+      firstModerator: rach,
+      members: false
+    });
+    this.setState({ thread });
+    console.log("thread", this.state.thread);
+    var threadMembers = await this.state.thread.listModerators();
+    console.log("memebers", threadMembers);
+    const posts = await this.state.thread.getPosts();
+    console.log("get posts ", posts);
+  }
+
+   savePost = async (formData)=> {
+    await this.state.thread.post(formData);
+  }
   render() {
     return (
       <div>
-        <div style={{ maxWidth: "300px", margin: "auto", textAlign: "center" }}>
-          <h2>Photos</h2>
-          {!this.state.thread && (
-            <div style={{ width: "60px", margin: "auto" }}>
-              <BounceLoader color={"#85CDCB"} />
-            </div>
-          )}
-          {this.state.thread && (
-            <ImageUploader
-              withIcon={true}
-              buttonText="Choose images"
-              onChange={this.onDrop}
-              imgExtension={[".jpg", ".gif", ".png", ".gif"]}
-              maxFileSize={5242880}
-            />
-          )}
-        </div>
-        {this.state.bin && this.state.thread && (
-          <div>
-            <img src={`data:image/jpeg;base64,${this.state.bin}`} />
-            <button
-              onClick={async () => {
-                await this.addPost(this.state.bin);
-                this.setState({bin : null})
-              }}
-            >
-              Add Image
-            </button>
-          </div>
-        )}
-        {this.state.posts &&
-          this.state.posts.map(post => (
-            <img
-              src={`data:image/jpeg;base64,${post.message}`}
-              style={{ maxWidth: "80px" }}
-            />
-          ))}
+        <h1>App Store</h1>
+        {this.state.thread && <AppForm savePost={this.savePost} />}
+        {/* <button >Add an App</button> */}
+        <button
+          onClick={async () => {
+            const posts = await this.state.thread.getPosts();
+            console.log("get posts ", posts);
+          }}
+        >
+          Get Posts
+        </button>
       </div>
     );
   }
