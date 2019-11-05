@@ -95,21 +95,22 @@ class Profile extends Component {
 class AppForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { value: "" };
+    this.state = { formData: { name : ""} };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
-    this.setState({ value: event.target.value });
-    console.log("value ", this.state.value);
+    
+    this.setState({formData :{ [event.target.name]: event.target.value }});
+    console.log("value ", event.target.name);
   }
 
   handleSubmit(event) {
-    this.props.savePost(this.state.value);
-    console.log("A name was submitted: " + this.state.value);
     event.preventDefault();
+    this.props.savePost(this.state.formData);
+    console.log("A name was submitted: " + this.state.formData);
   }
 
   render() {
@@ -119,7 +120,8 @@ class AppForm extends Component {
           Name:
           <input
             type="text"
-            value={this.state.value}
+            name="name"
+            value={this.state.formData.name}
             onChange={this.handleChange}
           />
         </label>
