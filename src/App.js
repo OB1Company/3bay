@@ -94,7 +94,7 @@ class Profile extends Component {
 }
 
 class AppForm extends Component {
-  state = { name: "", url: "", appImage : "", description : "" };
+  state = { name: "", url: "", appImage: "", description: "" };
   // constructor(props) {
   //   super(props);
   //   this.setState({ formData: { name: "", url : "" } })
@@ -109,7 +109,12 @@ class AppForm extends Component {
   };
 
   handleSubmit = event => {
-    this.props.savePost({ name: this.state.name, url: this.state.url, appImage : this.state.appImage, description : this.state.description });
+    this.props.savePost({
+      name: this.state.name,
+      url: this.state.url,
+      appImage: this.state.appImage,
+      description: this.state.description
+    });
     console.log(
       "A name was submitted: " + { name: this.state.name, url: this.state.url }
     );
@@ -119,63 +124,60 @@ class AppForm extends Component {
   render() {
     return (
       <div style={{ maxWidth: "500px", margin: "auto" }}>
-        <form onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="name">
-              Name:
-              <input
-                type="text"
-                name="name"
-                className="form-control"
-                aria-describedby="appName"
-                placeholder="Enter App Name"
-                value={this.state.name}
-                onChange={this.handleChange}
-              />
+      <form onSubmit={this.handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="name">
+            Name:
             </label>
-            <br />
-            <label htmlFor="url">
-              URL:
-              <input
-                type="text"
-                name="url"
-                className="form-control"
-                aria-describedby="url"
-                placeholder="Add url"
-                value={this.state.url}
-                onChange={this.handleChange}
-              />
-            </label>
-            <br/>
-            <label htmlFor="appImage">
-              Image:
-              <input
-                type="text"
-                name="appImage"
-                className="form-control"
-                aria-describedby="application image"
-                placeholder="Add an image"
-                value={this.state.appImage}
-                onChange={this.handleChange}
-              />
-            </label>
-            <br/>
-            <label htmlFor="description">
-              Description:
-              <input
-                type="text"
-                name="description"
-                className="form-control"
-                aria-describedby="description"
-                placeholder="Add a description"
-                value={this.state.description}
-                onChange={this.handleChange}
-              />
-            </label>
-          </div>
-          <input type="submit" value="Submit" className="btn btn-primary" />
-        </form>
-      </div>
+            <input
+              type="text"
+              name="name"
+              className="form-control"
+              aria-describedby="appName"
+              placeholder="Enter App Name"
+              value={this.state.name}
+              onChange={this.handleChange}
+            />
+        </div>
+        <div className="form-group">
+          <label htmlFor="url">URL:</label>
+          <input
+            type="text"
+            name="url"
+            className="form-control"
+            aria-describedby="url"
+            placeholder="Add url"
+            value={this.state.url}
+            onChange={this.handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="appImage">Image:</label>
+          <input
+            type="text"
+            name="appImage"
+            className="form-control"
+            aria-describedby="application image"
+            placeholder="Add an image"
+            value={this.state.appImage}
+            onChange={this.handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="description">Description:</label>
+          <input
+            type="text"
+            name="description"
+            className="form-control"
+            aria-describedby="description"
+            placeholder="Add a description"
+            value={this.state.description}
+            onChange={this.handleChange}
+          />
+        </div>
+        <input type="submit" value="Submit" className="btn btn-primary" />
+      </form>
+    </div>
     );
   }
 }
@@ -212,8 +214,8 @@ class AppStore extends Component {
     return (
       <div>
         <h1>App Store</h1>
-        
-        {this.state.thread && <AppForm savePost={this.savePost} />}
+        {/* this.state.thread  */}
+        {true && <AppForm savePost={this.savePost} />}
         {/* <button >Add an App</button> */}
         <button
           onClick={async () => {
