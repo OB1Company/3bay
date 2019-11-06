@@ -94,7 +94,7 @@ class Profile extends Component {
 }
 
 class AppForm extends Component {
-  state = { name: "", url: "" };
+  state = { name: "", url: "", appImage : "", description : "" };
   // constructor(props) {
   //   super(props);
   //   this.setState({ formData: { name: "", url : "" } })
@@ -109,7 +109,7 @@ class AppForm extends Component {
   };
 
   handleSubmit = event => {
-    this.props.savePost({ name: this.state.name, url: this.state.url });
+    this.props.savePost({ name: this.state.name, url: this.state.url, appImage : this.state.appImage, description : this.state.description });
     console.log(
       "A name was submitted: " + { name: this.state.name, url: this.state.url }
     );
@@ -143,6 +143,32 @@ class AppForm extends Component {
                 aria-describedby="url"
                 placeholder="Add url"
                 value={this.state.url}
+                onChange={this.handleChange}
+              />
+            </label>
+            <br/>
+            <label htmlFor="appImage">
+              Image:
+              <input
+                type="text"
+                name="appImage"
+                className="form-control"
+                aria-describedby="application image"
+                placeholder="Add an image"
+                value={this.state.appImage}
+                onChange={this.handleChange}
+              />
+            </label>
+            <br/>
+            <label htmlFor="description">
+              Description:
+              <input
+                type="text"
+                name="description"
+                className="form-control"
+                aria-describedby="description"
+                placeholder="Add a description"
+                value={this.state.description}
                 onChange={this.handleChange}
               />
             </label>
@@ -186,8 +212,8 @@ class AppStore extends Component {
     return (
       <div>
         <h1>App Store</h1>
-        {/* this.state.thread */}
-        {true && <AppForm savePost={this.savePost} />}
+        
+        {this.state.thread && <AppForm savePost={this.savePost} />}
         {/* <button >Add an App</button> */}
         <button
           onClick={async () => {
