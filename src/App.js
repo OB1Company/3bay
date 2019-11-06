@@ -7,6 +7,7 @@ import ImageUploader from "react-images-upload";
 import * as blobUtil from "blob-util";
 import { BounceLoader } from "react-spinners";
 import "bootstrap/dist/css/bootstrap.min.css";
+import AppForm from './components/AppForm';
 
 const getThreeBox = async address => {
   const profile = await Box.getProfile(address);
@@ -54,7 +55,7 @@ export default class App extends Component {
                 <Link to="/messager">Messenger</Link>
               </li>
               <li>
-                <Link to="/apps">App Store</Link>
+                <Link to="/add-application">Submit an App</Link>
               </li>
             </ul>
           </nav>
@@ -67,9 +68,9 @@ export default class App extends Component {
             <Route path="/messenger">
               <Messenger />
             </Route>
-            <Route path="/apps">
+            <Route path="/add-application">
               {this.state.accounts && (
-                <AppStore accounts={this.state.accounts} />
+                <AddApp accounts={this.state.accounts} />
               )}
               {!this.state.accounts && <h1>Login with metamask</h1>}
             </Route>
@@ -93,96 +94,9 @@ class Profile extends Component {
   }
 }
 
-class AppForm extends Component {
-  state = { name: "", url: "", appImage: "", description: "" };
-  // constructor(props) {
-  //   super(props);
-  //   this.setState({ formData: { name: "", url : "" } })
 
-  //   // this.handleChange = this.handleChange.bind(this);
-  //   // this.handleSubmit = this.handleSubmit.bind(this);
-  // }
 
-  handleChange = event => {
-    this.setState(Object.assign({ [event.target.name]: event.target.value }));
-    console.log("value ", event.target.name);
-  };
-
-  handleSubmit = event => {
-    this.props.savePost({
-      name: this.state.name,
-      url: this.state.url,
-      appImage: this.state.appImage,
-      description: this.state.description
-    });
-    console.log(
-      "A name was submitted: " + { name: this.state.name, url: this.state.url }
-    );
-    event.preventDefault();
-  };
-
-  render() {
-    return (
-      <div style={{ maxWidth: "500px", margin: "auto" }}>
-      <form onSubmit={this.handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="name">
-            Name:
-            </label>
-            <input
-              type="text"
-              name="name"
-              className="form-control"
-              aria-describedby="appName"
-              placeholder="Enter App Name"
-              value={this.state.name}
-              onChange={this.handleChange}
-            />
-        </div>
-        <div className="form-group">
-          <label htmlFor="url">URL:</label>
-          <input
-            type="text"
-            name="url"
-            className="form-control"
-            aria-describedby="url"
-            placeholder="Add url"
-            value={this.state.url}
-            onChange={this.handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="appImage">Image:</label>
-          <input
-            type="text"
-            name="appImage"
-            className="form-control"
-            aria-describedby="application image"
-            placeholder="Add an image"
-            value={this.state.appImage}
-            onChange={this.handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="description">Description:</label>
-          <input
-            type="text"
-            name="description"
-            className="form-control"
-            aria-describedby="description"
-            placeholder="Add a description"
-            value={this.state.description}
-            onChange={this.handleChange}
-          />
-        </div>
-        <input type="submit" value="Submit" className="btn btn-primary" />
-      </form>
-    </div>
-    );
-  }
-}
-
-class AppStore extends Component {
+class AddApp extends Component {
   state = {
     thread: null
   };
@@ -213,9 +127,9 @@ class AppStore extends Component {
   render() {
     return (
       <div>
-        <h1>App Store</h1>
-        {/* this.state.thread  */}
-        {true && <AppForm savePost={this.savePost} />}
+        <h1>Submit your Application!</h1>
+        {!this.state.thread && <h1>Loading</h1>}
+        {this.state.thread && <AppForm savePost={this.savePost} />}
         {/* <button >Add an App</button> */}
         <button
           onClick={async () => {
