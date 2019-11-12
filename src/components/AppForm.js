@@ -1,43 +1,43 @@
-import React , {Component} from 'react';
-
+import React, { Component } from "react";
 export default class AppForm extends Component {
-    state = { name: "", url: "", appImage: "", description: "" };
-  
-    handleChange = event => {
-      this.setState(Object.assign({ [event.target.name]: event.target.value }));
-      console.log("value ", event.target.name);
-    };
-  
-    handleSubmit = event => {
-      this.props.savePost({
-        name: this.state.name,
-        url: this.state.url,
-        appImage: this.state.appImage,
-        description: this.state.description
-      });
-      console.log(
-        "A name was submitted: " + { name: this.state.name, url: this.state.url }
-      );
-      event.preventDefault();
-    };
-  
-    render() {
-      return (
-        <div style={{ maxWidth: "500px", margin: "auto" }}>
+  state = { name: "", url: "", appImage: "", description: "" };
+
+  handleChange = event => {
+    this.setState(Object.assign({ [event.target.name]: event.target.value }));
+    console.log("value ", event.target.name);
+  };
+
+  async validateFormFields() {
+    console.log("to do - validiate form")
+  }
+
+  handleSubmit = event => {
+    event.preventDefault();
+    this.validateFormFields();
+    this.props.savePost({
+      name: this.state.name,
+      url: this.state.url,
+      appImage: this.state.appImage,
+      description: this.state.description
+    });
+
+  };
+
+  render() {
+    return (
+      <div style={{ maxWidth: "500px", margin: "auto" }}>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
-            <label htmlFor="name">
-              Name:
-              </label>
-              <input
-                type="text"
-                name="name"
-                className="form-control"
-                aria-describedby="appName"
-                placeholder="Enter App Name"
-                value={this.state.name}
-                onChange={this.handleChange}
-              />
+            <label htmlFor="name">Name:</label>
+            <input
+              type="text"
+              name="name"
+              className="form-control"
+              aria-describedby="appName"
+              placeholder="Enter App Name"
+              value={this.state.name}
+              onChange={this.handleChange}
+            />
           </div>
           <div className="form-group">
             <label htmlFor="url">URL:</label>
@@ -78,6 +78,6 @@ export default class AppForm extends Component {
           <input type="submit" value="Submit" className="btn btn-primary" />
         </form>
       </div>
-      );
-    }
+    );
   }
+}

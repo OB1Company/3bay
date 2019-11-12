@@ -55,7 +55,7 @@ export default class App extends Component {
                 <Link to="/messager">Messenger</Link>
               </li>
               <li>
-                <Link to="/add-application">Submit an App</Link>
+                <Link to="/add-application">Add an Application</Link>
               </li>
             </ul>
           </nav>
@@ -128,7 +128,11 @@ class AddApp extends Component {
     return (
       <div>
         <h1>Submit your Application!</h1>
-        {!this.state.thread && <h1>Loading</h1>}
+        {!this.state.thread && 
+        <div style={{width : '100px', margin : 'auto'}}>
+
+          <BounceLoader color={'blue'}/>
+        </div>}
         {this.state.thread && <AppForm savePost={this.savePost} />}
         {/* <button >Add an App</button> */}
         <button
