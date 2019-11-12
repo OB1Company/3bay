@@ -127,8 +127,8 @@ class AddApp extends Component {
   };
   render() {
     return (
-      <div className="container" style={{textAlign : "center"}}>
-        <h1>Submit your Application!</h1>
+      <div className="container" >
+        <h1 style={{textAlign : "center"}}>Submit your Application!</h1>
         {!this.state.thread && (
           <div style={{ width: "100px", margin: "auto" }}>
             <BounceLoader color={"blue"} />
