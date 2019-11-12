@@ -43,24 +43,21 @@ export default class App extends Component {
     return (
       <Router>
         <div>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/profile">Profile</Link>
-              </li>
-              <li>
-                <Link to="/messager">Messenger</Link>
-              </li>
-              <li>
-                <Link to="/add-application">Add an Application</Link>
-              </li>
-            </ul>
-          </nav>
-          {/* A <Switch> looks through its children <Route>s and
-              renders the first one that matches the current URL. */}
+        <ul className="nav nav-pills nav-justified">
+          <li className="nav-item">                
+            <Link className="nav-link" to="/">Home</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link"  to="/profile">Profile</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link"  to="/messager">Messenger</Link>
+          </li>
+          <li className="nav-item"> 
+            <Link className="nav-link"  to="/add-application">Add an Application</Link>
+          </li>
+        </ul>
+        
           <Switch>
             <Route path="/profile">
               <Profile />
@@ -134,7 +131,6 @@ class AddApp extends Component {
           <BounceLoader color={'blue'}/>
         </div>}
         {this.state.thread && <AppForm savePost={this.savePost} />}
-        {/* <button >Add an App</button> */}
         <button
           onClick={async () => {
             const posts = await this.state.thread.getPosts();
