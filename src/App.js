@@ -7,7 +7,7 @@ import ImageUploader from "react-images-upload";
 import * as blobUtil from "blob-util";
 import { BounceLoader } from "react-spinners";
 import "bootstrap/dist/css/bootstrap.min.css";
-import AppForm from './components/AppForm';
+import AppForm from "./components/AppForm";
 
 const getThreeBox = async address => {
   const profile = await Box.getProfile(address);
@@ -43,21 +43,29 @@ export default class App extends Component {
     return (
       <Router>
         <div>
-        <ul className="nav nav-pills nav-justified">
-          <li className="nav-item">                
-            <Link className="nav-link" to="/">Home</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link"  to="/profile">Profile</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link"  to="/messager">Messenger</Link>
-          </li>
-          <li className="nav-item"> 
-            <Link className="nav-link"  to="/add-application">Add an Application</Link>
-          </li>
-        </ul>
-        
+          <ul className="nav nav-pills nav-justified">
+            <li className="nav-item">
+              <Link className="nav-link" to="/">
+                Home
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/profile">
+                Profile
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/messager">
+                Messenger
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/add-application">
+                Add an Application
+              </Link>
+            </li>
+          </ul>
+
           <Switch>
             <Route path="/profile">
               <Profile />
@@ -66,9 +74,7 @@ export default class App extends Component {
               <Messenger />
             </Route>
             <Route path="/add-application">
-              {this.state.accounts && (
-                <AddApp accounts={this.state.accounts} />
-              )}
+              {this.state.accounts && <AddApp accounts={this.state.accounts} />}
               {!this.state.accounts && <h1>Login with metamask</h1>}
             </Route>
             <Route path="/">
@@ -90,8 +96,6 @@ class Profile extends Component {
     return <h2>Profile </h2>;
   }
 }
-
-
 
 class AddApp extends Component {
   state = {
@@ -123,13 +127,13 @@ class AddApp extends Component {
   };
   render() {
     return (
-      <div>
+      <div className="container" style={{textAlign : "center"}}>
         <h1>Submit your Application!</h1>
-        {!this.state.thread && 
-        <div style={{width : '100px', margin : 'auto'}}>
-
-          <BounceLoader color={'blue'}/>
-        </div>}
+        {!this.state.thread && (
+          <div style={{ width: "100px", margin: "auto" }}>
+            <BounceLoader color={"blue"} />
+          </div>
+        )}
         {this.state.thread && <AppForm savePost={this.savePost} />}
         <button
           onClick={async () => {
