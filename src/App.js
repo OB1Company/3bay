@@ -36,26 +36,24 @@ export default class App extends Component {
     }
 
     // async componentDidMount() {
-      const rach = "0x2f4cE4f714C68A3fC871d1f543FFC24b9b3c2386";
-  
-      const rachEth = "0x2f4cE4f714C68A3fC871d1f543FFC24b9b3c2386";
-      const box = await Box.openBox(this.state.accounts[0], window.ethereum);
-      this.setState({box})
-      const space = await this.state.box.openSpace("test-app-store");
-      console.log("space ", space);
-  
-      const thread = await space.joinThread("myThread", {
-        firstModerator: rach,
-        members: false
-      });
-      this.setState({ thread });
-      console.log("thread", this.state.thread);
-      var threadMembers = await this.state.thread.listModerators();
-      this.setState({threadMembers})
-      console.log("memebers", threadMembers);
-      const posts = await this.state.thread.getPosts();
-      this.setState({posts})
-      console.log("get posts ", posts);
+    const rach = "0x2f4cE4f714C68A3fC871d1f543FFC24b9b3c2386";
+    const box = await Box.openBox(this.state.accounts[0], window.ethereum);
+    this.setState({ box });
+    const space = await this.state.box.openSpace("test-app-store");
+    console.log("space ", space);
+
+    const thread = await space.joinThread("myThread2", {
+      firstModerator: rach,
+      members: false
+    });
+    this.setState({ thread });
+    console.log("thread", this.state.thread);
+    var threadMembers = await this.state.thread.listModerators();
+    this.setState({ threadMembers });
+    console.log("memebers", threadMembers);
+    const posts = await this.state.thread.getPosts();
+    this.setState({ posts });
+    console.log("get posts ", posts);
     // }
   }
   render() {
@@ -97,17 +95,20 @@ export default class App extends Component {
               <Messenger />
             </Route>
             <Route path="/add-application">
-              {this.state.accounts && <AddApp 
-                                        accounts={this.state.accounts} 
-                                        thread={this.state.thread} 
-                                        box={this.state.box} 
-                                        space={this.state.space}
-                                        threadMembers={this.state.threadMembers}
-                                        posts={this.state.posts} />}
+              {this.state.accounts && (
+                <AddApp
+                  accounts={this.state.accounts}
+                  thread={this.state.thread}
+                  box={this.state.box}
+                  space={this.state.space}
+                  threadMembers={this.state.threadMembers}
+                  posts={this.state.posts}
+                />
+              )}
               {!this.state.accounts && <h1>Login with metamask</h1>}
             </Route>
             <Route path="/">
-              <Home />
+              <Home posts={this.state.posts} />
             </Route>
           </Switch>
         </div>
@@ -117,21 +118,50 @@ export default class App extends Component {
 }
 
 class Home extends Component {
-  async componentDidMount(){
-   
-      const posts = await this.state.thread.getPosts();
-      console.log("get posts ", posts);
-
+  async componentDidMount() {
+    // const posts = await this.props.thread.getPosts();
+    // console.log("get posts ", posts);
   }
-  render(){
-    return (<dib>
-
-    </dib>
-
-    )
-
+  render() {
+    return (
+      <div className="container" style={{ textAlign: "center" }}>
+        <h1>Home</h1>
+        {/* TODO fix bootstrap grid */}
+        <div className="row">
+          {!this.props.posts && (
+            <div style={{ width: "100px", margin: "auto" }}>
+              <BounceLoader color={"blue"} />
+            </div>
+          )}
+          {this.props.posts &&
+            this.props.posts.map((post, i) => (
+              <div key={i}>
+                <div className="col">
+                  <h5>{post.message.name ? post.message.name : "unknown"}</h5>
+                  <img
+                    style={{ width: "200px" }}
+                    src={
+                      post.message.appImage
+                        ? post.message.appImage
+                        : "https://via.placeholder.com/200"
+                    }
+                  />
+                  <p>{post.message.description}</p>
+                  {post.message.url && (
+                    <p>
+                      <a href={post.message.url} target="_blank">
+                        website
+                      </a>
+                    </p>
+                  )}
+                </div>
+                {i % 3 == 0 && i != 0 && <div className="w-100"></div>}
+              </div>
+            ))}
+        </div>
+      </div>
+    );
   }
- 
 }
 
 class Profile extends Component {
@@ -145,15 +175,13 @@ class AddApp extends Component {
     thread: null
   };
 
-
-
   savePost = async formData => {
     await this.props.thread.post(formData);
   };
   render() {
     return (
-      <div className="container" >
-        <h1 style={{textAlign : "center"}}>Submit your Application!</h1>
+      <div className="container">
+        <h1 style={{ textAlign: "center" }}>Submit your Application!</h1>
         {!this.props.thread && (
           <div style={{ width: "100px", margin: "auto" }}>
             <BounceLoader color={"blue"} />
