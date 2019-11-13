@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import "./App.css";
 import Box from "3box";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { BounceLoader } from "react-spinners";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AppForm from "./components/AppForm";
+import Nav from './components/Nav'; 
 import ProfileHover from 'profile-hover';
 
 const getThreeBox = async address => {
@@ -59,29 +60,7 @@ export default class App extends Component {
     return (
       <Router>
         <div>
-          <ul className="nav nav-pills nav-justified">
-            <li className="nav-item">
-              <Link className="nav-link" to="/">
-                Home
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/profile">
-                Profile
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/messager">
-                Messenger
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/add-application">
-                Add an Application
-              </Link>
-            </li>
-          </ul>
-
+          <Nav/>
           <Switch>
             <Route path="/profile">
               <Profile />
