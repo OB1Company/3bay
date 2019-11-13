@@ -1,13 +1,11 @@
 import React, { Component } from "react";
-// import logo from './logo.svg';
 import "./App.css";
 import Box from "3box";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import ImageUploader from "react-images-upload";
-import * as blobUtil from "blob-util";
 import { BounceLoader } from "react-spinners";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AppForm from "./components/AppForm";
+import ProfileHover from 'profile-hover';
 
 const getThreeBox = async address => {
   const profile = await Box.getProfile(address);
@@ -34,8 +32,6 @@ export default class App extends Component {
       const threeBox = await getThreeBox(this.state.accounts[0]);
       this.setState({ threeBox });
     }
-
-    // async componentDidMount() {
     const rach = "0x2f4cE4f714C68A3fC871d1f543FFC24b9b3c2386";
     const box = await Box.openBox(this.state.accounts[0], window.ethereum);
     this.setState({ box });
@@ -54,7 +50,6 @@ export default class App extends Component {
     const posts = await this.state.thread.getPosts();
     this.setState({ posts });
     console.log("get posts ", posts);
-    // }
   }
   render() {
     if (this.state.needToAWeb3Browser) {
@@ -118,11 +113,9 @@ export default class App extends Component {
 }
 
 class Home extends Component {
-  async componentDidMount() {
-    // const posts = await this.props.thread.getPosts();
-    // console.log("get posts ", posts);
-  }
+
   render() {
+
     return (
       <div className="container" style={{ textAlign: "center" }}>
         <h1>Home</h1>
@@ -154,6 +147,7 @@ class Home extends Component {
                       </a>
                     </p>
                   )}
+                  <ProfileHover address={post.author} />
                 </div>
                 {i % 3 == 0 && i != 0 && <div className="w-100"></div>}
               </div>
@@ -188,14 +182,6 @@ class AddApp extends Component {
           </div>
         )}
         {this.props.thread && <AppForm savePost={this.savePost} />}
-        {/* <button
-          onClick={async () => {
-            const posts = await this.state.thread.getPosts();
-            console.log("get posts ", posts);
-          }}
-        >
-          Get Posts
-        </button> */}
       </div>
     );
   }
