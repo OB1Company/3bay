@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import "./App.css";
 import Box from "3box";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { BounceLoader } from "react-spinners";
 import "bootstrap/dist/css/bootstrap.min.css";
-import AppForm from "./components/AppForm";
-import Nav from './components/Nav'; 
+import Nav from './components/Nav';
+
 
 import Home from './pages/Home';
+import AddApp from './pages/AddApp';
+import Profile from './pages/Profile';
 
 const getThreeBox = async address => {
   const profile = await Box.getProfile(address);
@@ -66,9 +67,6 @@ export default class App extends Component {
             <Route path="/profile">
               <Profile />
             </Route>
-            <Route path="/messenger">
-              <Messenger />
-            </Route>
             <Route path="/add-application">
               {this.state.accounts && (
                 <AddApp
@@ -92,37 +90,3 @@ export default class App extends Component {
   }
 }
 
-
-
-class Profile extends Component {
-  render() {
-    return <h2>Profile </h2>;
-  }
-}
-
-class AddApp extends Component {
-  state = {
-    thread: null
-  };
-
-  savePost = async formData => {
-    await this.props.thread.post(formData);
-  };
-  render() {
-    return (
-      <div className="container">
-        <h1 style={{ textAlign: "center" }}>Submit your Application!</h1>
-        {!this.props.thread && (
-          <div style={{ width: "100px", margin: "auto" }}>
-            <BounceLoader color={"blue"} />
-          </div>
-        )}
-        {this.props.thread && <AppForm savePost={this.savePost} />}
-      </div>
-    );
-  }
-}
-
-function Messenger() {
-  return <h2>Messenger</h2>;
-}

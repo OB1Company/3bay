@@ -16,11 +16,6 @@ export default class Nav extends Component {
           </Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/messager">
-            Messenger
-          </Link>
-        </li>
-        <li className="nav-item">
           <Link className="nav-link" to="/add-application">
             Add an Application
           </Link>
