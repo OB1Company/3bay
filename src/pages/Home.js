@@ -6,11 +6,12 @@ export default class Home extends Component {
   render() {
     return (
       <div className="container" style={{ textAlign: "center" }}>
-        <h1 className="brand-font">Distribute</h1>
+        <h1 className="brand-font" style={{fontSize : '4rem'}}>Distribute</h1>
+        <p>The decentralised app store.</p>
         {/* TODO fix bootstrap grid */}
-        <div className="row">
+        <div className="row" style={{marginTop : '10%'}}>
           {!this.props.posts && (
-            <div style={{ width: "100px", margin: "auto" }}>
+            <div style={{ width: "60px", margin: "auto" }}>
               <BounceLoader color={"blue"} />
             </div>
           )}
