@@ -29,6 +29,14 @@ export default class App extends Component {
       this.setState({ accounts });
     }
   }
+  // async openAppThread(appName){
+  //   if(!this.state.space){
+  //     console.error("space has not been loaded in react state");
+  //     return
+  //   }
+  //   this.state.space
+  // }
+
   async componentDidMount() {
     await this.getAddressFromMetaMask();
     if (this.state.accounts) {
@@ -39,6 +47,7 @@ export default class App extends Component {
     const box = await Box.openBox(this.state.accounts[0], window.ethereum);
     this.setState({ box });
     const space = await this.state.box.openSpace("test-app-store");
+    this.setState({space})
 
     const thread = await space.joinThread("myThread2", {
       firstModerator: rach,
@@ -72,6 +81,7 @@ export default class App extends Component {
                   space={this.state.space}
                   threadMembers={this.state.threadMembers}
                   posts={this.state.posts}
+                  threeBox={this.state.threeBox}
                 />
               )}
               {!this.state.accounts && <h1>Login with metamask</h1>}

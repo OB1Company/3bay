@@ -1,5 +1,7 @@
 import { Modal, Button } from "react-bootstrap";
 import React, { useState } from "react";
+import CommentBox from '3box-comments-react';
+
 
 export default function Example(props) {
   const [show, setShow] = useState(false);
@@ -35,6 +37,12 @@ export default function Example(props) {
           }
         />
         <Modal.Body>{props.app.description}</Modal.Body>
+        <CommentBox
+         spaceName="test-app-store"
+         threadName={props.app.name}
+         currentUser3BoxProfile={props.threeBox}
+         adminEthAddr={'0x2f4cE4f714C68A3fC871d1f543FFC24b9b3c2386'} 
+        />
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close

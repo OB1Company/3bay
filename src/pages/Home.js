@@ -47,7 +47,7 @@ export default class Home extends Component {
                       <ProfileHover address={post.message.account} />
                     </div>
                   )}
-                  <Modal app={post.message}/>
+                  <Modal app={post.message} threeBox={this.props.threeBox}/>
                 </div>
                 {i % 3 == 0 && i != 0 && <div className="w-100"></div>}
               </div>
