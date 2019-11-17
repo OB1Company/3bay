@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ProfileHover from "profile-hover";
 import { BounceLoader } from "react-spinners";
+import Modal from './../components/Modal';
 
 export default class Home extends Component {
   render() {
@@ -46,6 +47,7 @@ export default class Home extends Component {
                       <ProfileHover address={post.message.account} />
                     </div>
                   )}
+                  <Modal app={post.message}/>
                 </div>
                 {i % 3 == 0 && i != 0 && <div className="w-100"></div>}
               </div>
