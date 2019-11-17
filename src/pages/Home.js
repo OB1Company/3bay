@@ -6,7 +6,7 @@ export default class Home extends Component {
   render() {
     return (
       <div className="container" style={{ textAlign: "center" }}>
-        <h1>Home</h1>
+        <h1 className="brand-font">Distribute</h1>
         {/* TODO fix bootstrap grid */}
         <div className="row">
           {!this.props.posts && (
@@ -26,6 +26,10 @@ export default class Home extends Component {
                         ? post.message.appImage
                         : "https://via.placeholder.com/200"
                     }
+                    onError={ev =>
+                      (ev.target.src =
+                        "http://www.stleos.uq.edu.au/wp-content/uploads/2016/08/image-placeholder-350x350.png")
+                    }
                   />
                   <p>{post.message.description}</p>
                   {post.message.url && (
@@ -35,7 +39,12 @@ export default class Home extends Component {
                       </a>
                     </p>
                   )}
-                  {post.message.account && <ProfileHover address={post.message.account} />}
+                  {post.message.account && (
+                    <div>
+                      <p>Submitted by</p>
+                      <ProfileHover address={post.message.account} />
+                    </div>
+                  )}
                 </div>
                 {i % 3 == 0 && i != 0 && <div className="w-100"></div>}
               </div>

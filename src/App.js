@@ -39,20 +39,16 @@ export default class App extends Component {
     const box = await Box.openBox(this.state.accounts[0], window.ethereum);
     this.setState({ box });
     const space = await this.state.box.openSpace("test-app-store");
-    console.log("space ", space);
 
     const thread = await space.joinThread("myThread2", {
       firstModerator: rach,
       members: false
     });
     this.setState({ thread });
-    console.log("thread", this.state.thread);
     var threadMembers = await this.state.thread.listModerators();
     this.setState({ threadMembers });
-    console.log("memebers", threadMembers);
     const posts = await this.state.thread.getPosts();
     this.setState({ posts });
-    console.log("get posts ", posts);
   }
   render() {
     if (this.state.needToAWeb3Browser) {
