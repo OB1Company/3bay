@@ -1,16 +1,18 @@
 import React, { Component } from "react";
 import ProfileHover from "profile-hover";
 import { BounceLoader } from "react-spinners";
-import Modal from './../components/Modal';
+import Modal from "./../components/Modal";
 
 export default class Home extends Component {
   render() {
     return (
       <div className="container" style={{ textAlign: "center" }}>
-        <h1 className="brand-font" style={{fontSize : '4rem'}}>Distribute</h1>
+        <h1 className="brand-font" style={{ fontSize: "4rem" }}>
+          Distribute
+        </h1>
         <p>The Decentralised App Store.</p>
         {/* TODO fix bootstrap grid */}
-        <div className="row" style={{marginTop : '10%'}}>
+        <div className="row" style={{ marginTop: "10%" }}>
           {!this.props.posts && (
             <div style={{ width: "60px", margin: "auto" }}>
               <BounceLoader color={"blue"} />
@@ -47,7 +49,11 @@ export default class Home extends Component {
                       <ProfileHover address={post.message.account} />
                     </div>
                   )}
-                  <Modal app={post.message} threeBox={this.props.threeBox}/>
+                  <Modal
+                    app={post.message}
+                    threeBox={this.props.threeBox}
+                    space={this.props.space}
+                  />
                 </div>
                 {i % 3 == 0 && i != 0 && <div className="w-100"></div>}
               </div>

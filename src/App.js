@@ -81,7 +81,8 @@ export default class App extends Component {
               {!this.state.accounts && <h1>Login with metamask</h1>}
             </Route>
             <Route path="/">
-              <Home posts={this.state.posts} />
+              <Home posts={this.state.posts}
+                    space={this.state.space} />
             </Route>
           </Switch>
         </div>
