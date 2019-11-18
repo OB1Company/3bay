@@ -53,6 +53,8 @@ export default class Home extends Component {
                     app={post.message}
                     threeBox={this.props.threeBox}
                     space={this.props.space}
+                    box={this.props.box}
+                    usersAddress={this.props.usersAddress}
                   />
                 </div>
                 {i % 3 == 0 && i != 0 && <div className="w-100"></div>}

@@ -82,7 +82,9 @@ export default class App extends Component {
             </Route>
             <Route path="/">
               <Home posts={this.state.posts}
-                    space={this.state.space} />
+                    space={this.state.space}
+                    box={this.state.box}
+                    usersAddress={this.state.accounts ?this.state.accounts[0]:null} />
             </Route>
           </Switch>
         </div>

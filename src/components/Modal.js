@@ -46,8 +46,11 @@ export default class Example extends Component {
           <CommentBox
             spaceName={SPACE_NAME}
             threadName={this.props.app.name}
+            box={this.props.box}
+            currentUserAddr={this.props.usersAddress}
             currentUser3BoxProfile={this.props.threeBox}
             adminEthAddr={"0x2f4cE4f714C68A3fC871d1f543FFC24b9b3c2386"}
+            
           />
           <Modal.Footer>
             <Button variant="secondary" onClick={this.state.handleClose}>
