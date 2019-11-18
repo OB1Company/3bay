@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "3box": "^1.13.1",
+    "3box": "^1.13.2",
     "3box-comments-react": "0.0.1-beta.20",
     "blob-util": "^2.0.2",
     "bootstrap": "^4.3.1",

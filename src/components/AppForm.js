@@ -5,7 +5,6 @@ export default class AppForm extends Component {
 
   handleChange = event => {
     this.setState(Object.assign({ [event.target.name]: event.target.value }));
-    console.log("value ", event.target.name);
   };
 
   async validateFormFields() {

@@ -9,12 +9,14 @@ import Nav from './components/Nav';
 import Home from './pages/Home';
 import AddApp from './pages/AddApp';
 import Profile from './pages/Profile';
+import { SPACE_NAME }from './Constants';
 
 const getThreeBox = async address => {
   const profile = await Box.getProfile(address);
-  console.log(profile);
   return profile;
 };
+
+
 
 export default class App extends Component {
   state = {
@@ -29,13 +31,6 @@ export default class App extends Component {
       this.setState({ accounts });
     }
   }
-  // async openAppThread(appName){
-  //   if(!this.state.space){
-  //     console.error("space has not been loaded in react state");
-  //     return
-  //   }
-  //   this.state.space
-  // }
 
   async componentDidMount() {
     await this.getAddressFromMetaMask();
@@ -46,16 +41,15 @@ export default class App extends Component {
     const rach = "0x2f4cE4f714C68A3fC871d1f543FFC24b9b3c2386";
     const box = await Box.openBox(this.state.accounts[0], window.ethereum);
     this.setState({ box });
-    const space = await this.state.box.openSpace("test-app-store");
+    const space = await this.state.box.openSpace(SPACE_NAME);
     this.setState({space})
 
-    const thread = await space.joinThread("myThread2", {
+    //TODO rename to appThread
+    const thread = await space.joinThread("application_list", {
       firstModerator: rach,
       members: false
     });
-    this.setState({ thread });
-    var threadMembers = await this.state.thread.listModerators();
-    this.setState({ threadMembers });
+    this.setState({thread});
     const posts = await this.state.thread.getPosts();
     this.setState({ posts });
   }

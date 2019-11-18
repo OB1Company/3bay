@@ -1,0 +1,1 @@
+export const SPACE_NAME  = "demo-app-store";
