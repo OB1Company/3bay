@@ -10,6 +10,10 @@ export default class Example extends Component {
     handleShow: () => this.setState({ show: true })
   };
 
+  componentWillUnmount(){
+    this.props.space.unsubscribeThread(this.props.app.name)
+  }
+
   render() {
     return (
       <>
