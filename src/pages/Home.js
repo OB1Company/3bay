@@ -4,6 +4,7 @@ import { BounceLoader } from "react-spinners";
 import Modal from "./../components/Modal";
 
 export default class Home extends Component {
+
   render() {
     return (
       <div className="container" style={{ textAlign: "center" }}>

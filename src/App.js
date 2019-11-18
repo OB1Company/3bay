@@ -17,7 +17,6 @@ const getThreeBox = async address => {
 };
 
 
-
 export default class App extends Component {
   state = {
     needToAWeb3Browser: false
@@ -50,9 +49,17 @@ export default class App extends Component {
       members: false
     });
     this.setState({thread});
+    this.getAppsThread()
+  }
+  async getAppsThread (){
+    if(!this.state.thread){
+      console.error('apps thread not in react state');
+      return;
+    }
     const posts = await this.state.thread.getPosts();
     this.setState({ posts });
   }
+
   render() {
     if (this.state.needToAWeb3Browser) {
       return <h1>Please install metamask</h1>;
@@ -76,6 +83,7 @@ export default class App extends Component {
                   threadMembers={this.state.threadMembers}
                   posts={this.state.posts}
                   threeBox={this.state.threeBox}
+                  getAppsThread={this.getAppsThread.bind(this)}
                 />
               )}
               {!this.state.accounts && <h1>Login with metamask</h1>}
@@ -84,7 +92,9 @@ export default class App extends Component {
               <Home posts={this.state.posts}
                     space={this.state.space}
                     box={this.state.box}
-                    usersAddress={this.state.accounts ?this.state.accounts[0]:null} />
+                    getAppsThread={this.getAppsThread}
+                    usersAddress={this.state.accounts ?this.state.accounts[0]:null}
+                     />
             </Route>
           </Switch>
         </div>

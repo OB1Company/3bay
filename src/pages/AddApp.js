@@ -11,6 +11,7 @@ export default class AddApp extends Component {
       formData.account = this.props.accounts[0];
       await this.props.thread.post(formData);
       //TODO Get posts and set a loading indicator in the UI
+      this.props.getAppsThread();
     };
     render() {
       return (
