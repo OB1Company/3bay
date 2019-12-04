@@ -4,7 +4,6 @@ import { BounceLoader } from "react-spinners";
 import Modal from "./../components/Modal";
 
 export default class Home extends Component {
-
   render() {
     return (
       <div className="container" style={{ textAlign: "center" }}>
@@ -19,48 +18,58 @@ export default class Home extends Component {
               <BounceLoader color={"blue"} />
             </div>
           )}
-          {this.props.posts &&
-            this.props.posts.map((post, i) => (
-              <div key={i}>
-                <div className="col">
-                  <h5>{post.message.name ? post.message.name : "unknown"}</h5>
-                  <img
-                    style={{ width: "200px" }}
-                    src={
-                      post.message.appImage
-                        ? post.message.appImage
-                        : "https://via.placeholder.com/200"
-                    }
-                    onError={ev =>
-                      (ev.target.src =
-                        "http://www.stleos.uq.edu.au/wp-content/uploads/2016/08/image-placeholder-350x350.png")
-                    }
-                  />
-                  <p>{post.message.description}</p>
-                  {post.message.url && (
-                    <p>
-                      <a href={post.message.url} target="_blank">
-                        website
-                      </a>
-                    </p>
-                  )}
-                  {post.message.account && (
-                    <div>
-                      <p>Submitted by</p>
-                      <ProfileHover address={post.message.account} />
+          <div className="container">
+            <div className="row">
+              {this.props.posts &&
+                this.props.posts.map((post, i) => {
+                  return (
+                    <>
+                    <div className="col-sm-4" key={i}>
+                      <div>
+                        <h5>
+                          {post.message.name ? post.message.name : "unknown"}
+                        </h5>
+                        <img
+                          style={{ height: "10vw" }}
+                          src={
+                            post.message.appImage
+                              ? post.message.appImage
+                              : "https://via.placeholder.com/200"
+                          }
+                          onError={ev =>
+                            (ev.target.src =
+                              "http://www.stleos.uq.edu.au/wp-content/uploads/2016/08/image-placeholder-350x350.png")
+                          }
+                        />
+                        <p>{post.message.description}</p>
+                        {post.message.url && (
+                          <p>
+                            <a href={post.message.url} target="_blank">
+                              website
+                            </a>
+                          </p>
+                        )}
+                        {post.message.account && (
+                          <div>
+                            <p>Submitted by</p>
+                            <ProfileHover address={post.message.account} />
+                          </div>
+                        )}
+                        <Modal
+                          app={post.message}
+                          threeBox={this.props.threeBox}
+                          space={this.props.space}
+                          box={this.props.box}
+                          usersAddress={this.props.usersAddress}
+                        />
+                      </div>
                     </div>
-                  )}
-                  <Modal
-                    app={post.message}
-                    threeBox={this.props.threeBox}
-                    space={this.props.space}
-                    box={this.props.box}
-                    usersAddress={this.props.usersAddress}
-                  />
-                </div>
-                {i % 3 == 0 && i != 0 && <div className="w-100"></div>}
-              </div>
-            ))}
+                      {(i + 1)% 3 == 0 && <div className="w-100"></div>}
+                      </>
+                  );
+                })}
+            </div>
+          </div>
         </div>
       </div>
     );
