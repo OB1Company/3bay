@@ -3,19 +3,18 @@ import "./App.css";
 import Box from "3box";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Nav from './components/Nav';
+import Nav from "./components/Nav";
+import { BounceLoader } from "react-spinners";
 
-
-import Home from './pages/Home';
-import AddApp from './pages/AddApp';
-import Profile from './pages/Profile';
-import { SPACE_NAME }from './Constants';
+import Home from "./pages/Home";
+import AddApp from "./pages/AddApp";
+import Profile from "./pages/Profile";
+import { SPACE_NAME } from "./Constants";
 
 const getThreeBox = async address => {
   const profile = await Box.getProfile(address);
   return profile;
 };
-
 
 export default class App extends Component {
   state = {
@@ -41,19 +40,19 @@ export default class App extends Component {
     const box = await Box.openBox(this.state.accounts[0], window.ethereum);
     this.setState({ box });
     const space = await this.state.box.openSpace(SPACE_NAME);
-    this.setState({space})
+    this.setState({ space });
 
     //TODO rename to appThread
     const thread = await space.joinThread("application_list", {
       firstModerator: rach,
       members: false
     });
-    this.setState({thread});
-    this.getAppsThread()
+    this.setState({ thread });
+    this.getAppsThread();
   }
-  async getAppsThread (){
-    if(!this.state.thread){
-      console.error('apps thread not in react state');
+  async getAppsThread() {
+    if (!this.state.thread) {
+      console.error("apps thread not in react state");
       return;
     }
     const posts = await this.state.thread.getPosts();
@@ -68,10 +67,22 @@ export default class App extends Component {
     return (
       <Router>
         <div>
-          <Nav/>
+          <Nav />
           <Switch>
             <Route path="/profile">
-              <Profile />
+              {this.state.space && (
+                <Profile
+                  box={this.state.box}
+                  space={this.state.space}
+                  accounts={this.state.accounts}
+                  threeBox={this.state.threeBox}
+                />
+              )}
+              {!this.state.space && (
+                <div style={{ width: "60px", margin: "auto" }}>
+                  <BounceLoader color={"blue"} />
+                </div>
+              )}
             </Route>
             <Route path="/add-application">
               {this.state.accounts && (
@@ -89,12 +100,15 @@ export default class App extends Component {
               {!this.state.accounts && <h1>Login with metamask</h1>}
             </Route>
             <Route path="/">
-              <Home posts={this.state.posts}
-                    space={this.state.space}
-                    box={this.state.box}
-                    getAppsThread={this.getAppsThread}
-                    usersAddress={this.state.accounts ?this.state.accounts[0]:null}
-                     />
+              <Home
+                posts={this.state.posts}
+                space={this.state.space}
+                box={this.state.box}
+                getAppsThread={this.getAppsThread}
+                usersAddress={
+                  this.state.accounts ? this.state.accounts[0] : null
+                }
+              />
             </Route>
           </Switch>
         </div>
@@ -102,4 +116,3 @@ export default class App extends Component {
     );
   }
 }
-

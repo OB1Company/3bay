@@ -24,6 +24,11 @@
 .brand-font {
   font-family: 'Gugi';
 }
+/* TODO Fix this  */
+.modal {
+  width : 100% !important;
+  z-index: 2000 !important;
+}
 .modal-content {
   padding: 34px;
 }

@@ -17,7 +17,7 @@ export default class Example extends Component {
   render() {
     return (
       <>
-        <Button variant="primary" onClick={this.state.handleShow} style={{width : "100%"}}>
+        <Button variant="primary" onClick={this.state.handleShow} style={{width : '100%'}}>
           Comments
         </Button>
 

@@ -10,11 +10,11 @@ export default class Nav extends Component {
             Home
           </Link>
         </li>
-        {/* <li className="nav-item">
+        <li className="nav-item">
           <Link className="nav-link" to="/profile">
             Profile
           </Link>
-        </li> */}
+        </li>
         <li className="nav-item">
           <Link className="nav-link" to="/add-application">
             Add an Application
