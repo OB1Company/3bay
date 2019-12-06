@@ -17,7 +17,7 @@ export default class Example extends Component {
   render() {
     return (
       <>
-        <Button variant="primary" onClick={this.state.handleShow}>
+        <Button variant="primary" onClick={this.state.handleShow} style={{width : "100%"}}>
           Comments
         </Button>
 
@@ -53,7 +53,7 @@ export default class Example extends Component {
             
           />
           <Modal.Footer>
-            <Button variant="secondary" onClick={this.state.handleClose}>
+            <Button variant="secondary" onClick={this.state.handleClose} >
               Close
             </Button>
           </Modal.Footer>

@@ -24,8 +24,8 @@ export default class Home extends Component {
                 this.props.posts.map((post, i) => {
                   return (
                     <>
-                    <div className="col-sm-4" key={i}>
-                      <div>
+                    <div className="col-sm-4" key={i} >
+                      <div style={{padding : '45px'}}>
                         <h5>
                           {post.message.name ? post.message.name : "unknown"}
                         </h5>
@@ -52,7 +52,7 @@ export default class Home extends Component {
                         {post.message.account && (
                           <div>
                             <p>Submitted by</p>
-                            <ProfileHover address={post.message.account} />
+                            <ProfileHover address={post.message.account} style={{width : '100%'}}/>
                           </div>
                         )}
                         <Modal
@@ -61,11 +61,12 @@ export default class Home extends Component {
                           space={this.props.space}
                           box={this.props.box}
                           usersAddress={this.props.usersAddress}
+                          style={{width : "100%"}}
                         />
                       </div>
-                    </div>
+                      </div>
                       {(i + 1)% 3 == 0 && <div className="w-100"></div>}
-                      </>
+                    </>
                   );
                 })}
             </div>
