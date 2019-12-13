@@ -11,7 +11,7 @@ export default class Profile extends Component {
             box={this.props.box}
             space={this.props.space}
             currentUserAddr={this.props.accounts[0]}
-            currentUser3BoxProfile={this.props.threeBox}
+            currentUser3BoxProfile={this.props.threeBoxProfile}
           />
         </div>
       </div>

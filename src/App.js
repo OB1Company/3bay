@@ -33,8 +33,8 @@ export default class App extends Component {
   async componentDidMount() {
     await this.getAddressFromMetaMask();
     if (this.state.accounts) {
-      const threeBox = await getThreeBox(this.state.accounts[0]);
-      this.setState({ threeBox });
+      const threeBoxProfile = await getThreeBox(this.state.accounts[0]);
+      this.setState({ threeBoxProfile });
     }
     const rach = "0x2f4cE4f714C68A3fC871d1f543FFC24b9b3c2386";
     const box = await Box.openBox(this.state.accounts[0], window.ethereum);
@@ -47,8 +47,8 @@ export default class App extends Component {
       firstModerator: rach,
       members: false
     });
-    this.setState({ thread });
-    this.getAppsThread();
+    this.setState({ thread }, ()=>(this.getAppsThread()));
+    
   }
   async getAppsThread() {
     if (!this.state.thread) {
@@ -75,7 +75,7 @@ export default class App extends Component {
                   box={this.state.box}
                   space={this.state.space}
                   accounts={this.state.accounts}
-                  threeBox={this.state.threeBox}
+                  threeBoxProfile={this.state.threeBoxProfile}
                 />
               )}
               {!this.state.space && (
@@ -93,7 +93,7 @@ export default class App extends Component {
                   space={this.state.space}
                   threadMembers={this.state.threadMembers}
                   posts={this.state.posts}
-                  threeBox={this.state.threeBox}
+                  threeBoxProfile={this.state.threeBoxProfile}
                   getAppsThread={this.getAppsThread.bind(this)}
                 />
               )}
