@@ -54,7 +54,7 @@ export default class AppForm extends Component {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="appImage">Image:</label>
+              <label htmlFor="appImage">Image URL:</label>
               <input
                 type="text"
                 name="appImage"
@@ -88,3 +88,5 @@ export default class AppForm extends Component {
     );
   }
 }
+
+
