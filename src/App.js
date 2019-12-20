@@ -42,7 +42,6 @@ export default class App extends Component {
     const space = await this.state.box.openSpace(SPACE_NAME);
     this.setState({ space });
 
-    //TODO rename to appThread
     const thread = await space.joinThread("application_list", {
       firstModerator: rach,
       members: false
