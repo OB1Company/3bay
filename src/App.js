@@ -48,15 +48,20 @@ export default class App extends Component {
       members: false
     });
     this.setState({ thread }, ()=>(this.getAppsThread()));
-    
   }
   async getAppsThread() {
     if (!this.state.thread) {
       console.error("apps thread not in react state");
       return;
     }
+
     const posts = await this.state.thread.getPosts();
-    this.setState({ posts });
+    this.setState({posts});
+
+    await this.state.thread.onUpdate(async()=> {
+      const posts = await this.state.thread.getPosts();
+      this.setState({posts});
+    })
   }
 
   render() {

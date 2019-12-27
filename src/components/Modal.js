@@ -17,7 +17,7 @@ export default class Example extends Component {
   render() {
     return (
       <>
-        <Button variant="primary" onClick={this.state.handleShow} style={{width : '100%'}}>
+        <Button variant="primary" onClick={this.state.handleShow} style={{width : '100%', margin: '10px'}}>
           Comments
         </Button>
 
@@ -48,7 +48,7 @@ export default class Example extends Component {
             threadName={this.props.app.name}
             box={this.props.box}
             currentUserAddr={this.props.usersAddress}
-            currentUser3BoxProfile={this.props.threeBox}
+            // currentUser3BoxProfile={this.props.threeBox}
             adminEthAddr={"0x2f4cE4f714C68A3fC871d1f543FFC24b9b3c2386"}
             
           />

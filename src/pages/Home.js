@@ -11,7 +11,6 @@ export default class Home extends Component {
           Distribute
         </h1>
         <p>The Decentralised App Store.</p>
-        {/* TODO fix bootstrap grid */}
         <div className="row" style={{ marginTop: "10%" }}>
           {!this.props.posts && (
             <div style={{ width: "60px", margin: "auto" }}>
@@ -55,6 +54,7 @@ export default class Home extends Component {
                               <ProfileHover
                                 address={post.message.account}
                                 style={{ width: "100%" }}
+                                showName={true}
                               />
                             </div>
                           )}
