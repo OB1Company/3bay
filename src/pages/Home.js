@@ -12,7 +12,7 @@ export default class Home extends Component {
         </h1>
         <p>The Decentralised App Store.</p>
         <div className="row" style={{ marginTop: "10%" }}>
-          {!this.props.posts && (
+          {(!this.props.posts || this.props.posts.length < 1) && (
             <div style={{ width: "60px", margin: "auto" }}>
               <BounceLoader color={"blue"} />
             </div>
