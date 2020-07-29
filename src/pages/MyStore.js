@@ -66,6 +66,7 @@ class ListingCard extends Component {
           <div style={styles.wrapper}>
             <div style={styles.cardWrapper}>
               <img
+                alt="Listing image"
                 style={styles.image}
                 src={
                   this.props.post.message.listingImage
