@@ -26,7 +26,7 @@ export default class Example extends Component {
             <Modal.Title>{this.props.app.name}</Modal.Title>
           </Modal.Header>
           <img
-            alt="Listing image"
+            alt="Listing"
             style={{
               width: "200px",
               marginLeft: "auto",

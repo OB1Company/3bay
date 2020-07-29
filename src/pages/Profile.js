@@ -20,7 +20,7 @@ export default class Profile extends Component {
           {this.state.hideEdit && (
             <div>
               <h2>{this.props.threeBoxProfile.name}</h2>
-              <img alt="Avatar image" src={this.props.threeBoxProfile.image.contentUrl['/']} />
+              <img alt="Avatar" src={this.props.threeBoxProfile.image.contentUrl['/']} />
               <p>{this.props.threeBoxProfile.description}</p>
               <p>{this.props.threeBoxProfile.emoji}</p>
               <button onClick={()=>(this.setState({hideEdit : false}))}>edit</button>
