@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Nav from "./components/Nav";
 import { BounceLoader } from "react-spinners";
+import ChatBox from "3box-chatbox-react";
 
 import MyStore from "./pages/MyStore";
 import Home from "./pages/Home";
@@ -192,6 +193,22 @@ export default class App extends Component {
               />
             </Route>
           </Switch>
+          <ChatBox
+            // required
+            spaceName={this.state.space}
+            threadName={this.state.globalListChat}
+            // Required props for context A) & B)
+            box={this.state.box}
+            currentUserAddr={
+              this.state.accounts ? this.state.accounts[0] : null
+            }
+            // optional
+            mute={false}
+            popupChat
+            showEmoji
+            colorTheme="#181F21"
+            currentUser3BoxProfile={this.state.threeBoxProfile}
+          />
         </div>
       </Router>
     );
