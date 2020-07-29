@@ -46,7 +46,7 @@ export default class App extends Component {
    */
   async componentDidMount() {
     // Set the background color (need to move this out of here)
-    document.body.style.backgroundColor = "#ededed";
+    document.body.style.backgroundColor = "#ffffff";
 
     // Fetch the user's ethereum account
     await this.getAddressFromMetaMask();

@@ -125,7 +125,7 @@ export default class Home extends Component {
           My store
         </h1>
         <p>This is my store.</p>
-        <div className="row" style={{ marginTop: "10%" }}>
+        <div className="row" style={{ marginTop: "50px" }}>
           {(!this.props.posts || this.props.posts.length < 1) && (
             <div style={{ width: "60px", margin: "auto" }}>
               <BounceLoader color={"blue"} />

@@ -2,6 +2,13 @@ import React, {Component} from 'react';
 import ListingForm from '../components/ListingForm';
 import { BounceLoader } from 'react-spinners';
 
+const styles = {
+  navHeading: {
+    textAlign: "center",
+    fontColor: "#0c2845",
+  }
+}
+
 export default class AddListing extends Component {
     state = {
       thread: null,
@@ -18,7 +25,7 @@ export default class AddListing extends Component {
     render() {
       return (
         <div className="container">
-          <h1 style={{ textAlign: "center" }}>Add a listing</h1>
+          <h1 style={styles.navHeading}>Add a listing</h1>
           {!this.props.thread && (
             <div style={{ width: "100px", margin: "auto" }}>
               <BounceLoader color={"blue"} />
