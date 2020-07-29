@@ -60,6 +60,7 @@ export default class App extends Component {
 
     // Open the 3Box object of the user's account
     const box = await Box.openBox(this.state.accounts[0], window.ethereum);
+    await box.syncDone;
     this.setState({ box });
 
     // Open the demo marketplace 'space' of the user
