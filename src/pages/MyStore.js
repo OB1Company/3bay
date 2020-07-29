@@ -121,19 +121,19 @@ export default class Home extends Component {
     return (
       <div className="container" style={styles.background}>
         <h1 className="brand-font" style={{ fontSize: "4rem" }}>
-          Ion
+          My store
         </h1>
-        <p>The Decentralised Marketplace.</p>
+        <p>This is my store.</p>
         <div className="row" style={{ marginTop: "10%" }}>
-          {(!this.props.globalPosts || this.props.globalPosts.length < 1) && (
+          {(!this.props.posts || this.props.posts.length < 1) && (
             <div style={{ width: "60px", margin: "auto" }}>
               <BounceLoader color={"blue"} />
             </div>
           )}
           <div className="container">
             <div className="row">
-              {this.props.globalPosts &&
-                this.props.globalPosts.map((post, i) => {
+              {this.props.posts &&
+                this.props.posts.map((post, i) => {
                   return (
                     <ListingCard
                       post={post}

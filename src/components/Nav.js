@@ -16,8 +16,13 @@ export default class Nav extends Component {
           </Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/add-application">
-            Add an Application
+          <Link className="nav-link" to="/my-store">
+            My store
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/add-listing">
+            Add a listing
           </Link>
         </li>
       </ul>

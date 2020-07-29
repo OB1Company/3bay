@@ -1,1 +1,1 @@
-export const SPACE_NAME  = "demo-app-store";
+export const SPACE_NAME  = "demo-marketplace";
