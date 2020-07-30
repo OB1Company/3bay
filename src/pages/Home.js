@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { CardColumns, Card } from "react-bootstrap";
+import { Button, Modal, CardColumns, Card } from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
+import ProfileHover from "profile-hover";
 
 const styles = {
   column: {
@@ -62,14 +63,43 @@ const styles = {
     margin: "0px",
     padding: "0px",
   },
+  modalShippingAddress: {
+    fontSize: "13px",
+    textAlign: "left",
+    height: "21px",
+    lineHeight: "13px",
+    marginTop: "10px",
+    marginBottom: "10px",
+    marginLeft: "0px",
+    marginRight: "0px",
+    padding: "0px",
+  },
+  soldBy: {
+    fontSize: "17px",
+    fontWeight: "bold",
+    textAlign: "left",
+    height: "20px",
+    lineHeight: "17px",
+    marginTop: "5px",
+    marginBottom: "5px",
+    marginLeft: "0px",
+    marginRight: "0px",
+    padding: "0px",
+  }
 };
 
 class ListingCard extends Component {
+  state = {
+    show: false,
+    handleClose: () => this.setState({ show: false }),
+    handleShow: () => this.setState({ show: true }),
+  };
+
   render() {
     return (
       <>
         <Card style={styles.wrapper}>
-          <div style={styles.cardWrapper}>
+          <div style={styles.cardWrapper} onClick={this.state.handleShow}>
             <img
               alt="Listing"
               style={styles.image}
@@ -94,25 +124,74 @@ class ListingCard extends Component {
                   ? this.props.post.message.price
                   : "$0"}
               </p>
-
               <p style={styles.description}>
                 {this.props.post.message.description}
               </p>
-
               <p style={styles.shippingAddress}>
                 {this.props.post.message.needsAddress === true ? "📦" : " "}
               </p>
-
-              {/* <Modal
-                  app={this.props.post.message}
-                  threeBox={this.props.threeBox}
-                  space={this.props.space}
-                  box={this.props.box}
-                  usersAddress={this.props.usersAddress}
-                /> */}
             </div>
           </div>
         </Card>
+        
+        <Modal onHide={this.state.handleClose} show={this.state.show}>
+          <Modal.Header closeButton>
+            <Modal.Title style={styles.name}>
+              {this.props.post.message.name
+                ? this.props.post.message.name
+                : "Unnamed"}
+            </Modal.Title>
+          </Modal.Header>
+          <img
+            alt="Listing"
+            onError={(ev) =>
+              (ev.target.src =
+                "https://www.stleos.uq.edu.au/wp-content/uploads/2016/08/image-placeholder-350x350.png")
+            }
+            src={
+              this.props.post.message.listingImage
+                ? this.props.post.message.listingImage
+                : "https://via.placeholder.com/200"
+            }
+            style={{
+              width: "100%",
+              borderRadius: "30px",
+              paddingTop: "10px",
+              paddingLeft: "10px",
+              paddingRight: "10px",
+            }}
+          />
+          <Modal.Body>
+            <p style={styles.price}>
+              {this.props.post.message.price
+                ? this.props.post.message.price
+                : "$0"}
+            </p>
+            <p style={styles.description}>
+              {this.props.post.message.description}
+            </p>
+            <p style={styles.modalShippingAddress}>
+              {this.props.post.message.needsAddress === true ? "📦 Shipping address required" : " "}
+            </p>
+            <p style={styles.soldBy}>
+              Sold by
+            </p>
+            {this.props.post.message.account && (
+              <div style={{ marginBottom: "10px" }}>
+                <ProfileHover
+                  address={this.props.post.message.account}
+                  style={{ width: "100%" }}
+                  showName={true}
+                />
+              </div>
+            )}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.state.handleClose} variant="secondary">
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
         {(this.props.i + 1) % 3 === 0 && <div className="w-100"></div>}
       </>
     );
