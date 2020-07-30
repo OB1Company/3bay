@@ -32,3 +32,9 @@
 .modal-content {
   padding: 34px;
 }
+
+.userscontainer {
+  margin-top: 100px;
+  width: 80%;
+  height: 600px;
+}

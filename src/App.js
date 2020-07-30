@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Nav from "./components/Nav";
 import { BounceLoader } from "react-spinners";
+import ChatBox from "3box-chatbox-react";
 
 import MyStore from "./pages/MyStore";
 import Home from "./pages/Home";
@@ -74,14 +75,17 @@ export default class App extends Component {
     });
     this.setState({ thread }, () => this.getListingsThread());
 
+    // Join global chat
+    const globalChat = await space.joinThread("globalListChat");
+
     // Fetch the listings in the thread of the global marketplace
     const globalThread = await space.joinThreadByAddress(
       "/orbitdb/zdpuAosv7kRPN49quPCwVr5p531SwjycjdxQeEbM9Y3SiNBp9/3box.thread.demo-marketplace.globalList"
     );
     this.setState({ globalThread }, () => this.getGlobalListingsThread());
     console.log(globalThread.address);
-    const dasPosts = await globalThread.getPosts()
-    console.log(dasPosts)
+    const dasPosts = await globalThread.getPosts();
+    console.log(dasPosts);
   }
 
   /**
@@ -192,6 +196,30 @@ export default class App extends Component {
               />
             </Route>
           </Switch>
+        </div>
+        <div className="userscontainer">
+          {this.state.space && (
+            <ChatBox
+              // required
+              spaceName={SPACE_NAME}
+              threadName="globalListChat"
+              // Required props for context A) & B)
+              box={this.state.box}
+              currentUserAddr={
+                this.state.accounts ? this.state.accounts[0] : null
+              }
+              // optional
+              mute={false}
+              popupChat
+              showEmoji
+              colorTheme="#181F21"
+              currentUser3BoxProfile={this.state.threeBoxProfile}
+              agentProfile={{
+                chatName: "ION Chat"
+              }}
+              openOnMount={true}
+            />
+          )}
         </div>
       </Router>
     );
