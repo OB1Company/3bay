@@ -77,6 +77,7 @@ export default class App extends Component {
 
     // Join global chat
     const globalChat = await space.joinThread("globalListChat");
+    this.setState({ globalChat });
 
     // Fetch the listings in the thread of the global marketplace
     const globalThread = await space.joinThreadByAddress(
