@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { Button, Modal, CardColumns, Card } from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
+import CommentBox from "3box-comments-react";
 import ProfileHover from "profile-hover";
+
+import { SPACE_NAME } from "../Constants";
 
 const styles = {
   column: {
@@ -85,7 +88,7 @@ const styles = {
     marginLeft: "0px",
     marginRight: "0px",
     padding: "0px",
-  }
+  },
 };
 
 class ListingCard extends Component {
@@ -133,8 +136,8 @@ class ListingCard extends Component {
             </div>
           </div>
         </Card>
-        
-        <Modal onHide={this.state.handleClose} show={this.state.show}>
+
+        <Modal onHide={this.state.handleClose} size="lg" show={this.state.show}>
           <Modal.Header closeButton>
             <Modal.Title style={styles.name}>
               {this.props.post.message.name
@@ -171,11 +174,11 @@ class ListingCard extends Component {
               {this.props.post.message.description}
             </p>
             <p style={styles.modalShippingAddress}>
-              {this.props.post.message.needsAddress === true ? "📦 Shipping address required" : " "}
+              {this.props.post.message.needsAddress === true
+                ? "📦 Shipping address required"
+                : " "}
             </p>
-            <p style={styles.soldBy}>
-              Sold by
-            </p>
+            <p style={styles.soldBy}>Sold by</p>
             {this.props.post.message.account && (
               <div style={{ marginBottom: "10px" }}>
                 <ProfileHover
@@ -185,6 +188,18 @@ class ListingCard extends Component {
                 />
               </div>
             )}
+          </Modal.Body>
+          <Modal.Body>
+            <CommentBox
+              spaceName={SPACE_NAME}
+              threadName={this.props.post.postId}
+              box={this.props.box}
+              currentUserAddr={this.props.usersAddress}
+              // currentUser3BoxProfile={this.props.threeBox}
+              adminEthAddr={this.props.post.message.account}
+              showCommentCount={10}
+              useHovers={true}
+            />
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.state.handleClose} variant="secondary">
