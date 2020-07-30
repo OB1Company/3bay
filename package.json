@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "3box": "^1.20.3",
-    "3box-chatbox-react": "^0.2.0",
+    "3box-chatbox-react": "^0.2.1-beta.1",
     "3box-comments-react": "^3.0.5",
     "3box-profile-edit-react": "0.0.9",
     "blob-util": "^2.0.2",
