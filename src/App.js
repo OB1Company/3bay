@@ -9,6 +9,7 @@ import ChatBox from "3box-chatbox-react";
 
 import MyStore from "./pages/MyStore";
 import Home from "./pages/Home";
+import Cart from "./pages/Cart";
 import AddListing from "./pages/AddListing";
 import Profile from "./pages/Profile";
 import { SPACE_NAME } from "./Constants";
@@ -76,7 +77,12 @@ export default class App extends Component {
     this.setState({ thread }, () => this.getListingsThread());
 
     // Create and fetch the listings in the shopping cart
-    const shoppingCart = await space.createConfidentialThread('demo-shoppingCart');
+    const shoppingCart = await space.joinThread('demo-shoppingCart-public', {
+      firstModerator: userMod,
+      members: true,
+      ghost: false,
+      confidential: false,
+    });
     this.setState ({ shoppingCart }, () => this.getShoppingCartThread());
 
     // Join global chat
@@ -88,9 +94,9 @@ export default class App extends Component {
       "/orbitdb/zdpuAosv7kRPN49quPCwVr5p531SwjycjdxQeEbM9Y3SiNBp9/3box.thread.demo-marketplace.globalList"
     );
     this.setState({ globalThread }, () => this.getGlobalListingsThread());
-    console.log(globalThread.address);
-    const dasPosts = await globalThread.getPosts();
-    console.log(dasPosts);
+    // console.log(globalThread.address);
+    // const dasPosts = await globalThread.getPosts();
+    // console.log(dasPosts);
   }
 
   /**
@@ -145,7 +151,6 @@ export default class App extends Component {
     // Fetch the cart items and add them to state
     const cartItems = await this.state.shoppingCart.getPosts();
     this.setState({ cartItems });
-    console.log(this.state.cartItems)
 
     // Update the shopping cart when new items are added
     await this.state.shoppingCart.onUpdate(async () => {
@@ -205,6 +210,18 @@ export default class App extends Component {
                 space={this.state.space}
                 box={this.state.box}
                 getListingsThread={this.getListingsThread}
+                usersAddress={
+                  this.state.accounts ? this.state.accounts[0] : null
+                }
+              />
+            </Route>
+            <Route path="/cart">
+              <Cart
+                space={this.state.space}
+                box={this.state.box}
+                cartItems={this.state.cartItems}
+                shoppingCart={this.state.shoppingCart}
+                getShoppingCartThread={this.getShoppingCartThread.bind(this)}
                 usersAddress={
                   this.state.accounts ? this.state.accounts[0] : null
                 }

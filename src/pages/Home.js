@@ -128,8 +128,6 @@ class ListingCard extends Component {
     this.state.handleToastShow();
     const cartItem = this.props.post;
     console.log(cartItem);
-    // console.log(this.props.shoppingCart);
-    // console.log(this.props.getShoppingCartThread);
     await this.props.shoppingCart.post(cartItem);
     this.props.getShoppingCartThread();
     console.log(this.props.cartItems);
