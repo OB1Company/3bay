@@ -1,5 +1,13 @@
 import React, { Component } from "react";
-import { Button, Modal, CardColumns, Card } from "react-bootstrap";
+import {
+  Button,
+  Modal,
+  CardColumns,
+  Card,
+  Container,
+  Row,
+  Col,
+} from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
 import CommentBox from "3box-comments-react";
 import ProfileHover from "profile-hover";
@@ -83,10 +91,24 @@ const styles = {
     textAlign: "left",
     height: "20px",
     lineHeight: "17px",
-    marginTop: "5px",
+    marginTop: "10px",
     marginBottom: "5px",
     marginLeft: "0px",
     marginRight: "0px",
+    padding: "0px",
+  },
+  addToCart: {
+    width: "100%",
+    marginTop: "20px",
+    marginBottom: "30px",
+  },
+  modalPrice: {
+    fontSize: "37px",
+    fontWeight: "bold",
+    textAlign: "left",
+    height: "45px",
+    lineHeight: "37px",
+    margin: "0px",
     padding: "0px",
   },
 };
@@ -137,7 +159,7 @@ class ListingCard extends Component {
           </div>
         </Card>
 
-        <Modal onHide={this.state.handleClose} size="lg" show={this.state.show}>
+        <Modal onHide={this.state.handleClose} size="xl" show={this.state.show}>
           <Modal.Header closeButton>
             <Modal.Title style={styles.name}>
               {this.props.post.message.name
@@ -145,61 +167,88 @@ class ListingCard extends Component {
                 : "Unnamed"}
             </Modal.Title>
           </Modal.Header>
-          <img
-            alt="Listing"
-            onError={(ev) =>
-              (ev.target.src =
-                "https://www.stleos.uq.edu.au/wp-content/uploads/2016/08/image-placeholder-350x350.png")
-            }
-            src={
-              this.props.post.message.listingImage
-                ? this.props.post.message.listingImage
-                : "https://via.placeholder.com/200"
-            }
+          <Modal.Body
+            className="show-grid"
             style={{
-              width: "100%",
-              borderRadius: "30px",
-              paddingTop: "10px",
-              paddingLeft: "10px",
-              paddingRight: "10px",
+              paddingLeft: "0px",
+              paddingRight: "0px",
             }}
-          />
-          <Modal.Body>
-            <p style={styles.price}>
-              {this.props.post.message.price
-                ? this.props.post.message.price
-                : "$0"}
-            </p>
-            <p style={styles.description}>
-              {this.props.post.message.description}
-            </p>
-            <p style={styles.modalShippingAddress}>
-              {this.props.post.message.needsAddress === true
-                ? "📦 Shipping address required"
-                : " "}
-            </p>
-            <p style={styles.soldBy}>Sold by</p>
-            {this.props.post.message.account && (
-              <div style={{ marginBottom: "10px" }}>
-                <ProfileHover
-                  address={this.props.post.message.account}
-                  style={{ width: "100%" }}
-                  showName={true}
-                />
-              </div>
-            )}
-          </Modal.Body>
-          <Modal.Body>
-            <CommentBox
-              spaceName={SPACE_NAME}
-              threadName={this.props.post.postId}
-              box={this.props.box}
-              currentUserAddr={this.props.usersAddress}
-              // currentUser3BoxProfile={this.props.threeBox}
-              adminEthAddr={this.props.post.message.account}
-              showCommentCount={10}
-              useHovers={true}
-            />
+          >
+            <Container>
+              <Row style={{ paddingTop: "10px" }}>
+                <Col xs={12} md={8} style={{ paddingRight: "10px" }}>
+                  <img
+                    alt="Listing"
+                    onError={(ev) =>
+                      (ev.target.src =
+                        "https://www.stleos.uq.edu.au/wp-content/uploads/2016/08/image-placeholder-350x350.png")
+                    }
+                    src={
+                      this.props.post.message.listingImage
+                        ? this.props.post.message.listingImage
+                        : "https://via.placeholder.com/200"
+                    }
+                    style={{
+                      width: "100%",
+                      borderRadius: "30px",
+                      padding: "0px",
+                    }}
+                  />
+                  <div
+                    style={{
+                      width: "100%",
+                      paddingTop: "50px",
+                    }}
+                  >
+                    <CommentBox
+                      spaceName={SPACE_NAME}
+                      threadName={this.props.post.postId}
+                      box={this.props.box}
+                      currentUserAddr={this.props.usersAddress}
+                      // currentUser3BoxProfile={this.props.threeBox}
+                      adminEthAddr={this.props.post.message.account}
+                      showCommentCount={10}
+                      useHovers={true}
+                    />
+                  </div>
+                </Col>
+                <Col xs={6} md={4} style={{ paddingRight: "10px", paddingLeft: "20px" }}>
+                  <p style={styles.modalPrice}>
+                    {this.props.post.message.price
+                      ? this.props.post.message.price
+                      : "$0"}
+                  </p>
+                  <p style={styles.description}>
+                    {this.props.post.message.description}
+                  </p>
+                  {this.props.post.message.needsAddress === true && (
+                    <p style={styles.modalShippingAddress}>
+                      <span role="img" aria-label="das">
+                        📦
+                      </span>{" "}
+                      Shipping address required
+                    </p>
+                  )}
+                  <Button
+                    variant="dark"
+                    // onClick={this.state.handleShow}
+                    style={styles.addToCart}
+                  >
+                    ADD TO CART
+                  </Button>
+                  <p style={styles.soldBy}>Sold by</p>
+                  {this.props.post.message.account && (
+                    <div style={{ marginBottom: "10px" }}>
+                      <ProfileHover
+                        address={this.props.post.message.account}
+                        style={{ width: "100%" }}
+                        showName={true}
+                      />
+                    </div>
+                  )}
+                </Col>
+              </Row>
+            </Container>
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.state.handleClose} variant="secondary">
