@@ -32,6 +32,11 @@ export default class Nav extends Component {
             Add a listing
           </Link>
         </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/cart" style={styles.navHeading}>
+          <span role="img" aria-label="das">🛒</span>
+          </Link>
+        </li>
       </ul>
     );
   }
