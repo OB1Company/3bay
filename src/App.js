@@ -68,12 +68,16 @@ export default class App extends Component {
     const space = await this.state.box.openSpace(SPACE_NAME);
     this.setState({ space });
 
-    // Fetch the listings thread of the user's store
+    // Create and fetch the listings thread of the user's store
     const thread = await space.joinThread("listing_list", {
       firstModerator: userMod,
       members: false,
     });
     this.setState({ thread }, () => this.getListingsThread());
+
+    // Create and fetch the listings in the shopping cart
+    const shoppingCart = await space.createConfidentialThread('demo-shoppingCart');
+    this.setState ({ shoppingCart }, () => this.getShoppingCartThread());
 
     // Join global chat
     const globalChat = await space.joinThread("globalListChat");
@@ -126,6 +130,27 @@ export default class App extends Component {
     await this.state.globalThread.onUpdate(async () => {
       const globalPosts = await this.state.globalThread.getPosts();
       this.setState({ globalPosts });
+    });
+  }
+
+    /**
+   * getShoppingCartThread => Fetch the cart items in a user's store
+   */
+  async getShoppingCartThread() {
+    if (!this.state.shoppingCart) {
+      console.error("shoppingCart thread not in react state");
+      return;
+    }
+
+    // Fetch the cart items and add them to state
+    const cartItems = await this.state.shoppingCart.getPosts();
+    this.setState({ cartItems });
+    console.log(this.state.cartItems)
+
+    // Update the shopping cart when new items are added
+    await this.state.shoppingCart.onUpdate(async () => {
+      const cartItems = await this.state.shoppingCart.getPosts();
+      this.setState({ cartItems });
     });
   }
 
@@ -191,6 +216,9 @@ export default class App extends Component {
                 space={this.state.space}
                 box={this.state.box}
                 getGlobalListingsThread={this.getGlobalListingsThread}
+                cartItems={this.state.cartItems}
+                shoppingCart={this.state.shoppingCart}
+                getShoppingCartThread={this.getShoppingCartThread.bind(this)}
                 usersAddress={
                   this.state.accounts ? this.state.accounts[0] : null
                 }

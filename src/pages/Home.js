@@ -7,6 +7,7 @@ import {
   Container,
   Row,
   Col,
+  Toast,
 } from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
 import CommentBox from "3box-comments-react";
@@ -117,7 +118,21 @@ class ListingCard extends Component {
   state = {
     show: false,
     handleClose: () => this.setState({ show: false }),
-    handleShow: () => this.setState({ show: true }),
+    handleShow: () => this.setState({ show: true, toast: false }),
+    handleToastShow: () => this.setState({ toast: true }),
+    handleToastClose: () => this.setState({ toast: false }),
+    toast: false,
+  };
+
+  addToCart = async (_ButtonShit) => {
+    this.state.handleToastShow();
+    const cartItem = this.props.post;
+    console.log(cartItem);
+    // console.log(this.props.shoppingCart);
+    // console.log(this.props.getShoppingCartThread);
+    await this.props.shoppingCart.post(cartItem);
+    this.props.getShoppingCartThread();
+    console.log(this.props.cartItems);
   };
 
   render() {
@@ -212,7 +227,11 @@ class ListingCard extends Component {
                     />
                   </div>
                 </Col>
-                <Col xs={6} md={4} style={{ paddingRight: "10px", paddingLeft: "20px" }}>
+                <Col
+                  xs={6}
+                  md={4}
+                  style={{ paddingRight: "10px", paddingLeft: "20px" }}
+                >
                   <p style={styles.modalPrice}>
                     {this.props.post.message.price
                       ? this.props.post.message.price
@@ -233,9 +252,25 @@ class ListingCard extends Component {
                     variant="dark"
                     // onClick={this.state.handleShow}
                     style={styles.addToCart}
+                    post={this.props.post}
+                    onClick={this.addToCart}
                   >
                     ADD TO CART
                   </Button>
+                  <Toast
+                    show={this.state.toast}
+                    onClose={this.state.handleToastClose}
+                  >
+                    <Toast.Header>
+                      <strong className="mr-auto">
+                        <span role="img" aria-label="das">
+                          🛒
+                        </span> Shopping cart
+                      </strong>
+                      <small>Just now</small>
+                    </Toast.Header>
+                    <Toast.Body>Item added to cart!</Toast.Body>
+                  </Toast>
                   <p style={styles.soldBy}>Sold by</p>
                   {this.props.post.message.account && (
                     <div style={{ marginBottom: "10px" }}>
@@ -287,6 +322,9 @@ export default class Home extends Component {
                     space={this.props.space}
                     box={this.props.box}
                     usersAddress={this.props.usersAddress}
+                    cartItems={this.props.cartItems}
+                    shoppingCart={this.props.shoppingCart}
+                    getShoppingCartThread={this.props.getShoppingCartThread}
                     i={i}
                   />
                 );
