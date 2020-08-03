@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import {
-  CardColumns,
+  Button,
   Card,
+  Container,
+  Image,
+  Row,
+  Col,
+  FormControl,
 } from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
 
@@ -25,27 +30,27 @@ const styles = {
     boxShadow: "-20px 20px 40px #e0e0e0, 20px -20px 40px #ffffff",
   },
   image: {
-    width: "100%",
-    borderRadius: "20px 20px 0px 0px",
+    width: "200px",
+    height: "200px",
+    objectFit: "none",
+    objectPosition: "center",
   },
   copyWrapper: {
     padding: "20px",
   },
   name: {
-    fontSize: "25px",
+    fontSize: "23px",
     fontWeight: "bold",
     textAlign: "left",
     height: "32px",
-    lineHeight: "25px",
+    lineHeight: "23px",
     margin: "0px",
     padding: "0px",
   },
   price: {
-    fontSize: "20px",
-    fontWeight: "bold",
+    fontSize: "15px",
     textAlign: "left",
-    height: "27px",
-    lineHeight: "20px",
+    lineHeight: "15px",
     margin: "0px",
     padding: "0px",
   },
@@ -76,6 +81,12 @@ const styles = {
     marginRight: "0px",
     padding: "0px",
   },
+  remove: {
+    backgroundColor: "#ffffff",
+    borderColor: "#ffffff",
+    color: "#0094ff",
+    paddingLeft: "0px",
+  },
   soldBy: {
     fontSize: "17px",
     fontWeight: "bold",
@@ -104,16 +115,24 @@ const styles = {
   },
 };
 
-class ListingCard extends Component {
+class CartItems extends Component {
+  removeFromCart = async (_removeButton) => {
+    const cartItem = this.props.post;
+    const postId = cartItem.postId;
+    console.log(cartItem);
+    console.log(postId);
+    await this.props.shoppingCart.deletePost(postId);
+    this.props.getShoppingCartThread();
+    console.log(this.props.cartItems);
+  };
 
   render() {
     return (
       <>
-        <Card style={styles.wrapper}>
-          <div style={styles.cardWrapper}>
-            <img
+        <Row style={{ paddingBottom: "5px" }}>
+          <Col sm={4}>
+            <Image
               alt="Listing"
-              style={styles.image}
               src={
                 this.props.post.message.listingImage
                   ? this.props.post.message.listingImage
@@ -123,29 +142,49 @@ class ListingCard extends Component {
                 (ev.target.src =
                   "https://stleos.uq.edu.au/wp-content/uploads/2016/08/image-placeholder-350x350.png")
               }
+              style={styles.image}
+              thumbnail
+              fluid
             />
-            <div style={styles.copyWrapper}>
+          </Col>
+          <Col sm={6} style={{ paddingTop: "5px" }}>
+            <Row>
               <p style={styles.name}>
                 {this.props.post.message.name
                   ? this.props.post.message.name
                   : "Unnamed"}
               </p>
-              <p style={styles.price}>
-                {this.props.post.message.price
-                  ? this.props.post.message.price
-                  : "$0"}
-              </p>
-              <p style={styles.description}>
-                {this.props.post.message.description}
-              </p>
-              <p style={styles.shippingAddress}>
-                {this.props.post.message.needsAddress === true ? "📦" : " "}
-              </p>
-            </div>
-          </div>
-        </Card>
-
-        {(this.props.i + 1) % 3 === 0 && <div className="w-100"></div>}
+            </Row>
+            <Row style={{ paddingTop: "10px" }}>
+              <Col sm={2} style={{ paddingLeft: "0px", paddingRight: "20px" }}>
+                <FormControl
+                  aria-label="amount"
+                  aria-describedby="basic-addon1"
+                  placeholder="1"
+                  style={{ textAlign: "center" }}
+                />
+              </Col>
+              <Col sm={4}></Col>
+            </Row>
+            <Row style={{ paddingTop: "20px" }}>
+              <Button
+                style={styles.remove}
+                onClick={this.removeFromCart}
+                size="sm">
+                Remove
+              </Button>
+            </Row>
+          </Col>
+          <Col sm={2} style={{ paddingTop: "5px" }}>
+            <p style={styles.price}>
+              {this.props.post.message.price
+                ? this.props.post.message.price
+                : "$0"}
+              <br />
+              USD
+            </p>
+          </Col>
+        </Row>
       </>
     );
   }
@@ -158,32 +197,48 @@ export default class Home extends Component {
         <h1 className="brand-font" style={{ fontSize: "4rem" }}>
           Shopping cart
         </h1>
-        <div className="row" style={{ marginTop: "50px" }}>
+        <Container style={{ marginTop: "50px" }}>
           {(!this.props.cartItems || this.props.cartItems.length < 1) && (
             <div style={{ width: "60px", margin: "auto" }}>
               <BounceLoader color={"blue"} />
             </div>
           )}
-          <CardColumns style={styles.column}>
-            {this.props.cartItems &&
-              this.props.cartItems.map((post, i) => {
-                return (
-                  <ListingCard
-                    post={post.message}
-                    key={i}
-                    threeBox={this.props.threeBox}
-                    space={this.props.space}
-                    box={this.props.box}
-                    usersAddress={this.props.usersAddress}
-                    cartItems={this.props.cartItems}
-                    shoppingCart={this.props.shoppingCart}
-                    getShoppingCartThread={this.props.getShoppingCartThread}
-                    i={i}
-                  />
-                );
-              })}
-          </CardColumns>
-        </div>
+          {this.props.cartItems && (
+            <Row>
+              <Col sm={8}>
+                {this.props.cartItems.map((post, i) => {
+                  return (
+                    <CartItems
+                      post={post.message}
+                      key={i}
+                      threeBox={this.props.threeBox}
+                      space={this.props.space}
+                      box={this.props.box}
+                      usersAddress={this.props.usersAddress}
+                      cartItems={this.props.cartItems}
+                      shoppingCart={this.props.shoppingCart}
+                      getShoppingCartThread={this.props.getShoppingCartThread}
+                      i={i}
+                    />
+                  );
+                })}
+              </Col>
+              <Col sm={4}>
+                <Card>
+                  <Card.Header as="h5">Cart</Card.Header>
+                  <Card.Body>
+                    <Card.Title>Special title treatment</Card.Title>
+                    <Card.Text>
+                      With supporting text below as a natural lead-in to
+                      additional content.
+                    </Card.Text>
+                    <Button variant="success">Checkout</Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          )}
+        </Container>
       </div>
     );
   }
