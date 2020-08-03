@@ -263,7 +263,7 @@ export default class App extends Component {
               agentProfile={{
                 chatName: "ION Chat",
               }}
-              openOnMount={true}
+              openOnMount={false}
             />
           )}
         </div>

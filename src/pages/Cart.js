@@ -32,7 +32,7 @@ const styles = {
   image: {
     width: "200px",
     height: "200px",
-    objectFit: "none",
+    objectFit: "cover",
     objectPosition: "center",
   },
   copyWrapper: {
@@ -113,6 +113,18 @@ const styles = {
     margin: "0px",
     padding: "0px",
   },
+  cartBoxLeftCol: {
+    textAlign: "left",
+    fontSize: "15px",
+  },
+  cartBoxRightCol: {
+    textAlign: "right",
+    fontSize: "15px",
+  },
+  cartBoxButton: {
+    width: "100%",
+    fontSize: "15px",
+  },
 };
 
 class CartItems extends Component {
@@ -134,8 +146,8 @@ class CartItems extends Component {
             <Image
               alt="Listing"
               src={
-                this.props.post.message.listingImage
-                  ? this.props.post.message.listingImage
+                this.props.item.message.listingImage
+                  ? this.props.item.message.listingImage
                   : "https://via.placeholder.com/200"
               }
               onError={(ev) =>
@@ -150,8 +162,8 @@ class CartItems extends Component {
           <Col sm={6} style={{ paddingTop: "5px" }}>
             <Row>
               <p style={styles.name}>
-                {this.props.post.message.name
-                  ? this.props.post.message.name
+                {this.props.item.message.name
+                  ? this.props.item.message.name
                   : "Unnamed"}
               </p>
             </Row>
@@ -177,8 +189,8 @@ class CartItems extends Component {
           </Col>
           <Col sm={2} style={{ paddingTop: "5px" }}>
             <p style={styles.price}>
-              {this.props.post.message.price
-                ? this.props.post.message.price
+              {this.props.item.message.price
+                ? this.props.item.message.price
                 : "$0"}
               <br />
               USD
@@ -198,41 +210,73 @@ export default class Home extends Component {
           Shopping cart
         </h1>
         <Container style={{ marginTop: "50px" }}>
-          {(!this.props.cartItems || this.props.cartItems.length < 1) && (
+          {!this.props.cartItems && (
             <div style={{ width: "60px", margin: "auto" }}>
               <BounceLoader color={"blue"} />
             </div>
           )}
           {this.props.cartItems && (
             <Row>
-              <Col sm={8}>
-                {this.props.cartItems.map((post, i) => {
-                  return (
-                    <CartItems
-                      post={post.message}
-                      key={i}
-                      threeBox={this.props.threeBox}
-                      space={this.props.space}
-                      box={this.props.box}
-                      usersAddress={this.props.usersAddress}
-                      cartItems={this.props.cartItems}
-                      shoppingCart={this.props.shoppingCart}
-                      getShoppingCartThread={this.props.getShoppingCartThread}
-                      i={i}
-                    />
-                  );
-                })}
+              <Col sm={9}>
+                {this.props.cartItems.length >= 1 &&
+                  this.props.cartItems.map((post, i) => {
+                    return (
+                      <CartItems
+                        post={post}
+                        item={post.message}
+                        key={i}
+                        threeBox={this.props.threeBox}
+                        space={this.props.space}
+                        box={this.props.box}
+                        usersAddress={this.props.usersAddress}
+                        cartItems={this.props.cartItems}
+                        shoppingCart={this.props.shoppingCart}
+                        getShoppingCartThread={this.props.getShoppingCartThread}
+                        i={i}
+                      />
+                    );
+                  })}
+                {this.props.cartItems.length === 0 && (
+                  <p style={{ textAlign: "left" }}>
+                    There is nothing in your cart!
+                  </p>
+                )}
               </Col>
-              <Col sm={4}>
+              <Col sm={3}>
                 <Card>
                   <Card.Header as="h5">Cart</Card.Header>
                   <Card.Body>
-                    <Card.Title>Special title treatment</Card.Title>
                     <Card.Text>
-                      With supporting text below as a natural lead-in to
-                      additional content.
+                      <Row>
+                        <Col sm={8} style={styles.cartBoxLeftCol}>
+                          Item total
+                        </Col>
+                        <Col sm={4} style={styles.cartBoxRightCol}>
+                          $0
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col sm={8} style={styles.cartBoxLeftCol}>
+                          Shipping
+                        </Col>
+                        <Col sm={4} style={styles.cartBoxRightCol}>
+                          $0
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col sm={8} style={styles.cartBoxLeftCol}>
+                          <span style={{ fontWeight: "bold" }}>
+                            Order total
+                          </span>
+                        </Col>
+                        <Col sm={4} style={styles.cartBoxRightCol}>
+                          <span style={{ fontWeight: "bold" }}>$0</span>
+                        </Col>
+                      </Row>
                     </Card.Text>
-                    <Button variant="success">Checkout</Button>
+                    <Button variant="success" style={styles.cartBoxButton}>
+                      Checkout
+                    </Button>
                   </Card.Body>
                 </Card>
               </Col>
