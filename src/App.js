@@ -77,13 +77,13 @@ export default class App extends Component {
     this.setState({ thread }, () => this.getListingsThread());
 
     // Create and fetch the listings in the shopping cart
-    const shoppingCart = await space.joinThread('demo-shoppingCart-public', {
+    const shoppingCart = await space.joinThread("demo-shoppingCart-public", {
       firstModerator: userMod,
       members: true,
       ghost: false,
       confidential: false,
     });
-    this.setState ({ shoppingCart }, () => this.getShoppingCartThread());
+    this.setState({ shoppingCart }, () => this.getShoppingCartThread());
 
     // Join global chat
     const globalChat = await space.joinThread("globalListChat");
@@ -139,7 +139,7 @@ export default class App extends Component {
     });
   }
 
-    /**
+  /**
    * getShoppingCartThread => Fetch the cart items in a user's store
    */
   async getShoppingCartThread() {
@@ -167,7 +167,7 @@ export default class App extends Component {
     return (
       <Router>
         <div>
-          <Nav />
+          <Nav cartItems={this.state.cartItems} />
           <Switch>
             <Route path="/profile">
               {this.state.space && (
@@ -261,7 +261,7 @@ export default class App extends Component {
               colorTheme="#181F21"
               currentUser3BoxProfile={this.state.threeBoxProfile}
               agentProfile={{
-                chatName: "ION Chat"
+                chatName: "ION Chat",
               }}
               openOnMount={true}
             />
