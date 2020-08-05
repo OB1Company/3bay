@@ -120,6 +120,7 @@ const styles = {
   cartBoxRightCol: {
     textAlign: "right",
     fontSize: "15px",
+    paddingLeft: "0px",
   },
   cartBoxButton: {
     width: "100%",
@@ -249,10 +250,10 @@ export default class Home extends Component {
                     <Card.Text>
                       <Row>
                         <Col sm={8} style={styles.cartBoxLeftCol}>
-                          Item total
+                          Items total
                         </Col>
                         <Col sm={4} style={styles.cartBoxRightCol}>
-                          $0
+                          ${this.props.orderPrice}
                         </Col>
                       </Row>
                       <Row>
@@ -260,7 +261,7 @@ export default class Home extends Component {
                           Shipping
                         </Col>
                         <Col sm={4} style={styles.cartBoxRightCol}>
-                          $0
+                          ${0}
                         </Col>
                       </Row>
                       <Row>
@@ -270,7 +271,9 @@ export default class Home extends Component {
                           </span>
                         </Col>
                         <Col sm={4} style={styles.cartBoxRightCol}>
-                          <span style={{ fontWeight: "bold" }}>$0</span>
+                          <span style={{ fontWeight: "bold" }}>
+                            ${this.props.orderPrice}
+                          </span>
                         </Col>
                       </Row>
                     </Card.Text>

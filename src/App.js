@@ -157,6 +157,12 @@ export default class App extends Component {
       const cartItems = await this.state.shoppingCart.getPosts();
       this.setState({ cartItems });
     });
+
+    // Fetch the order price and add it to state
+    const prices = this.state.cartItems.map(x => parseFloat(x.message.message.price));
+    console.log(prices);
+    const orderPrice = prices.reduce((a, b) => a + b, 0).toFixed(2);
+    this.setState({ orderPrice });
   }
 
   render() {
@@ -225,6 +231,7 @@ export default class App extends Component {
                 usersAddress={
                   this.state.accounts ? this.state.accounts[0] : null
                 }
+                orderPrice={this.state.orderPrice}
               />
             </Route>
             <Route path="/">

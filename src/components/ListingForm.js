@@ -11,7 +11,7 @@ export default class ListingForm extends Component {
 
   handleChange = (event) => {
     this.setState(Object.assign({ [event.target.name]: event.target.value }));
-    this.setState({ needsAddress: event.target.checked});
+    this.setState({ needsAddress: event.target.checked });
     console.log(this.state.needsAddress);
   };
 
@@ -52,6 +52,7 @@ export default class ListingForm extends Component {
                 placeholder="Enter Listing Name"
                 value={this.state.name}
                 onChange={this.handleChange}
+                required
               />
             </div>
             <div className="form-group">
@@ -64,6 +65,7 @@ export default class ListingForm extends Component {
                 placeholder="Add an image"
                 value={this.state.listingImage}
                 onChange={this.handleChange}
+                required
               />
             </div>
             <div className="form-group">
@@ -76,23 +78,30 @@ export default class ListingForm extends Component {
                 placeholder="Add a description"
                 value={this.state.description}
                 onChange={this.handleChange}
+                required
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="price">Price:</label>
+            <label htmlFor="price">Price:</label>
+            <div className="form-group input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">$</span>
+              </div>
               <input
-                type="text"
+                type="number"
+                min="0.01"
+                step="0.01"
                 name="price"
                 className="form-control"
                 aria-describedby="price"
                 placeholder="Price in USD"
                 value={this.state.price}
                 onChange={this.handleChange}
+                required
               />
             </div>
             <div className="form-group">
               <label>
-                Requires shipping address: 
+                Requires shipping address:
                 <span style={{ marginLeft: 8 }}></span>
                 <input
                   name="needsAddress"
@@ -110,8 +119,7 @@ export default class ListingForm extends Component {
             <h1>Thank you for submiting</h1>
             <button
               className="btn btn-secondary"
-              onClick={() => this.setState({ submitted: false })}
-            >
+              onClick={() => this.setState({ submitted: false })}>
               Add another listing{" "}
             </button>
           </div>
