@@ -1,19 +1,10 @@
 import React, { Component } from "react";
 import {
-  Button,
-  Modal,
   CardColumns,
-  Card,
-  Container,
-  Row,
-  Col,
-  Toast,
 } from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
-import CommentBox from "3box-comments-react";
-import ProfileHover from "profile-hover";
 
-import { SPACE_NAME } from "../Constants";
+import ListingCard from "../components/ListingCard.js"
 
 const styles = {
   column: {
@@ -114,187 +105,6 @@ const styles = {
   },
 };
 
-class ListingCard extends Component {
-  state = {
-    show: false,
-    handleClose: () => this.setState({ show: false }),
-    handleShow: () => this.setState({ show: true, toast: false }),
-    handleToastShow: () => this.setState({ toast: true }),
-    handleToastClose: () => this.setState({ toast: false }),
-    toast: false,
-  };
-
-  addToCart = async (_ButtonShit) => {
-    this.state.handleToastShow();
-    const cartItem = this.props.post;
-    console.log(cartItem);
-    await this.props.shoppingCart.post(cartItem);
-    this.props.getShoppingCartThread();
-    console.log(this.props.cartItems);
-  };
-
-  render() {
-    return (
-      <>
-        <Card style={styles.wrapper}>
-          <div style={styles.cardWrapper} onClick={this.state.handleShow}>
-            <img
-              alt="Listing"
-              style={styles.image}
-              src={
-                this.props.post.message.listingImage
-                  ? this.props.post.message.listingImage
-                  : "https://via.placeholder.com/200"
-              }
-              onError={(ev) =>
-                (ev.target.src =
-                  "https://stleos.uq.edu.au/wp-content/uploads/2016/08/image-placeholder-350x350.png")
-              }
-            />
-            <div style={styles.copyWrapper}>
-              <p style={styles.name}>
-                {this.props.post.message.name
-                  ? this.props.post.message.name
-                  : "Unnamed"}
-              </p>
-              <p style={styles.price}>
-                {this.props.post.message.price
-                  ? this.props.post.message.price
-                  : "$0"}
-              </p>
-              <p style={styles.description}>
-                {this.props.post.message.description}
-              </p>
-              <p style={styles.shippingAddress}>
-                {this.props.post.message.needsAddress === true ? "📦" : " "}
-              </p>
-            </div>
-          </div>
-        </Card>
-
-        <Modal onHide={this.state.handleClose} size="xl" show={this.state.show}>
-          <Modal.Header closeButton>
-            <Modal.Title style={styles.name}>
-              {this.props.post.message.name
-                ? this.props.post.message.name
-                : "Unnamed"}
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body
-            className="show-grid"
-            style={{
-              paddingLeft: "0px",
-              paddingRight: "0px",
-            }}
-          >
-            <Container>
-              <Row style={{ paddingTop: "10px" }}>
-                <Col xs={12} md={8} style={{ paddingRight: "10px" }}>
-                  <img
-                    alt="Listing"
-                    onError={(ev) =>
-                      (ev.target.src =
-                        "https://www.stleos.uq.edu.au/wp-content/uploads/2016/08/image-placeholder-350x350.png")
-                    }
-                    src={
-                      this.props.post.message.listingImage
-                        ? this.props.post.message.listingImage
-                        : "https://via.placeholder.com/200"
-                    }
-                    style={{
-                      width: "100%",
-                      borderRadius: "30px",
-                      padding: "0px",
-                    }}
-                  />
-                  <div
-                    style={{
-                      width: "100%",
-                      paddingTop: "50px",
-                    }}
-                  >
-                    <CommentBox
-                      spaceName={SPACE_NAME}
-                      threadName={this.props.post.postId}
-                      box={this.props.box}
-                      currentUserAddr={this.props.usersAddress}
-                      // currentUser3BoxProfile={this.props.threeBox}
-                      adminEthAddr={this.props.post.message.account}
-                      showCommentCount={10}
-                      useHovers={true}
-                    />
-                  </div>
-                </Col>
-                <Col
-                  xs={6}
-                  md={4}
-                  style={{ paddingRight: "10px", paddingLeft: "20px" }}
-                >
-                  <p style={styles.modalPrice}>
-                    {this.props.post.message.price
-                      ? this.props.post.message.price
-                      : "$0"}
-                  </p>
-                  <p style={styles.description}>
-                    {this.props.post.message.description}
-                  </p>
-                  {this.props.post.message.needsAddress === true && (
-                    <p style={styles.modalShippingAddress}>
-                      <span role="img" aria-label="das">
-                        📦
-                      </span>{" "}
-                      Shipping address required
-                    </p>
-                  )}
-                  <Button
-                    variant="dark"
-                    // onClick={this.state.handleShow}
-                    style={styles.addToCart}
-                    post={this.props.post}
-                    onClick={this.addToCart}
-                  >
-                    ADD TO CART
-                  </Button>
-                  <Toast
-                    show={this.state.toast}
-                    onClose={this.state.handleToastClose}
-                  >
-                    <Toast.Header>
-                      <strong className="mr-auto">
-                        <span role="img" aria-label="das">
-                          🛒
-                        </span> Shopping cart
-                      </strong>
-                      <small>Just now</small>
-                    </Toast.Header>
-                    <Toast.Body>Item added to cart!</Toast.Body>
-                  </Toast>
-                  <p style={styles.soldBy}>Sold by</p>
-                  {this.props.post.message.account && (
-                    <div style={{ marginBottom: "10px" }}>
-                      <ProfileHover
-                        address={this.props.post.message.account}
-                        style={{ width: "100%" }}
-                        showName={true}
-                      />
-                    </div>
-                  )}
-                </Col>
-              </Row>
-            </Container>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={this.state.handleClose} variant="secondary">
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
-        {(this.props.i + 1) % 3 === 0 && <div className="w-100"></div>}
-      </>
-    );
-  }
-}
-
 export default class Home extends Component {
   render() {
     return (
@@ -314,6 +124,7 @@ export default class Home extends Component {
               this.props.globalPosts.map((post, i) => {
                 return (
                   <ListingCard
+                    globalThread={this.props.globalThread}
                     post={post}
                     key={i}
                     threeBox={this.props.threeBox}
@@ -323,7 +134,10 @@ export default class Home extends Component {
                     cartItems={this.props.cartItems}
                     shoppingCart={this.props.shoppingCart}
                     getShoppingCartThread={this.props.getShoppingCartThread}
+                    getGlobalListingsThread={this.props.getGlobalListingsThread}
                     i={i}
+                    admin={this.props.admin}
+                    home={true}
                   />
                 );
               })}

@@ -59,6 +59,8 @@ export default class App extends Component {
       this.setState({ threeBoxProfile });
     }
     const userMod = this.state.accounts[0];
+    const admin = "0xf54d276a029a49458e71167ebc25d1cca235ee6f";
+    this.setState({ admin });
 
     // Open the 3Box object of the user's account
     const box = await Box.openBox(this.state.accounts[0], window.ethereum);
@@ -212,10 +214,14 @@ export default class App extends Component {
             </Route>
             <Route path="/my-store">
               <MyStore
+                thread={this.state.thread}
                 posts={this.state.posts}
+                globalThread={this.state.globalThread}
+                globalPosts={this.state.globalPosts}
                 space={this.state.space}
                 box={this.state.box}
-                getListingsThread={this.getListingsThread}
+                getGlobalListingsThread={this.getGlobalListingsThread.bind(this)}
+                getListingsThread={this.getListingsThread.bind(this)}
                 usersAddress={
                   this.state.accounts ? this.state.accounts[0] : null
                 }
@@ -236,16 +242,18 @@ export default class App extends Component {
             </Route>
             <Route path="/">
               <Home
+                globalThread={this.state.globalThread}
                 globalPosts={this.state.globalPosts}
                 space={this.state.space}
                 box={this.state.box}
-                getGlobalListingsThread={this.getGlobalListingsThread}
+                getGlobalListingsThread={this.getGlobalListingsThread.bind(this)}
                 cartItems={this.state.cartItems}
                 shoppingCart={this.state.shoppingCart}
                 getShoppingCartThread={this.getShoppingCartThread.bind(this)}
                 usersAddress={
                   this.state.accounts ? this.state.accounts[0] : null
                 }
+                admin={this.state.admin}
               />
             </Route>
           </Switch>

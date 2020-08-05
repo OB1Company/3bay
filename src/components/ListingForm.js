@@ -83,8 +83,8 @@ export default class ListingForm extends Component {
             </div>
             <label htmlFor="price">Price:</label>
             <div className="form-group input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text">$</span>
+              <div className="input-group-prepend">
+                <span className="input-group-text">$</span>
               </div>
               <input
                 type="number"
