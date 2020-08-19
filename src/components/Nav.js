@@ -53,6 +53,14 @@ export default class Nav extends Component {
             </span>
           </Link>
         </li>
+        <li className="nav-item">
+          <Link
+            className="nav-link"
+            to="/orders"
+            style={styles.navHeading}>
+            Orders
+          </Link>
+        </li>
       </ul>
     );
   }

@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import Web3 from "web3";
+import { contractABIRopsten, multipayAddressRopsten } from "../Constants";
+
 import {
   Button,
   Card,
@@ -190,9 +193,10 @@ class CartItems extends Component {
           </Col>
           <Col sm={2} style={{ paddingTop: "5px" }}>
             <p style={styles.price}>
+              $
               {this.props.item.message.price
                 ? this.props.item.message.price
-                : "$0"}
+                : "0"}
               <br />
               USD
             </p>
@@ -203,7 +207,88 @@ class CartItems extends Component {
   }
 }
 
-export default class Home extends Component {
+export default class Cart extends Component {
+  sendTransaction = async (_payTheMan) => {
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+      // Step 1: Get cart items
+      const cartItems = this.props.cartItems;
+
+      // Step 2: Create and fill arrays with the addresses and amounts to send
+      let addresses = [
+        "0xd664d46e6adc48a66244310223bfbb89ed42b12c",
+        "0xf54d276a029a49458e71167ebc25d1cca235ee6f",
+      ];
+      let amounts = [10000000000000000000000, 200000000000000000000000];
+      // addresses = cartItems.map((x) => x.message.message.account);
+      // amounts = cartItems.map((x) => x.message.message.price);
+      console.log(addresses);
+      console.log(amounts);
+
+      // Step 3: Convert amounts (in $USD) to wei
+
+      // Step 4: Import the contract ABI and address
+      const multipayContract = new window.web3.eth.Contract(
+        contractABIRopsten,
+        multipayAddressRopsten
+      );
+      console.log(multipayContract);
+
+      // Step 5: Execute 'multiSendEther' function
+      multipayContract.methods
+        .multiSendEther(addresses, amounts)
+        .call()
+        .then(console.log);
+    }
+
+    /*     if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+      window.web3.eth.sendTransaction({
+        to: "0xf54d276a029a49458e71167ebc25d1cca235ee6f",
+        from: this.props.usersAddress,
+        value: window.web3.utils.toWei("1", "ether"),
+      });
+    } */
+  };
+
+  // Step 1:  Create individual order thread for each cart item
+  createOrderThread = async (_createOrderThreads) => {
+    this.props.cartItems.map(async (cartItem) => {
+      const orderName = Date.now();
+      const sellerId = cartItem.message.message.account;
+      const moderator = "0xf54d276a029a49458e71167ebc25d1cca235ee6f";
+      const orderThread = await this.props.space.joinThread("demo-order_" + orderName, {
+        firstModerator: this.props.userMod,
+        members: true,
+        ghost: false,
+        confidential: false,
+      });
+      await orderThread.addModerator(sellerId);
+      await orderThread.addModerator(moderator);
+      await orderThread.post(cartItem);
+      console.log(orderThread);
+      await this.props.orders.post(cartItem);
+      this.props.getOrdersThread();
+      console.log(this.props.orders);
+      const postId = cartItem.postId;
+      console.log(cartItem);
+      console.log(postId);
+      await this.props.shoppingCart.deletePost(postId);
+      this.props.getShoppingCartThread();
+      console.log(this.props.cartItems);
+    });
+  };
+
+  // Step 2:  Add the thread ID to the orders thread
+  addToOrders = async (_addToOrders) => {
+    const orderItems = this.props.cartItems;
+    // this.props.handleToastShow();
+    console.log(orderItems);
+    await this.props.orders.post(orderItems);
+    this.props.getOrdersThread();
+    console.log(this.props.orders);
+  };
+
   render() {
     return (
       <div className="container" style={styles.background}>
@@ -247,37 +332,42 @@ export default class Home extends Component {
                 <Card>
                   <Card.Header as="h5">Cart</Card.Header>
                   <Card.Body>
-                    <Card.Text>
-                      <Row>
-                        <Col sm={8} style={styles.cartBoxLeftCol}>
-                          Items total
-                        </Col>
-                        <Col sm={4} style={styles.cartBoxRightCol}>
-                          ${this.props.orderPrice}
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col sm={8} style={styles.cartBoxLeftCol}>
-                          Shipping
-                        </Col>
-                        <Col sm={4} style={styles.cartBoxRightCol}>
-                          ${0}
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col sm={8} style={styles.cartBoxLeftCol}>
+                    <Row>
+                      <Col sm={8} style={styles.cartBoxLeftCol}>
+                        <Card.Text>Items total</Card.Text>
+                      </Col>
+                      <Col sm={4} style={styles.cartBoxRightCol}>
+                        <Card.Text>${this.props.orderPrice}</Card.Text>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col sm={8} style={styles.cartBoxLeftCol}>
+                        <Card.Text>Shipping</Card.Text>
+                      </Col>
+                      <Col sm={4} style={styles.cartBoxRightCol}>
+                        <Card.Text>${0}</Card.Text>
+                      </Col>
+                    </Row>
+                    <Row style={{ paddingTop: "5px", paddingBottom: "10px" }}>
+                      <Col sm={8} style={styles.cartBoxLeftCol}>
+                        <Card.Text>
                           <span style={{ fontWeight: "bold" }}>
                             Order total
                           </span>
-                        </Col>
-                        <Col sm={4} style={styles.cartBoxRightCol}>
+                        </Card.Text>
+                      </Col>
+                      <Col sm={4} style={styles.cartBoxRightCol}>
+                        <Card.Text>
                           <span style={{ fontWeight: "bold" }}>
                             ${this.props.orderPrice}
                           </span>
-                        </Col>
-                      </Row>
-                    </Card.Text>
-                    <Button variant="success" style={styles.cartBoxButton}>
+                        </Card.Text>
+                      </Col>
+                    </Row>
+                    <Button
+                      variant="success"
+                      style={styles.cartBoxButton}
+                      onClick={this.createOrderThread}>
                       Checkout
                     </Button>
                   </Card.Body>

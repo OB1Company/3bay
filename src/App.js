@@ -12,6 +12,7 @@ import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import AddListing from "./pages/AddListing";
 import Profile from "./pages/Profile";
+import Orders from "./pages/Orders";
 import { SPACE_NAME } from "./Constants";
 
 // 3Box identity
@@ -59,6 +60,7 @@ export default class App extends Component {
       this.setState({ threeBoxProfile });
     }
     const userMod = this.state.accounts[0];
+    this.setState({ userMod });
     const admin = "0xf54d276a029a49458e71167ebc25d1cca235ee6f";
     this.setState({ admin });
 
@@ -86,6 +88,15 @@ export default class App extends Component {
       confidential: false,
     });
     this.setState({ shoppingCart }, () => this.getShoppingCartThread());
+
+    // Create and fetch the orders
+    const orders = await space.joinThread("demo-orders-public", {
+      firstModerator: userMod,
+      members: true,
+      ghost: false,
+      confidential: false,
+    });
+    this.setState({ orders }, () => this.getOrdersThread());
 
     // Join global chat
     const globalChat = await space.joinThread("globalListChat");
@@ -161,10 +172,32 @@ export default class App extends Component {
     });
 
     // Fetch the order price and add it to state
-    const prices = this.state.cartItems.map(x => parseFloat(x.message.message.price));
+    const prices = this.state.cartItems.map((x) =>
+      parseFloat(x.message.message.price)
+    );
     console.log(prices);
     const orderPrice = prices.reduce((a, b) => a + b, 0).toFixed(2);
     this.setState({ orderPrice });
+  }
+
+  /**
+   * getOrdersThread => Fetch orders for a user
+   */
+  async getOrdersThread() {
+    if (!this.state.orders) {
+      console.error("orders thread not in react state");
+      return;
+    }
+
+    // Fetch the cart items and add them to state
+    const orderItems = await this.state.orders.getPosts();
+    this.setState({ orderItems });
+
+    // Update the shopping cart when new items are added
+    await this.state.orders.onUpdate(async () => {
+      const orderItems = await this.state.orders.getPosts();
+      this.setState({ orderItems });
+    });
   }
 
   render() {
@@ -220,7 +253,9 @@ export default class App extends Component {
                 globalPosts={this.state.globalPosts}
                 space={this.state.space}
                 box={this.state.box}
-                getGlobalListingsThread={this.getGlobalListingsThread.bind(this)}
+                getGlobalListingsThread={this.getGlobalListingsThread.bind(
+                  this
+                )}
                 getListingsThread={this.getListingsThread.bind(this)}
                 usersAddress={
                   this.state.accounts ? this.state.accounts[0] : null
@@ -238,6 +273,25 @@ export default class App extends Component {
                   this.state.accounts ? this.state.accounts[0] : null
                 }
                 orderPrice={this.state.orderPrice}
+                orders={this.state.orders}
+                orderItems={this.state.orderItems}
+                getOrdersThread={this.getOrdersThread.bind(this)}
+                space={this.state.space}
+                userMod={this.state.userMod}
+              />
+            </Route>
+            <Route path="/orders">
+              <Orders
+                space={this.state.space}
+                box={this.state.box}
+                cartItems={this.state.cartItems}
+                shoppingCart={this.state.shoppingCart}
+                getShoppingCartThread={this.getShoppingCartThread.bind(this)}
+                usersAddress={
+                  this.state.accounts ? this.state.accounts[0] : null
+                }
+                orders={this.state.orders}
+                orderItems={this.state.orderItems}
               />
             </Route>
             <Route path="/">
@@ -246,7 +300,9 @@ export default class App extends Component {
                 globalPosts={this.state.globalPosts}
                 space={this.state.space}
                 box={this.state.box}
-                getGlobalListingsThread={this.getGlobalListingsThread.bind(this)}
+                getGlobalListingsThread={this.getGlobalListingsThread.bind(
+                  this
+                )}
                 cartItems={this.state.cartItems}
                 shoppingCart={this.state.shoppingCart}
                 getShoppingCartThread={this.getShoppingCartThread.bind(this)}
