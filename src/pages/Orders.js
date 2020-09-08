@@ -128,7 +128,7 @@ class OrderItems extends Component {
     return (
       <>
         <Row style={{ paddingBottom: "5px" }}>
-          <Col sm={4}>
+          <Col sm={2}>
             <Image
               alt="Listing"
               src={
@@ -144,7 +144,7 @@ class OrderItems extends Component {
               fluid
             />
           </Col>
-          <Col sm={6} style={{ paddingTop: "5px" }}>
+          <Col sm={8} style={{ paddingTop: "5px" }}>
             <Row>
               <p style={styles.name}>
                 {this.props.item.message.name

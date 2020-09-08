@@ -1,14 +1,8 @@
 import React, { Component } from "react";
-import {
-  Button,
-  Modal,
-  Container,
-  Row,
-  Col,
-  Toast,
-} from "react-bootstrap";
+import { Button, Modal, Container, Row, Col, Toast } from "react-bootstrap";
 import CommentBox from "3box-comments-react";
 import ProfileHover from "profile-hover";
+import Web3 from "web3";
 
 import { SPACE_NAME } from "../Constants";
 
@@ -55,8 +49,8 @@ const styles = {
   },
   addToCart: {
     width: "100%",
-    marginTop: "20px",
-    marginBottom: "30px",
+    marginTop: "5px",
+    marginBottom: "5px",
   },
   modalPrice: {
     fontSize: "37px",
@@ -70,7 +64,7 @@ const styles = {
 };
 
 export default class ListingDetails extends Component {
-/*   state = {
+  /*   state = {
     handleClose: () => this.setState({ show: false }),
     handleShow: () => this.setState({ show: true, toast: false }),
     handleToastShow: () => this.setState({ toast: true }),
@@ -85,6 +79,53 @@ export default class ListingDetails extends Component {
     this.props.getShoppingCartThread();
     console.log(this.props.cartItems);
   };
+
+  sendTransaction = async (_payTheMan) => {
+    const url =
+      "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=USD";
+    const post = this.props.post;
+    const usersAddress = this.props.usersAddress;
+    var rate;
+    await fetch(url, post)
+      .then((resp) => resp.json())
+      .then(data => rate = data);
+    console.log(rate);
+    const rateUSD = rate.ethereum.usd;
+    console.log(rateUSD);
+    const seller = post;
+    const sellerAccount = post.message.account;
+    const price = post.message.price;
+    console.log(seller);
+    console.log(sellerAccount);
+    console.log(usersAddress);
+    console.log(price);
+    const priceETH = (price/rateUSD).toString();
+    console.log(priceETH);
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+      if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+      window.web3.eth.sendTransaction({
+        to: sellerAccount,
+        from: usersAddress,
+        value: window.web3.utils.toWei(priceETH, "ether"),
+      });
+    }}
+  };
+
+  /*   triggerTransaction = async (_fuck) => {
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+
+      if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+      window.web3.eth.sendTransaction({
+        to: sellerAccount,
+        from: this.props.usersAddress,
+        value: window.web3.utils.toWei("1", "ether"),
+      });
+    }
+  }}; */
 
   render() {
     return (
@@ -145,7 +186,8 @@ export default class ListingDetails extends Component {
                   md={4}
                   style={{ paddingRight: "10px", paddingLeft: "20px" }}>
                   <p style={styles.modalPrice}>
-                    ${this.props.post.message.price
+                    $
+                    {this.props.post.message.price
                       ? this.props.post.message.price
                       : "0"}
                   </p>
@@ -160,6 +202,14 @@ export default class ListingDetails extends Component {
                       Shipping address required
                     </p>
                   )}
+                  <Button
+                    variant="dark"
+                    // onClick={this.state.handleShow}
+                    style={styles.addToCart}
+                    post={this.props.post}
+                    onClick={this.sendTransaction}>
+                    BUY NOW
+                  </Button>
                   <Button
                     variant="dark"
                     // onClick={this.state.handleShow}

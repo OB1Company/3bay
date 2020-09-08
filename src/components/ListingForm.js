@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Container, Image, Row, Col } from "react-bootstrap";
+
 const blankState = {
   name: "",
   price: "",
@@ -6,6 +8,15 @@ const blankState = {
   description: "",
   needsAddress: false,
 };
+
+const styles = {
+  image: {
+    width: "100%",
+    objectFit: "cover",
+    objectPosition: "center",
+  },
+};
+
 export default class ListingForm extends Component {
   state = blankState;
 
@@ -39,78 +50,98 @@ export default class ListingForm extends Component {
 
   render() {
     return (
-      <div style={{ maxWidth: "500px", margin: "auto" }}>
+      <div style={{ margin: "auto" }}>
         {!this.state.submitted && (
           <form onSubmit={this.handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="name">Name:</label>
-              <input
-                type="text"
-                name="name"
-                className="form-control"
-                aria-describedby="listingName"
-                placeholder="Enter Listing Name"
-                value={this.state.name}
-                onChange={this.handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="listingImage">Image URL:</label>
-              <input
-                type="text"
-                name="listingImage"
-                className="form-control"
-                aria-describedby="listing image"
-                placeholder="Add an image"
-                value={this.state.listingImage}
-                onChange={this.handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="description">Description:</label>
-              <input
-                type="text"
-                name="description"
-                className="form-control"
-                aria-describedby="description"
-                placeholder="Add a description"
-                value={this.state.description}
-                onChange={this.handleChange}
-                required
-              />
-            </div>
-            <label htmlFor="price">Price:</label>
-            <div className="form-group input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text">$</span>
-              </div>
-              <input
-                type="number"
-                min="0.01"
-                step="0.01"
-                name="price"
-                className="form-control"
-                aria-describedby="price"
-                placeholder="Price in USD"
-                value={this.state.price}
-                onChange={this.handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>
-                Requires shipping address:
-                <span style={{ marginLeft: 8 }}></span>
-                <input
-                  name="needsAddress"
-                  type="checkbox"
-                  checked={this.state.needsAddress}
-                  onChange={this.handleChange}
+            <Row>
+              <Col sm={3}>
+                <Image
+                  alt="Listing"
+                  src={
+                    this.state.listingImage
+                      ? this.state.listingImage
+                      : "https://via.placeholder.com/150"
+                  }
+                  onError={(ev) =>
+                    (ev.target.src = "https://via.placeholder.com/150")
+                  }
+                  style={styles.image}
+                  thumbnail
+                  fluid
                 />
-              </label>
-            </div>
+              </Col>
+              <Col sm={9}>
+                <div className="form-group">
+                  <label htmlFor="name">Name:</label>
+                  <input
+                    type="text"
+                    name="name"
+                    className="form-control"
+                    aria-describedby="listingName"
+                    placeholder="Enter Listing Name"
+                    value={this.state.name}
+                    onChange={this.handleChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="listingImage">Image URL:</label>
+                  <input
+                    type="text"
+                    name="listingImage"
+                    className="form-control"
+                    aria-describedby="listing image"
+                    placeholder="Add an image"
+                    value={this.state.listingImage}
+                    onChange={this.handleChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="description">Description:</label>
+                  <input
+                    type="text"
+                    name="description"
+                    className="form-control"
+                    aria-describedby="description"
+                    placeholder="Add a description"
+                    value={this.state.description}
+                    onChange={this.handleChange}
+                    required
+                  />
+                </div>
+                <label htmlFor="price">Price:</label>
+                <div className="form-group input-group">
+                  <div className="input-group-prepend">
+                    <span className="input-group-text">$</span>
+                  </div>
+                  <input
+                    type="number"
+                    min="0.01"
+                    step="0.01"
+                    name="price"
+                    className="form-control"
+                    aria-describedby="price"
+                    placeholder="Price in USD"
+                    value={this.state.price}
+                    onChange={this.handleChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>
+                    Requires shipping address:
+                    <span style={{ marginLeft: 8 }}></span>
+                    <input
+                      name="needsAddress"
+                      type="checkbox"
+                      checked={this.state.needsAddress}
+                      onChange={this.handleChange}
+                    />
+                  </label>
+                </div>
+              </Col>
+            </Row>
             <input type="submit" value="Submit" className="btn btn-primary" />
           </form>
         )}
