@@ -276,7 +276,6 @@ export default class App extends Component {
                 orders={this.state.orders}
                 orderItems={this.state.orderItems}
                 getOrdersThread={this.getOrdersThread.bind(this)}
-                space={this.state.space}
                 userMod={this.state.userMod}
               />
             </Route>

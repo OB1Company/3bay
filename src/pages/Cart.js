@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import Web3 from "web3";
-import { contractABIRopsten, multipayAddressRopsten } from "../Constants";
 
 import {
   Button,
@@ -208,7 +206,7 @@ class CartItems extends Component {
 }
 
 export default class Cart extends Component {
-  sendTransaction = async (_payTheMan) => {
+/*   sendTransaction = async (_payTheMan) => {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
       // Step 1: Get cart items
@@ -248,8 +246,8 @@ export default class Cart extends Component {
         from: this.props.usersAddress,
         value: window.web3.utils.toWei("1", "ether"),
       });
-    } */
-  };
+    }
+  }; */
 
   // Step 1:  Create individual order thread for each cart item
   createOrderThread = async (_createOrderThreads) => {

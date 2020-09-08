@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Image, Row, Col } from "react-bootstrap";
+import { Image, Row, Col } from "react-bootstrap";
 
 const blankState = {
   name: "",
