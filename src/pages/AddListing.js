@@ -6,7 +6,8 @@ const styles = {
   navHeading: {
     textAlign: "center",
     fontColor: "#0c2845",
-  }
+    paddingBottom: "10px",
+  },
 }
 
 export default class AddListing extends Component {
@@ -25,7 +26,7 @@ export default class AddListing extends Component {
     render() {
       return (
         <div className="container">
-          <h1 style={styles.navHeading}>Add a listing</h1>
+          <h1 className="brand-font" style={styles.navHeading}>Add a listing</h1>
           {!this.props.thread && (
             <div style={{ width: "100px", margin: "auto" }}>
               <BounceLoader color={"blue"} />

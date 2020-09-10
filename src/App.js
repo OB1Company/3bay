@@ -208,7 +208,7 @@ export default class App extends Component {
     return (
       <Router>
         <div>
-          <Nav cartItems={this.state.cartItems} />
+          <Nav cartItems={this.state.cartItems} style={{background: "#ffffff"}} />
           <Switch>
             <Route path="/profile">
               {this.state.space && (
@@ -331,7 +331,7 @@ export default class App extends Component {
               colorTheme="#181F21"
               currentUser3BoxProfile={this.state.threeBoxProfile}
               agentProfile={{
-                chatName: "ION Chat",
+                chatName: "Spendit chat",
               }}
               openOnMount={false}
             />

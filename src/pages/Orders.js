@@ -6,9 +6,6 @@ import { BounceLoader } from "react-spinners";
 import ProfileHover from "profile-hover";
 
 const styles = {
-  column: {
-    width: "100%",
-  },
   background: {
     textAlign: "center",
   },
@@ -17,21 +14,11 @@ const styles = {
     background: "rgb(0,0,0,0)",
     borderWidth: "0",
   },
-  cardWrapper: {
-    width: "100%",
-    borderRadius: "20px",
-    alignContent: "center",
-    background: "#ffffff",
-    boxShadow: "-20px 20px 40px #e0e0e0, 20px -20px 40px #ffffff",
-  },
   image: {
     width: "150px",
     height: "150px",
     objectFit: "cover",
     objectPosition: "center",
-  },
-  copyWrapper: {
-    padding: "20px",
   },
   name: {
     fontSize: "23px",
@@ -41,6 +28,7 @@ const styles = {
     lineHeight: "23px",
     margin: "0px",
     padding: "0px",
+    fontFamily: "Courier New",
   },
   price: {
     fontSize: "15px",
@@ -48,78 +36,7 @@ const styles = {
     lineHeight: "15px",
     margin: "0px",
     padding: "0px",
-  },
-  description: {
-    fontSize: "15px",
-    textAlign: "left",
-    height: "22px",
-    lineHeight: "15px",
-    margin: "0px",
-    padding: "0px",
-  },
-  shippingAddress: {
-    fontSize: "13px",
-    textAlign: "left",
-    height: "18px",
-    lineHeight: "11px",
-    margin: "0px",
-    padding: "0px",
-  },
-  modalShippingAddress: {
-    fontSize: "13px",
-    textAlign: "left",
-    height: "21px",
-    lineHeight: "13px",
-    marginTop: "10px",
-    marginBottom: "10px",
-    marginLeft: "0px",
-    marginRight: "0px",
-    padding: "0px",
-  },
-  remove: {
-    backgroundColor: "#ffffff",
-    borderColor: "#ffffff",
-    color: "#0094ff",
-    paddingLeft: "0px",
-  },
-  soldBy: {
-    fontSize: "17px",
-    fontWeight: "bold",
-    textAlign: "left",
-    height: "20px",
-    lineHeight: "17px",
-    marginTop: "10px",
-    marginBottom: "5px",
-    marginLeft: "0px",
-    marginRight: "0px",
-    padding: "0px",
-  },
-  addToCart: {
-    width: "100%",
-    marginTop: "20px",
-    marginBottom: "30px",
-  },
-  modalPrice: {
-    fontSize: "37px",
-    fontWeight: "bold",
-    textAlign: "left",
-    height: "45px",
-    lineHeight: "37px",
-    margin: "0px",
-    padding: "0px",
-  },
-  cartBoxLeftCol: {
-    textAlign: "left",
-    fontSize: "15px",
-  },
-  cartBoxRightCol: {
-    textAlign: "right",
-    fontSize: "15px",
-    paddingLeft: "0px",
-  },
-  cartBoxButton: {
-    width: "100%",
-    fontSize: "15px",
+    fontFamily: "Courier New",
   },
 };
 
@@ -127,7 +44,12 @@ class OrderItems extends Component {
   render() {
     return (
       <>
-        <Row style={{ paddingBottom: "5px" }}>
+        <Row
+          style={{
+            paddingBottom: "5px",
+            paddingLeft: "0px",
+            marginLeft: "0px",
+          }}>
           <Col sm={2}>
             <Image
               alt="Listing"
@@ -153,26 +75,26 @@ class OrderItems extends Component {
               </p>
             </Row>
             <Row style={{ paddingTop: "10px" }}>
-              {this.props.item.message.account && (
-                <div style={{ marginBottom: "10px" }}>
-                  <ProfileHover
-                    address={this.props.item.message.account}
-                    style={{ width: "100%" }}
-                    showName={true}
-                  />
-                </div>
-              )}
+              <p style={styles.price}>
+                $
+                {this.props.item.message.price
+                  ? this.props.item.message.price
+                  : "0"}
+                <br />
+                USD
+              </p>
             </Row>
           </Col>
           <Col sm={2} style={{ paddingTop: "5px" }}>
-            <p style={styles.price}>
-              $
-              {this.props.item.message.price
-                ? this.props.item.message.price
-                : "0"}
-              <br />
-              USD
-            </p>
+            {this.props.item.message.account && (
+              <div style={{ marginBottom: "10px" }}>
+                <ProfileHover
+                  address={this.props.item.message.account}
+                  style={{ width: "100%" }}
+                  showName={true}
+                />
+              </div>
+            )}
           </Col>
         </Row>
       </>

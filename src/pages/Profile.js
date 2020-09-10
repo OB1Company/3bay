@@ -8,8 +8,8 @@ export default class Profile extends Component {
   render() {
     return (
       <div className="container">
-        <div style={{margin : 'auto'}}>
-          <h1 style={{textAlign : "center"}}>Edit your 3Box Profile here</h1>
+        <h1 className="brand-font" style={{textAlign : "center", paddingBottom: "20px"}}>Edit your 3Box Profile here</h1>
+        <div className="d-flex justify-content-center" style={{margin : 'auto'}}>
           {!this.state.hideEdit && <EditProfile
             box={this.props.box}
             space={this.props.space}

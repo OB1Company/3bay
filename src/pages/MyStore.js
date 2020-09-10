@@ -20,7 +20,7 @@ export default class MyStore extends Component {
         <h1 className="brand-font" style={{ fontSize: "4rem" }}>
           My store
         </h1>
-        <p>This is my store.</p>
+        <p className="brand-font">This is my store.</p>
         <div className="row" style={{ marginTop: "50px" }}>
           {!this.props.posts && (
             <div style={{ width: "60px", margin: "auto" }}>

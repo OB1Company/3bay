@@ -1,39 +1,52 @@
 import React, { Component } from "react";
-import { Button, Modal, Container, Row, Col, Toast } from "react-bootstrap";
+import {
+  Button,
+  Image,
+  Modal,
+  Container,
+  Row,
+  Col,
+  Toast,
+} from "react-bootstrap";
 import CommentBox from "3box-comments-react";
 import ProfileHover from "profile-hover";
 import Web3 from "web3";
+import daiIcon from "../assets/dai.png";
 
-import { SPACE_NAME } from "../Constants";
+import { SPACE_NAME, contractAddressDAI, contractABIDAI } from "../Constants";
 
 const styles = {
   name: {
-    fontSize: "25px",
+    fontSize: "30px",
     fontWeight: "bold",
     textAlign: "left",
     height: "32px",
     lineHeight: "25px",
     margin: "0px",
     padding: "0px",
+    fontFamily: "Courier New",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
   description: {
-    fontSize: "15px",
+    fontSize: "20px",
     textAlign: "left",
-    height: "22px",
-    lineHeight: "15px",
+    lineHeight: "20px",
     margin: "0px",
     padding: "0px",
+    fontFamily: "Courier New",
   },
   modalShippingAddress: {
+    marginTop: "10px",
     fontSize: "13px",
     textAlign: "left",
-    height: "21px",
     lineHeight: "13px",
-    marginTop: "10px",
     marginBottom: "10px",
     marginLeft: "0px",
     marginRight: "0px",
     padding: "0px",
+    fontFamily: "Courier New",
   },
   soldBy: {
     fontSize: "17px",
@@ -46,11 +59,13 @@ const styles = {
     marginLeft: "0px",
     marginRight: "0px",
     padding: "0px",
+    fontFamily: "Courier New",
   },
   addToCart: {
     width: "100%",
     marginTop: "5px",
     marginBottom: "5px",
+    fontFamily: "Courier New",
   },
   modalPrice: {
     fontSize: "37px",
@@ -60,6 +75,18 @@ const styles = {
     lineHeight: "37px",
     margin: "0px",
     padding: "0px",
+    fontFamily: "Courier New",
+  },
+  daiIcon: {
+    height: "20px",
+    width: "20px",
+  },
+  paymentInfo: {
+    height: "20px",
+    alignText: "center",
+    lineHeight: "20px",
+    paddingLeft: "10px",
+    fontFamily: "Courier New",
   },
 };
 
@@ -71,14 +98,14 @@ export default class ListingDetails extends Component {
     handleToastClose: () => this.setState({ toast: false }),
   }; */
 
-  addToCart = async (_ButtonShit) => {
+  /*   addToCart = async (_ButtonShit) => {
     this.props.handleToastShow();
     const cartItem = this.props.post;
     console.log(cartItem);
     await this.props.shoppingCart.post(cartItem);
     this.props.getShoppingCartThread();
     console.log(this.props.cartItems);
-  };
+  }; */
 
   sendTransaction = async (_payTheMan) => {
     const url =
@@ -88,7 +115,7 @@ export default class ListingDetails extends Component {
     var rate;
     await fetch(url, post)
       .then((resp) => resp.json())
-      .then(data => rate = data);
+      .then((data) => (rate = data));
     console.log(rate);
     const rateUSD = rate.ethereum.usd;
     console.log(rateUSD);
@@ -99,18 +126,19 @@ export default class ListingDetails extends Component {
     console.log(sellerAccount);
     console.log(usersAddress);
     console.log(price);
-    const priceETH = (price/rateUSD).toString();
+    const priceETH = (price / rateUSD).toString();
     console.log(priceETH);
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
       if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum);
-      window.web3.eth.sendTransaction({
-        to: sellerAccount,
-        from: usersAddress,
-        value: window.web3.utils.toWei(priceETH, "ether"),
-      });
-    }}
+        window.web3 = new Web3(window.ethereum);
+        window.web3.eth.sendTransaction({
+          to: sellerAccount,
+          from: usersAddress,
+          value: window.web3.utils.toWei(priceETH, "ether"),
+        });
+      }
+    }
   };
 
   /*   triggerTransaction = async (_fuck) => {
@@ -126,6 +154,68 @@ export default class ListingDetails extends Component {
       });
     }
   }}; */
+
+  sendDAI = async (_payTheMan) => {
+    // Get addresses
+    const post = this.props.post;
+    const toAddress = post.message.account;
+    const fromAddress = this.props.usersAddress;
+
+    // Get exchange rate for coin
+    const url =
+      "https://api.coingecko.com/api/v3/simple/price?ids=dai&vs_currencies=USD";
+    var rate;
+    await fetch(url, post)
+      .then((resp) => resp.json())
+      .then((data) => (rate = data));
+    const rateUSD = rate.dai.usd;
+
+    // Calculate price at the rate
+    const listingPrice = post.message.price;
+    const price = (listingPrice / rateUSD).toFixed(2).toString();
+
+    // Console check
+    console.log(listingPrice);
+    console.log(rateUSD);
+    console.log(price);
+
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+
+      // Just gas
+      // const gasPrice = await window.web3.eth.getGasPrice();
+      const gasLimit = 60000;
+
+      // Step 1: Import the contract ABI and address
+      const contractDAI = new window.web3.eth.Contract(
+        contractABIDAI,
+        contractAddressDAI
+      );
+      console.log(contractDAI);
+
+      // calculate ERC20 token amount
+      // let value = amount.mul(window.web3.utils.toBN(10).pow(decimals));
+      let value = window.web3.utils.toWei(price, "ether");
+
+      // call transfer function
+      contractDAI.methods
+        .transfer(toAddress, value)
+        .send({ from: fromAddress, gas: gasLimit })
+        .on("transactionHash", function(hash) {
+          console.log(hash);
+        });
+    }
+  };
+
+  /*     if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+      window.web3.eth.sendTransaction({
+        to: "0xf54d276a029a49458e71167ebc25d1cca235ee6f",
+        from: this.props.usersAddress,
+        value: window.web3.utils.toWei("1", "ether"),
+      });
+    }
+  };*/
 
   render() {
     return (
@@ -160,14 +250,20 @@ export default class ListingDetails extends Component {
                     }
                     style={{
                       width: "100%",
-                      borderRadius: "30px",
                       padding: "0px",
+                      borderStyle: "dotted",
+                      borderWidth: "thin",
+                      borderColor: "#000000",
                     }}
                   />
                   <div
+                    className="container d-flex justify-content-center"
                     style={{
                       width: "100%",
                       paddingTop: "50px",
+                      justifyContent: "center",
+                      display: "flex",
+                      alignItems: "center",
                     }}>
                     <CommentBox
                       spaceName={SPACE_NAME}
@@ -207,17 +303,29 @@ export default class ListingDetails extends Component {
                     // onClick={this.state.handleShow}
                     style={styles.addToCart}
                     post={this.props.post}
-                    onClick={this.sendTransaction}>
+                    onClick={this.sendDAI}>
                     BUY NOW
                   </Button>
-                  <Button
+                  {/*                   <Button
                     variant="dark"
                     // onClick={this.state.handleShow}
                     style={styles.addToCart}
                     post={this.props.post}
                     onClick={this.addToCart}>
                     ADD TO CART
-                  </Button>
+                  </Button> */}
+                  <div
+                    className="container d-flex justify-content-center"
+                    style={{ alignContent: "center" }}>
+                    <Row style={{ marginTop: "15px" }}>
+                      <Image
+                        src={daiIcon}
+                        roundedCircle
+                        style={styles.daiIcon}
+                      />
+                      <p style={styles.paymentInfo}>All payments in DAI</p>
+                    </Row>
+                  </div>
                   <Toast
                     show={this.props.toast}
                     onClose={this.props.handleToastClose}>
