@@ -76,7 +76,7 @@ export default class App extends Component {
     // Create and fetch the listings thread of the user's store
     const thread = await space.joinThread("listing_list", {
       firstModerator: userMod,
-      members: false,
+      members: true,
     });
     this.setState({ thread }, () => this.getListingsThread());
 
