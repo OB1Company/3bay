@@ -212,15 +212,105 @@ export default class ListingDetails extends Component {
     }
   };
 
-  /*     if (window.ethereum) {
+  sendTestnetDAI = async (_payTheMan) => {
+    // Get addresses
+    const space = this.props.space;
+    const userAddress = this.props.userAddress;
+    const post = this.props.post;
+    const toAddress = post.message.account;
+    const fromAddress = this.props.usersAddress;
+    const testnetReceipts = this.props.testnetReceipts;
+    const getTestnetReceipts = () => this.props.getTestnetReceipts();
+    const testnetReceiptItems = this.props.testnetReceiptItems;
+
+    // Get exchange rate for coin
+    const url =
+      "https://api.coingecko.com/api/v3/simple/price?ids=dai&vs_currencies=USD";
+    var rate;
+    await fetch(url, post)
+      .then((resp) => resp.json())
+      .then((data) => (rate = data));
+    const rateUSD = rate.dai.usd;
+
+    // Calculate price at the rate
+    const listingPrice = post.message.price;
+    const price = (listingPrice / rateUSD).toFixed(2).toString();
+
+    if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
-      window.web3.eth.sendTransaction({
-        to: "0xf54d276a029a49458e71167ebc25d1cca235ee6f",
-        from: this.props.usersAddress,
-        value: window.web3.utils.toWei("1", "ether"),
-      });
+
+      // Just gas
+      // const gasPrice = await window.web3.eth.getGasPrice();
+      const gasLimit = 60000;
+
+      // Step 1: Import the contract ABI and address
+      const contractDAI = new window.web3.eth.Contract(
+        contractABIDAI,
+        testnetDAI
+      );
+
+      // calculate ERC20 token amount
+      let value = window.web3.utils.toWei(price, "ether");
+
+      let receipt;
+
+      // call transfer function
+      contractDAI.methods
+        .transfer(toAddress, value)
+        .send({ from: fromAddress, gas: gasLimit })
+        .on("transactionHash", async function(hash) {
+          // 1. Create a thread for the order [DONE]
+          const orderNumber = new Date().getTime();
+          const orderThread = await space.joinThread(orderNumber, {
+            firstModerator: userAddress,
+            members: true,
+            ghost: false,
+            confidential: false,
+          });
+          await orderThread.addMember(post.message.account);
+          const orderThreadAddress = orderThread.address;
+          console.log(orderThreadAddress);
+
+          // 2. Create a transaction receipt
+          receipt = {
+            name: post.message.name,
+            description: post.message.description,
+            seller: post.message.account,
+            price: post.message.price,
+            listingImage: post.message.listingImage,
+            needsAddress: post.message.needsAddress,
+            inboxThreadAddress: post.message.inboxThreadAddress,
+            orderThreadAddress: orderThreadAddress,
+            txHash: hash,
+          };
+
+          console.log("receiptItem:");
+          console.log(receipt);
+          console.log(testnetReceipts);
+
+          // 2. Add transaction to order history [DONE]
+          await testnetReceipts.post(receipt);
+          getTestnetReceipts();
+          console.log(testnetReceiptItems);
+
+          // 3. Add transaction to order thread
+          await orderThread.post(receipt);
+          console.log("Order thread:");
+          console.log(orderThread);
+
+          // 4. Add order message to inbox of the seller [DONE]
+          let message = {
+            messageId: orderThreadAddress,
+            type: "order",
+          };
+
+          const sellerInbox = await space.joinThreadByAddress(
+            post.message.inboxThreadAddress
+          );
+          await sellerInbox.post(message);
+        });
     }
-  };*/
+  };
 
   render() {
     return (
@@ -308,7 +398,7 @@ export default class ListingDetails extends Component {
                     // onClick={this.state.handleShow}
                     style={styles.addToCart}
                     post={this.props.post}
-                    onClick={this.sendDAI}>
+                    onClick={this.sendTestnetDAI}>
                     BUY NOW
                   </Button>
                   {/*                   <Button
