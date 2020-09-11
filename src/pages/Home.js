@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import {
-  CardColumns,
-} from "react-bootstrap";
+import { CardColumns } from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
 
-import ListingCard from "../components/ListingCard.js"
+import ListingCard from "../components/ListingCard.js";
 
 const styles = {
   column: {
@@ -54,6 +52,12 @@ export default class Home extends Component {
                     i={i}
                     admin={this.props.admin}
                     home={true}
+                    testnetReceipts={this.props.testnetReceipts}
+                    testnetReceiptItems={this.props.testnetReceiptItems}
+                    getTestnetReceipts={this.props.getTestnetReceipts}
+                    inboxThread={this.props.inboxThread}
+                    inboxMessages={this.props.inboxMessages}
+                    getInboxThread={this.props.getInboxThread}
                   />
                 );
               })}

@@ -221,6 +221,12 @@ export default class ListingCard extends Component {
           handleToastClose={this.state.handleToastClose}
           show={this.state.show}
           toast={this.state.toast}
+          testnetReceipts={this.props.testnetReceipts}
+          testnetReceiptItems={this.props.testnetReceiptItems}
+          getTestnetReceipts={this.props.getTestnetReceipts}
+          inboxThread={this.props.inboxThread}
+          inboxMessages={this.props.inboxMessages}
+          getInboxThread={this.props.getInboxThread}
         />
 
         {(this.props.i + 1) % 3 === 0 && <div className="w-100"></div>}

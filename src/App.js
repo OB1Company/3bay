@@ -13,6 +13,7 @@ import Cart from "./pages/Cart";
 import AddListing from "./pages/AddListing";
 import Profile from "./pages/Profile";
 import Orders from "./pages/Orders";
+import Inbox from "./pages/Inbox";
 import { SPACE_NAME } from "./Constants";
 
 // 3Box identity
@@ -80,6 +81,15 @@ export default class App extends Component {
     });
     this.setState({ thread }, () => this.getListingsThread());
 
+    // Create a public inbox for the user
+    const inboxThread = await space.joinThread("inboxTestnet", {
+      firstModerator: userMod,
+      members: false,
+      ghost: false,
+      confidential: false,
+    });
+    this.setState({ inboxThread }, () => this.getInboxThread());
+    
     // Create and fetch the listings in the shopping cart
     const shoppingCart = await space.joinThread("demo-shoppingCart-public", {
       firstModerator: userMod,
@@ -97,6 +107,18 @@ export default class App extends Component {
       confidential: false,
     });
     this.setState({ orders }, () => this.getOrdersThread());
+
+    // Create and fetch the testnet receipts
+    const testnetReceipts = await space.joinThread(
+      "demo-testnet-receipts-public",
+      {
+        firstModerator: userMod,
+        members: true,
+        ghost: false,
+        confidential: false,
+      }
+    );
+    this.setState({ testnetReceipts }, () => this.getTestnetReceipts());
 
     // Join global chat
     const globalChat = await space.joinThread("globalListChat");
@@ -129,6 +151,31 @@ export default class App extends Component {
     await this.state.thread.onUpdate(async () => {
       const posts = await this.state.thread.getPosts();
       this.setState({ posts });
+    });
+  }
+
+  /**
+   * getInboxThread => Fetch the messages in a user's inbox
+   */
+  async getInboxThread() {
+    if (!this.state.inboxThread) {
+      console.error("messages in inbox thread not in react state");
+      return;
+    }
+
+    // Save the thread address
+    const inboxThreadAddress = this.state.inboxThread.address;
+    console.log(inboxThreadAddress);
+    this.setState({ inboxThreadAddress });
+
+    // Fetch the messages and add them to state
+    const inboxMessages = await this.state.inboxThread.getPosts();
+    this.setState({ inboxMessages });
+
+    // Update the state when new messages are added
+    await this.state.inboxThread.onUpdate(async () => {
+      const inboxMessages = await this.state.inboxThread.getPosts();
+      this.setState({ inboxMessages });
     });
   }
 
@@ -200,6 +247,26 @@ export default class App extends Component {
     });
   }
 
+  /**
+   * getTestnetReceiptsThread => Fetch receipts from testnet
+   */
+  async getTestnetReceipts() {
+    if (!this.state.testnetReceipts) {
+      console.error("testnet receipts thread not in react state");
+      return;
+    }
+
+    // Fetch the cart items and add them to state
+    const testnetReceiptItems = await this.state.testnetReceipts.getPosts();
+    this.setState({ testnetReceiptItems });
+
+    // Update the shopping cart when new items are added
+    await this.state.testnetReceipts.onUpdate(async () => {
+      const testnetReceiptItems = await this.state.testnetReceipts.getPosts();
+      this.setState({ testnetReceiptItems });
+    });
+  }
+
   render() {
     if (this.state.needToAWeb3Browser) {
       return <h1>Please install metamask</h1>; //! Need something nice here
@@ -208,7 +275,11 @@ export default class App extends Component {
     return (
       <Router>
         <div>
-          <Nav cartItems={this.state.cartItems} style={{background: "#ffffff"}} />
+          <Nav
+            cartItems={this.state.cartItems}
+            inboxMessages={this.state.inboxMessages}
+            style={{ background: "#ffffff" }}
+          />
           <Switch>
             <Route path="/profile">
               {this.state.space && (
@@ -241,6 +312,7 @@ export default class App extends Component {
                   getGlobalListingsThread={this.getGlobalListingsThread.bind(
                     this
                   )}
+                  inboxThreadAddress={this.state.inboxThreadAddress}
                 />
               )}
               {!this.state.accounts && <h1>Login with metamask</h1>}
@@ -293,6 +365,18 @@ export default class App extends Component {
                 orderItems={this.state.orderItems}
               />
             </Route>
+            <Route path="/inbox">
+              <Inbox
+                space={this.state.space}
+                box={this.state.box}
+                inboxThread={this.state.inboxThread}
+                inboxMessages={this.state.inboxMessages}
+                getInboxThread={this.getInboxThread.bind(this)}
+                usersAddress={
+                  this.state.accounts ? this.state.accounts[0] : null
+                }
+              />
+            </Route>
             <Route path="/">
               <Home
                 globalThread={this.state.globalThread}
@@ -309,6 +393,12 @@ export default class App extends Component {
                   this.state.accounts ? this.state.accounts[0] : null
                 }
                 admin={this.state.admin}
+                testnetReceipts={this.state.testnetReceipts}
+                testnetReceiptItems={this.state.testnetReceiptItems}
+                getTestnetReceipts={this.getTestnetReceipts.bind(this)}
+                inboxThread={this.state.inboxThread}
+                inboxMessages={this.state.inboxMessages}
+                getInboxThread={this.getInboxThread.bind(this)}
               />
             </Route>
           </Switch>

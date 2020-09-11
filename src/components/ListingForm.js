@@ -47,6 +47,7 @@ export default class ListingForm extends Component {
       listingImage: this.state.listingImage,
       description: this.state.description,
       needsAddress: this.state.needsAddress,
+      inboxThreadAddress: this.props.inboxThreadAddress,
     });
 
     this.setState(Object.assign({}, blankState, { submitted: true }));
