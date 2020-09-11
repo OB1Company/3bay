@@ -159,6 +159,8 @@ export const contractABIRopsten = [
 
 export const contractAddressDAI = "0x6b175474e89094c44da98b954eedeac495271d0f";
 
+export const testnetDAI = "0xc2118d4d90b274016cb7a54c03ef52e6c537d957";
+
 export const contractABIDAI = [
   {
     inputs: [{ internalType: "uint256", name: "chainId_", type: "uint256" }],

@@ -13,7 +13,12 @@ import ProfileHover from "profile-hover";
 import Web3 from "web3";
 import daiIcon from "../assets/dai.png";
 
-import { SPACE_NAME, contractAddressDAI, contractABIDAI } from "../Constants";
+import {
+  SPACE_NAME,
+  testnetDAI,
+  contractAddressDAI,
+  contractABIDAI,
+} from "../Constants";
 
 const styles = {
   name: {
