@@ -14,11 +14,19 @@ const styles = {
     width: "100%",
     objectFit: "cover",
     objectPosition: "center",
+    alignContent: "center",
+    background: "#ffffff",
+    borderStyle: "dotted",
+    borderWidth: "thin",
+    borderColor: "#000000",
   },
   label: {
     fontWeight: "bold",
     fontFamily: "Courier New",
-  }
+  },
+  button: {
+    fontFamily: "Courier New",
+  },
 };
 
 export default class ListingForm extends Component {
@@ -71,7 +79,6 @@ export default class ListingForm extends Component {
                     (ev.target.src = "https://via.placeholder.com/150")
                   }
                   style={styles.image}
-                  thumbnail
                   fluid
                 />
               </Col>
@@ -176,6 +183,7 @@ export default class ListingForm extends Component {
               type="submit"
               value="Submit"
               className="btn btn-dark float-sm-right"
+              style={styles.button}
             />
           </form>
         )}
@@ -184,7 +192,8 @@ export default class ListingForm extends Component {
             <h1>Thank you for submiting</h1>
             <button
               className="btn btn-dark"
-              onClick={() => this.setState({ submitted: false })}>
+              onClick={() => this.setState({ submitted: false })}
+              style={styles.button}>
               Add another listing{" "}
             </button>
           </div>

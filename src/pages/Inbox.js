@@ -72,7 +72,7 @@ export default class Inbox extends Component {
   render() {
     return (
       <div className="container" style={styles.background}>
-        <h1 className="brand-font" style={{ fontSize: "4rem" }}>
+        <h1 className="brand-font">
           Inbox
         </h1>
         <Container style={{ marginTop: "50px" }}>

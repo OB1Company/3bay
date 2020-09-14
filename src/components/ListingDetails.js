@@ -293,7 +293,7 @@ export default class ListingDetails extends Component {
           getTestnetReceipts();
           console.log(testnetReceiptItems);
 
-          // 3. Add transaction to order thread
+          // 3. Add transaction to order thread [DONE]
           await orderThread.post(receipt);
           console.log("Order thread:");
           console.log(orderThread);

@@ -17,7 +17,7 @@ export default class MyStore extends Component {
   render() {
     return (
       <div className="container" style={styles.background}>
-        <h1 className="brand-font" style={{ fontSize: "4rem" }}>
+        <h1 className="brand-font">
           My store
         </h1>
         <p className="brand-font">This is my store.</p>

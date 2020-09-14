@@ -355,14 +355,12 @@ export default class App extends Component {
               <Orders
                 space={this.state.space}
                 box={this.state.box}
-                cartItems={this.state.cartItems}
-                shoppingCart={this.state.shoppingCart}
-                getShoppingCartThread={this.getShoppingCartThread.bind(this)}
+                getTestnetReceipts={this.getTestnetReceipts.bind(this)}
+                testnetReceipts={this.state.testnetReceipts}
+                testnetReceiptItems={this.state.testnetReceiptItems}
                 usersAddress={
                   this.state.accounts ? this.state.accounts[0] : null
                 }
-                orders={this.state.orders}
-                orderItems={this.state.orderItems}
               />
             </Route>
             <Route path="/inbox">
