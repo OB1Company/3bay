@@ -23,6 +23,7 @@ const styles = {
     borderStyle: "dotted",
     borderWidth: "thin",
     borderColor: "#000000",
+    cursor: "pointer",
     // boxShadow: "-20px 20px 40px #e0e0e0, 20px -20px 40px #ffffff",
   },
   imageContainer: {
