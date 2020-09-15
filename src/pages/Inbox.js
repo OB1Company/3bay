@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-
 import { Button, Container, Row, Col } from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
+import OrderDetails from "../components/OrderDetails.js";
 
 const styles = {
   background: {
@@ -50,6 +50,45 @@ const styles = {
 };
 
 class InboxMessages extends Component {
+  state = {
+    show: false,
+    handleClose: () => this.setState({ show: false }),
+    handleShow: () => this.setState({ show: true }),
+  };
+
+  loadTheOrder = async (_stuff) => {
+    // To do: add logic to open order thread here, add to state, and pass it to OrderDetails
+    const space = this.props.space;
+    const orderNumber = this.props.item.messageId;
+    this.setState({ orderNumber });
+    const orderThread = await space.joinThreadByAddress(orderNumber);
+    this.setState({ orderThread }, () => this.getOrderThread());
+    this.setState({ show: true });
+  };
+
+  async getOrderThread() {
+    if (!this.state.orderThread) {
+      console.error("orders thread not in react state");
+      return;
+    }
+
+    // Fetch the cart items and add them to state
+    const fetch = await this.state.orderThread.getPosts();
+    let orderItems = fetch.reverse();
+    let orderPreview = orderItems.pop();
+    this.setState({ orderItems });
+    this.setState({ orderPreview });
+
+    // Update the shopping cart when new items are added
+    await this.state.orderThread.onUpdate(async () => {
+      const fetch = await this.state.orderThread.getPosts();
+      let orderItems = fetch.reverse();
+      let orderPreview = orderItems.pop();
+      this.setState({ orderItems });
+      this.setState({ orderPreview });
+    });
+  }
+
   deletePost = async (e) => {
     e.stopPropagation();
     const post = this.props.post;
@@ -70,7 +109,7 @@ class InboxMessages extends Component {
             marginLeft: "0px",
           }}>
           <Col sm={2}></Col>
-          <Col sm={8}>
+          <Col sm={8} onClick={this.loadTheOrder}>
             <Row
               style={{
                 borderStyle: "dashed",
@@ -82,10 +121,11 @@ class InboxMessages extends Component {
               }}>
               <Col>
                 <pre style={styles.price}>
-                  <b>from:</b>    {this.props.post.author}
+                  <b>from:</b> {this.props.post.author}
                 </pre>
                 <pre style={styles.price}>
-                  <b>subject:</b> {this.props.item.messageId
+                  <b>subject:</b>{" "}
+                  {this.props.item.messageId
                     ? this.props.item.messageId
                     : "Unnamed"}
                 </pre>
@@ -99,6 +139,24 @@ class InboxMessages extends Component {
           </Col>
           <Col sm={2}></Col>
         </Row>
+
+        <OrderDetails
+          app={this.props.post.message}
+          post={this.props.post}
+          threeBox={this.props.threeBox}
+          space={this.props.space}
+          box={this.props.box}
+          item={this.props.item}
+          usersAddress={this.props.usersAddress}
+          handleClose={this.state.handleClose}
+          handleShow={this.state.handleShow}
+          show={this.state.show}
+          orderNumber={this.state.orderNumber}
+          orderThread={this.state.orderThread}
+          orderItems={this.state.orderItems}
+          getOrderThread={this.getOrderThread.bind(this)}
+          orderPreview={this.state.orderPreview}
+        />
       </>
     );
   }

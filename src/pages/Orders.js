@@ -92,13 +92,17 @@ class OrderItems extends Component {
     // Fetch the cart items and add them to state
     const fetch = await this.state.orderThread.getPosts();
     let orderItems = fetch.reverse();
+    let orderPreview = orderItems.pop();
     this.setState({ orderItems });
+    this.setState({ orderPreview });
 
     // Update the shopping cart when new items are added
     await this.state.orderThread.onUpdate(async () => {
       const fetch = await this.state.orderThread.getPosts();
       let orderItems = fetch.reverse();
+      let orderPreview = orderItems.pop();
       this.setState({ orderItems });
+      this.setState({ orderPreview });
     });
   }
 
@@ -208,6 +212,7 @@ class OrderItems extends Component {
           orderThread={this.state.orderThread}
           orderItems={this.state.orderItems}
           getOrderThread={this.getOrderThread.bind(this)}
+          orderPreview={this.state.orderPreview}
         />
       </>
     );

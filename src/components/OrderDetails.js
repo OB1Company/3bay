@@ -140,8 +140,8 @@ export default class OrderDetails extends Component {
           show={this.props.show}>
           <Modal.Header closeButton>
             <Modal.Title style={styles.name}>
-              {this.props.post.message.name
-                ? this.props.post.message.name
+              {this.props.orderPreview && this.props.orderPreview.message.name
+                ? this.props.orderPreview.message.name
                 : "Unnamed"}
             </Modal.Title>
           </Modal.Header>
@@ -163,8 +163,8 @@ export default class OrderDetails extends Component {
                 <Image
                   alt="Listing"
                   src={
-                    this.props.item && this.props.item.listingImage
-                      ? this.props.item.listingImage
+                    this.props.orderPreview && this.props.orderPreview.message.listingImage
+                      ? this.props.orderPreview.message.listingImage
                       : "https://via.placeholder.com/150"
                   }
                   onError={(ev) =>
@@ -177,30 +177,30 @@ export default class OrderDetails extends Component {
               <Col sm={9} style={{ marginTop: "5px" }}>
                 <Row>
                   <p style={styles.name}>
-                    {this.props.item && this.props.item.name
-                      ? this.props.item.name
+                    {this.props.orderPreview && this.props.orderPreview.message.name
+                      ? this.props.orderPreview.message.name
                       : "Unnamed"}
                   </p>
                 </Row>
                 <Row style={{ marginTop: "5px" }}>
                   <p style={styles.price}>
                     $
-                    {this.props.item && this.props.item.price
-                      ? this.props.item.price
+                    {this.props.orderPreview && this.props.orderPreview.message.price
+                      ? this.props.orderPreview.message.price
                       : "0"}
                   </p>
                 </Row>
                 <Row style={{ marginTop: "5px" }}>
                   <p style={styles.description}>
-                    {this.props.item && this.props.item.description
-                      ? this.props.item.description
+                    {this.props.orderPreview && this.props.orderPreview.message.description
+                      ? this.props.orderPreview.message.description
                       : "No description."}
                   </p>
                 </Row>
-                {this.props.item && this.props.item.txHash && (
+                {this.props.orderPreview && this.props.orderPreview.message.txHash && (
                   <Row style={{ marginTop: "5px" }}>
                     <a
-                      href={`https://etherscan.io/tx/` + this.props.item.txHash}
+                      href={`https://etherscan.io/tx/` + this.props.orderPreview.message.txHash}
                       style={styles.link}
                       target="_blank"
                       rel="noopener noreferrer">
