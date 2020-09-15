@@ -4,6 +4,7 @@ import { Container, Button, Image, Row, Col } from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
 
 import ProfileHover from "profile-hover";
+import OrderDetails from "../components/OrderDetails.js";
 
 const styles = {
   background: {
@@ -66,6 +67,41 @@ const styles = {
 };
 
 class OrderItems extends Component {
+  state = {
+    show: false,
+    handleClose: () => this.setState({ show: false }),
+    handleShow: () => this.setState({ show: true }),
+  };
+
+  loadTheOrder = async (_stuff) => {
+    // To do: add logic to open order thread here, add to state, and pass it to OrderDetails
+    const space = this.props.space;
+    const orderNumber = this.props.item.orderThreadAddress;
+    this.setState({ orderNumber });
+    const orderThread = await space.joinThreadByAddress(orderNumber);
+    this.setState({ orderThread }, () => this.getOrderThread());
+    this.setState({ show: true });
+  };
+
+  async getOrderThread() {
+    if (!this.state.orderThread) {
+      console.error("orders thread not in react state");
+      return;
+    }
+
+    // Fetch the cart items and add them to state
+    const fetch = await this.state.orderThread.getPosts();
+    let orderItems = fetch.reverse();
+    this.setState({ orderItems });
+
+    // Update the shopping cart when new items are added
+    await this.state.orderThread.onUpdate(async () => {
+      const fetch = await this.state.orderThread.getPosts();
+      let orderItems = fetch.reverse();
+      this.setState({ orderItems });
+    });
+  }
+
   deletePost = async (e) => {
     e.stopPropagation();
     const postId = this.props.post.postId;
@@ -84,7 +120,7 @@ class OrderItems extends Component {
             marginLeft: "0px",
           }}>
           <Col sm={2}></Col>
-          <Col sm={2}>
+          <Col sm={2} onClick={this.loadTheOrder} style={{ cursor: "pointer" }}>
             <Image
               alt="Listing"
               src={
@@ -99,7 +135,10 @@ class OrderItems extends Component {
               fluid
             />
           </Col>
-          <Col sm={4} style={{ marginTop: "5px" }}>
+          <Col
+            sm={4}
+            style={{ marginTop: "5px", cursor: "pointer" }}
+            onClick={this.loadTheOrder}>
             <Row>
               <p style={styles.name}>
                 {this.props.item && this.props.item.name
@@ -138,7 +177,7 @@ class OrderItems extends Component {
               )}
             </Row>
           </Col>
-          <Col sm={2}>
+          <Col sm={2} style={{ cursor: "pointer" }}>
             <div style={styles.topRight}>
               <Button style={styles.button} onClick={this.deletePost}>
                 <span role="img" aria-label="dasButton">
@@ -149,6 +188,27 @@ class OrderItems extends Component {
           </Col>
           <Col sm={2}></Col>
         </Row>
+
+        <OrderDetails
+          app={this.props.post.message}
+          post={this.props.post}
+          threeBox={this.props.threeBox}
+          space={this.props.space}
+          box={this.props.box}
+          item={this.props.item}
+          usersAddress={this.props.usersAddress}
+          cartItems={this.props.cartItems}
+          handleClose={this.state.handleClose}
+          handleShow={this.state.handleShow}
+          show={this.state.show}
+          getTestnetReceipts={this.props.getTestnetReceipts}
+          testnetReceipts={this.props.testnetReceipts}
+          testnetReceiptItems={this.props.testnetReceiptItems}
+          orderNumber={this.state.orderNumber}
+          orderThread={this.state.orderThread}
+          orderItems={this.state.orderItems}
+          getOrderThread={this.getOrderThread.bind(this)}
+        />
       </>
     );
   }
