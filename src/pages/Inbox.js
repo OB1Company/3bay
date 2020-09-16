@@ -3,6 +3,8 @@ import { Button, Container, Row, Col } from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
 import OrderDetails from "../components/OrderDetails.js";
 
+import { fontFamily } from "../Constants.js";
+
 const styles = {
   background: {
     textAlign: "center",
@@ -26,7 +28,7 @@ const styles = {
     lineHeight: "23px",
     margin: "0px",
     padding: "0px",
-    fontFamily: "Courier New",
+    fontFamily,
   },
   price: {
     fontSize: "13px",
@@ -34,7 +36,7 @@ const styles = {
     lineHeight: "13px",
     margin: "0px",
     padding: "0px",
-    fontFamily: "Courier New",
+    fontFamily,
     overflow: "hidden",
   },
   topRight: {
@@ -172,6 +174,31 @@ export default class Inbox extends Component {
             <div style={{ width: "60px", margin: "auto" }}>
               <BounceLoader color={"blue"} />
             </div>
+          )}
+          {this.props.inboxMessages && (
+            <Row>
+              <Col sm={2}></Col>
+              <Col sm={8}>
+                <p
+                  className="brand-font"
+                  style={{
+                    fontSize: "13px",
+                    textAlign: "left",
+                  }}>
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      cursor: "pointer",
+                      color: "#0000EE",
+                      textDecoration: "underline",
+                    }}>
+                    Sales
+                  </span>
+                  /<span>Chat</span>
+                </p>
+              </Col>
+              <Col sm={2}></Col>
+            </Row>
           )}
           {this.props.inboxMessages && (
             <Row>

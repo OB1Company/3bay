@@ -6,6 +6,8 @@ const styles = {
   navHeading: {
     color: "#0c2845",
     fontWeight: "bold",
+    fontSize: "15px",
+    lineHeight: "15px",
   },
 };
 

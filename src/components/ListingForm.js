@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Image, Row, Col } from "react-bootstrap";
+import { fontFamily } from "../Constants.js"
 
 const blankState = {
   name: "",
@@ -22,10 +23,11 @@ const styles = {
   },
   label: {
     fontWeight: "bold",
-    fontFamily: "Courier New",
+    fontFamily,
+    textAlign: "left",
   },
   button: {
-    fontFamily: "Courier New",
+    fontFamily,
   },
 };
 

@@ -18,6 +18,7 @@ import {
   testnetDAI,
   contractAddressDAI,
   contractABIDAI,
+  fontFamily,
 } from "../Constants";
 
 const styles = {
@@ -29,7 +30,7 @@ const styles = {
     lineHeight: "25px",
     margin: "0px",
     padding: "0px",
-    fontFamily: "Courier New",
+    fontFamily,
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
@@ -40,7 +41,7 @@ const styles = {
     lineHeight: "20px",
     margin: "0px",
     padding: "0px",
-    fontFamily: "Courier New",
+    fontFamily,
   },
   modalShippingAddress: {
     marginTop: "10px",
@@ -51,7 +52,7 @@ const styles = {
     marginLeft: "0px",
     marginRight: "0px",
     padding: "0px",
-    fontFamily: "Courier New",
+    fontFamily,
   },
   soldBy: {
     fontSize: "17px",
@@ -64,13 +65,13 @@ const styles = {
     marginLeft: "0px",
     marginRight: "0px",
     padding: "0px",
-    fontFamily: "Courier New",
+    fontFamily,
   },
   addToCart: {
     width: "100%",
     marginTop: "5px",
     marginBottom: "5px",
-    fontFamily: "Courier New",
+    fontFamily,
   },
   modalPrice: {
     fontSize: "37px",
@@ -80,7 +81,7 @@ const styles = {
     lineHeight: "37px",
     margin: "0px",
     padding: "0px",
-    fontFamily: "Courier New",
+    fontFamily,
   },
   daiIcon: {
     height: "20px",
@@ -91,7 +92,7 @@ const styles = {
     alignText: "center",
     lineHeight: "20px",
     paddingLeft: "10px",
-    fontFamily: "Courier New",
+    fontFamily,
   },
 };
 

@@ -437,3 +437,5 @@ export const contractABIDAI = [
     type: "function",
   },
 ];
+
+export const fontFamily = 'monospace';

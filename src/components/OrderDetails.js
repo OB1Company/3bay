@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Button, Image, Modal, Row, Col } from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
 
+import { fontFamily } from "../Constants.js";
+
 const styles = {
   name: {
     fontSize: "20px",
@@ -10,12 +12,12 @@ const styles = {
     lineHeight: "20px",
     margin: "0px",
     padding: "0px",
-    fontFamily: "Courier New",
+    fontFamily,
     textOverflow: "ellipsis",
   },
   description: {
     fontSize: "15px",
-    fontFamily: "Courier New",
+    fontFamily,
     textAlign: "left",
     margin: "0px",
     padding: "0px",
@@ -39,7 +41,7 @@ const styles = {
     lineHeight: "17px",
     margin: "0px",
     padding: "0px",
-    fontFamily: "Courier New",
+    fontFamily,
   },
   link: {
     fontSize: "14px",
@@ -47,7 +49,7 @@ const styles = {
     lineHeight: "14px",
     margin: "0px",
     padding: "0px",
-    fontFamily: "Courier New",
+    fontFamily,
     color: "#000000",
     textDecoration: "underline",
   },

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, Card } from "react-bootstrap";
 
 import ListingDetails from "./ListingDetails.js";
+import { fontFamily } from "../Constants.js";
 
 const styles = {
   wrapper: {
@@ -53,7 +54,7 @@ const styles = {
   },
   name: {
     fontSize: "20px",
-    fontFamily: "Courier New",
+    fontFamily,
     fontWeight: "bold",
     textAlign: "left",
     // height: "32px",
@@ -66,7 +67,7 @@ const styles = {
   },
   price: {
     fontSize: "17px",
-    fontFamily: "Courier New",
+    fontFamily,
     fontWeight: "bold",
     textAlign: "left",
     // height: "27px",
@@ -79,7 +80,7 @@ const styles = {
   },
   description: {
     fontSize: "15px",
-    fontFamily: "Courier New",
+    fontFamily,
     textAlign: "left",
     // height: "22px",
     // lineHeight: "15px",
@@ -97,7 +98,7 @@ const styles = {
     textAlign: "center",
     background: "#ffffff",
     fontSize: "15px",
-    fontFamily: "Courier New",
+    fontFamily,
     // textAlign: "left",
     // height: "18px",
     // lineHeight: "11px",

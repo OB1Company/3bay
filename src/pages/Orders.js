@@ -5,6 +5,7 @@ import { BounceLoader } from "react-spinners";
 
 import ProfileHover from "profile-hover";
 import OrderDetails from "../components/OrderDetails.js";
+import { fontFamily } from "../Constants.js";
 
 const styles = {
   background: {
@@ -33,7 +34,7 @@ const styles = {
     lineHeight: "20px",
     margin: "0px",
     padding: "0px",
-    fontFamily: "Courier New",
+    fontFamily,
     textOverflow: "ellipsis",
   },
   price: {
@@ -42,7 +43,7 @@ const styles = {
     lineHeight: "17px",
     margin: "0px",
     padding: "0px",
-    fontFamily: "Courier New",
+    fontFamily,
   },
   link: {
     fontSize: "14px",
@@ -50,7 +51,7 @@ const styles = {
     lineHeight: "14px",
     margin: "0px",
     padding: "0px",
-    fontFamily: "Courier New",
+    fontFamily,
     color: "#000000",
     textDecoration: "underline",
   },

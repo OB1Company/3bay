@@ -3,6 +3,9 @@ import ListingForm from "../components/ListingForm";
 import { BounceLoader } from "react-spinners";
 
 const styles = {
+  background: {
+    textAlign: "center",
+  },
   navHeading: {
     textAlign: "center",
     fontColor: "#0c2845",
@@ -25,7 +28,7 @@ export default class AddListing extends Component {
   };
   render() {
     return (
-      <div className="container">
+      <div className="container" style={styles.background}>
         <h1 className="brand-font" style={styles.navHeading}>
           Add a listing
         </h1>
