@@ -16,6 +16,23 @@ const styles = {
     background: "rgb(0,0,0,0)",
     borderWidth: "0",
   },
+  slash: {
+    fontSize: "13px",
+    textAlign: "left",
+    paddingLeft: "2px",
+    paddingRight: "2px",
+  },
+  link: {
+    fontSize: "13px",
+    textAlign: "left",
+    cursor: "pointer",
+    color: "#0000EE",
+  },
+  path: {
+    fontSize: "13px",
+    textAlign: "left",
+    color: "#000000",
+  },
 };
 export default ({
   space,
@@ -87,33 +104,29 @@ export default ({
         <Link
           className="brand-font float-sm-left"
           to="/"
-          style={{
-            fontSize: "13px",
-            textAlign: "left",
-            cursor: "pointer",
-            color: "#0000EE",
-          }}>
-          All
+          style={threadId === "all" ? styles.path : styles.link}>
+          all
         </Link>
-        <p
-          style={{
-            fontSize: "13px",
-            textAlign: "left",
-            paddingLeft: "2px",
-            paddingRight: "2px",
-          }}>
-          /
-        </p>
+        <p style={styles.slash}>/</p>
         <Link
           className="brand-font float-sm-left"
-          to="/s/bbb"
-          style={{
-            fontSize: "13px",
-            textAlign: "left",
-            cursor: "pointer",
-            color: "#0000EE",
-          }}>
-          Stuff
+          to="/"
+          style={threadId === "bbb" ? styles.path : styles.link}>
+          bbb
+        </Link>
+        <p style={styles.slash}>/</p>
+        <Link
+          className="brand-font float-sm-left"
+          to="/s/shoes"
+          style={threadId === "shoes" ? styles.path : styles.link}>
+          shoes
+        </Link>
+        <p style={styles.slash}>/</p>
+        <Link
+          className="brand-font float-sm-left"
+          to="/s/shirts"
+          style={threadId === "shirts" ? styles.path : styles.link}>
+          shirts
         </Link>
       </Row>
       <div className="row" style={{ marginTop: "50px" }}>

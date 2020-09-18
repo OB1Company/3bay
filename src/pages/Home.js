@@ -18,6 +18,23 @@ const styles = {
     background: "rgb(0,0,0,0)",
     borderWidth: "0",
   },
+  slash: {
+    fontSize: "13px",
+    textAlign: "left",
+    paddingLeft: "2px",
+    paddingRight: "2px",
+  },
+  link: {
+    fontSize: "13px",
+    textAlign: "left",
+    cursor: "pointer",
+    color: "#0000EE",
+  },
+  path: {
+    fontSize: "13px",
+    textAlign: "left",
+    color: "#000000",
+  },
 };
 
 export default class Home extends Component {
@@ -29,33 +46,29 @@ export default class Home extends Component {
         </h1>
         <p className="brand-font">Reddit-style decentralized marketplace.</p>
         <Row>
-          <p
-            className="brand-font float-sm-left"
-            style={{
-              fontSize: "13px",
-              textAlign: "left",
-            }}>
-            All
-          </p>
-          <p
-            style={{
-              fontSize: "13px",
-              textAlign: "left",
-              paddingLeft: "2px",
-              paddingRight: "2px",
-            }}>
-            /
-          </p>
+          <Link className="brand-font float-sm-left" style={styles.path}>
+            all
+          </Link>
+          <p style={styles.slash}>/</p>
           <Link
             className="brand-font float-sm-left"
-            to="/s/stuff"
-            style={{
-              fontSize: "13px",
-              textAlign: "left",
-              cursor: "pointer",
-              color: "#0000EE",
-            }}>
-            stuff
+            to="/s/bbb"
+            style={styles.link}>
+            bbb
+          </Link>
+          <p style={styles.slash}>/</p>
+          <Link
+            className="brand-font float-sm-left"
+            to="/s/shoes"
+            style={styles.link}>
+            shoes
+          </Link>
+          <p style={styles.slash}>/</p>
+          <Link
+            className="brand-font float-sm-left"
+            to="/s/shirts"
+            style={styles.link}>
+            shirts
           </Link>
         </Row>
         <div className="row" style={{ marginTop: "50px" }}>
