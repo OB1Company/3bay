@@ -38,3 +38,11 @@
   width: 80%;
   height: 600px;
 }
+
+.threebox-comments-react {
+  max-width: 100% !important;
+}
+
+.comments_footer { 
+  display: none !important;
+}

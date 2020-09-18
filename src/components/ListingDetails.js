@@ -316,7 +316,11 @@ export default class ListingDetails extends Component {
   render() {
     return (
       <>
-        <Modal onHide={this.props.handleClose} size="xl" show={this.props.show}>
+        <Modal
+          onHide={this.props.handleClose}
+          size="xl"
+          show={this.props.show}
+          animation={false}>
           <Modal.Header closeButton>
             <Modal.Title style={styles.name}>
               {this.props.post.message.name
