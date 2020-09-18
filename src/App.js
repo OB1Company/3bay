@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Nav from "./components/Nav";
 import { BounceLoader } from "react-spinners";
-import ChatBox from "3box-chatbox-react";
+// import ChatBox from "3box-chatbox-react";
 
 import MyStore from "./pages/MyStore";
 import Home from "./pages/Home";
@@ -14,6 +14,7 @@ import AddListing from "./pages/AddListing";
 import Profile from "./pages/Profile";
 import Orders from "./pages/Orders";
 import Inbox from "./pages/Inbox";
+import Thread from "./pages/Thread";
 import { SPACE_NAME } from "./Constants";
 
 // 3Box identity
@@ -89,7 +90,7 @@ export default class App extends Component {
       confidential: false,
     });
     this.setState({ inboxThread }, () => this.getInboxThread());
-    
+
     // Create and fetch the listings in the shopping cart
     const shoppingCart = await space.joinThread("demo-shoppingCart-public", {
       firstModerator: userMod,
@@ -129,9 +130,13 @@ export default class App extends Component {
       "/orbitdb/zdpuAosv7kRPN49quPCwVr5p531SwjycjdxQeEbM9Y3SiNBp9/3box.thread.demo-marketplace.globalList"
     );
     this.setState({ globalThread }, () => this.getGlobalListingsThread());
-    // console.log(globalThread.address);
-    // const dasPosts = await globalThread.getPosts();
-    // console.log(dasPosts);
+
+    // TEST: remove later
+    /*     const submarketThread = await space.joinThread("bbb", {
+      firstModerator: "0xf54D276a029a49458E71167EBc25D1cCa235ee6f",
+      members: false,
+    });
+    this.setState({ submarketThread }, () => this.getSubmarketThread()); */
   }
 
   /**
@@ -267,6 +272,33 @@ export default class App extends Component {
     });
   }
 
+  async joinSubmarket() {
+    // Fetch the listings in the thread of the global marketplace
+    const space = this.state.space;
+    const submarketThread = await space.joinThread("bbb", {
+      firstModerator: "0xf54D276a029a49458E71167EBc25D1cCa235ee6f",
+      members: false,
+    });
+    this.setState({ submarketThread }, () => this.getSubmarketThread());
+  }
+
+  async getSubmarketThread() {
+    if (!this.state.submarketThread) {
+      console.error("global listings thread not in react state");
+      return;
+    }
+
+    // Fetch the listings and add them to state
+    const submarketPosts = await this.state.submarketThread.getPosts();
+    this.setState({ submarketPosts });
+
+    // Update the state when new listings are added
+    await this.state.submarketThread.onUpdate(async () => {
+      const submarketPosts = await this.state.submarketThread.getPosts();
+      this.setState({ submarketPosts });
+    });
+  }
+
   render() {
     if (this.state.needToAWeb3Browser) {
       return <h1>Please install metamask</h1>; //! Need something nice here
@@ -313,6 +345,9 @@ export default class App extends Component {
                     this
                   )}
                   inboxThreadAddress={this.state.inboxThreadAddress}
+                  getSubmarketThread={this.getSubmarketThread.bind(this)}
+                  submarketThread={this.state.submarketThread}
+                  submarketPosts={this.state.submarketPosts}
                 />
               )}
               {!this.state.accounts && <h1>Login with metamask</h1>}
@@ -375,6 +410,30 @@ export default class App extends Component {
                 }
               />
             </Route>
+            <Route
+              path="/s/:threadId"
+              component={(props) => (
+                <Thread
+                  {...props}
+                  thread={this.state.thread}
+                  posts={this.state.posts}
+                  globalThread={this.state.globalThread}
+                  globalPosts={this.state.globalPosts}
+                  space={this.state.space}
+                  box={this.state.box}
+                  getGlobalListingsThread={this.getGlobalListingsThread.bind(
+                    this
+                  )}
+                  getListingsThread={this.getListingsThread.bind(this)}
+                  usersAddress={
+                    this.state.accounts ? this.state.accounts[0] : null
+                  }
+                  joinSubmarket={this.joinSubmarket.bind(this)}
+                  getSubmarketThread={this.getSubmarketThread.bind(this)}
+                  submarketThread={this.state.submarketThread}
+                  submarketPosts={this.state.submarketPosts}
+                />
+              )}></Route>
             <Route path="/">
               <Home
                 globalThread={this.state.globalThread}
@@ -401,7 +460,7 @@ export default class App extends Component {
             </Route>
           </Switch>
         </div>
-        <div className="userscontainer">
+        {/*         <div className="userscontainer">
           {this.state.space && (
             <ChatBox
               // required
@@ -424,7 +483,7 @@ export default class App extends Component {
               openOnMount={false}
             />
           )}
-        </div>
+        </div> */}
       </Router>
     );
   }

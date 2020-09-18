@@ -1,8 +1,13 @@
 import React, { Component } from "react";
-import { CardColumns } from "react-bootstrap";
+import { CardColumns, Row } from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
+import { Link } from "react-router-dom";
 
 import ListingCard from "../components/ListingCard.js";
+
+const blankState = {
+  subMarket: "",
+};
 
 const styles = {
   column: {
@@ -27,6 +32,39 @@ export default class Home extends Component {
           Spendit
         </h1>
         <p className="brand-font">Reddit-style decentralized marketplace.</p>
+        <Row>
+          <Link
+            className="brand-font float-sm-left"
+            to="/"
+            style={{
+              fontSize: "13px",
+              textAlign: "left",
+              cursor: "pointer",
+              color: "#0000EE",
+            }}>
+            All
+          </Link>
+          <p
+            style={{
+              fontSize: "13px",
+              textAlign: "left",
+              paddingLeft: "2px",
+              paddingRight: "2px",
+            }}>
+            /
+          </p>
+          <Link
+            className="brand-font float-sm-left"
+            to="/s/stuff"
+            style={{
+              fontSize: "13px",
+              textAlign: "left",
+              cursor: "pointer",
+              color: "#0000EE",
+            }}>
+            stuff
+          </Link>
+        </Row>
         <div className="row" style={{ marginTop: "50px" }}>
           {(!this.props.globalPosts || this.props.globalPosts.length < 1) && (
             <div style={{ width: "60px", margin: "auto" }}>

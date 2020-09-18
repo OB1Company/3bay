@@ -23,8 +23,10 @@ export default class AddListing extends Component {
     formData.account = this.props.accounts[0];
     await this.props.thread.post(formData);
     await this.props.globalThread.post(formData);
+    await this.props.submarketThread.post(formData);
     this.props.getListingsThread();
     this.props.getGlobalListingsThread();
+    this.props.getSubmarketThread();
   };
   render() {
     return (
