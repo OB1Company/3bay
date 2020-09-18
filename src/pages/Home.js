@@ -5,10 +5,6 @@ import { Link } from "react-router-dom";
 
 import ListingCard from "../components/ListingCard.js";
 
-const blankState = {
-  subMarket: "",
-};
-
 const styles = {
   column: {
     width: "100%",
@@ -33,17 +29,14 @@ export default class Home extends Component {
         </h1>
         <p className="brand-font">Reddit-style decentralized marketplace.</p>
         <Row>
-          <Link
+          <p
             className="brand-font float-sm-left"
-            to="/"
             style={{
               fontSize: "13px",
               textAlign: "left",
-              cursor: "pointer",
-              color: "#0000EE",
             }}>
             All
-          </Link>
+          </p>
           <p
             style={{
               fontSize: "13px",

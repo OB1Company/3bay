@@ -412,7 +412,7 @@ export default class App extends Component {
             </Route>
             <Route
               path="/s/:threadId"
-              component={(props) => (
+              render={(props) => (
                 <Thread
                   {...props}
                   thread={this.state.thread}
