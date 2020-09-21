@@ -41,10 +41,7 @@ export default class MyStore extends Component {
                       space={this.props.space}
                       box={this.props.box}
                       usersAddress={this.props.usersAddress}
-                      cartItems={this.props.cartItems}
-                      shoppingCart={this.props.shoppingCart}
                       getListingsThread={this.props.getListingsThread}
-                      getShoppingCartThread={this.props.getShoppingCartThread}
                       getGlobalListingsThread={
                         this.props.getGlobalListingsThread
                       }

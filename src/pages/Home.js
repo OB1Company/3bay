@@ -46,7 +46,10 @@ export default class Home extends Component {
         </h1>
         <p className="brand-font">Reddit-style decentralized marketplace.</p>
         <Row>
-          <Link className="brand-font float-sm-left" style={styles.path}>
+          <Link
+            className="brand-font float-sm-left"
+            style={styles.path}
+            to="/">
             all
           </Link>
           <p style={styles.slash}>/</p>
@@ -89,9 +92,6 @@ export default class Home extends Component {
                     space={this.props.space}
                     box={this.props.box}
                     usersAddress={this.props.usersAddress}
-                    cartItems={this.props.cartItems}
-                    shoppingCart={this.props.shoppingCart}
-                    getShoppingCartThread={this.props.getShoppingCartThread}
                     getGlobalListingsThread={this.props.getGlobalListingsThread}
                     i={i}
                     admin={this.props.admin}

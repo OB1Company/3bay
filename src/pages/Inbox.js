@@ -74,14 +74,14 @@ class InboxMessages extends Component {
       return;
     }
 
-    // Fetch the cart items and add them to state
+    // Fetch the order list and add them to state
     const fetch = await this.state.orderThread.getPosts();
     let orderItems = fetch.reverse();
     let orderPreview = orderItems.pop();
     this.setState({ orderItems });
     this.setState({ orderPreview });
 
-    // Update the shopping cart when new items are added
+    // Update the order list when new orders are added
     await this.state.orderThread.onUpdate(async () => {
       const fetch = await this.state.orderThread.getPosts();
       let orderItems = fetch.reverse();

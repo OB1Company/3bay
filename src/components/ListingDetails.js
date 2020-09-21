@@ -1,13 +1,5 @@
 import React, { Component } from "react";
-import {
-  Button,
-  Image,
-  Modal,
-  Container,
-  Row,
-  Col,
-  Toast,
-} from "react-bootstrap";
+import { Button, Image, Modal, Container, Row, Col } from "react-bootstrap";
 import CommentBox from "3box-comments-react";
 import ProfileHover from "profile-hover";
 import Web3 from "web3";
@@ -67,7 +59,7 @@ const styles = {
     padding: "0px",
     fontFamily,
   },
-  addToCart: {
+  buyNowButton: {
     width: "100%",
     marginTop: "5px",
     marginBottom: "5px",
@@ -97,22 +89,6 @@ const styles = {
 };
 
 export default class ListingDetails extends Component {
-  /*   state = {
-    handleClose: () => this.setState({ show: false }),
-    handleShow: () => this.setState({ show: true, toast: false }),
-    handleToastShow: () => this.setState({ toast: true }),
-    handleToastClose: () => this.setState({ toast: false }),
-  }; */
-
-  /*   addToCart = async (_ButtonShit) => {
-    this.props.handleToastShow();
-    const cartItem = this.props.post;
-    console.log(cartItem);
-    await this.props.shoppingCart.post(cartItem);
-    this.props.getShoppingCartThread();
-    console.log(this.props.cartItems);
-  }; */
-
   sendTransaction = async (_payTheMan) => {
     const url =
       "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=USD";
@@ -146,20 +122,6 @@ export default class ListingDetails extends Component {
       }
     }
   };
-
-  /*   triggerTransaction = async (_fuck) => {
-    if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum);
-
-      if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum);
-      window.web3.eth.sendTransaction({
-        to: sellerAccount,
-        from: this.props.usersAddress,
-        value: window.web3.utils.toWei("1", "ether"),
-      });
-    }
-  }}; */
 
   sendDAI = async (_payTheMan) => {
     // Get addresses
@@ -401,19 +363,11 @@ export default class ListingDetails extends Component {
                   <Button
                     variant="dark"
                     // onClick={this.state.handleShow}
-                    style={styles.addToCart}
+                    style={styles.buyNowButton}
                     post={this.props.post}
                     onClick={this.sendTestnetDAI}>
                     BUY NOW
                   </Button>
-                  {/*                   <Button
-                    variant="dark"
-                    // onClick={this.state.handleShow}
-                    style={styles.addToCart}
-                    post={this.props.post}
-                    onClick={this.addToCart}>
-                    ADD TO CART
-                  </Button> */}
                   <div
                     className="container d-flex justify-content-center"
                     style={{ alignContent: "center" }}>
@@ -426,20 +380,6 @@ export default class ListingDetails extends Component {
                       <p style={styles.paymentInfo}>All payments in DAI</p>
                     </Row>
                   </div>
-                  <Toast
-                    show={this.props.toast}
-                    onClose={this.props.handleToastClose}>
-                    <Toast.Header>
-                      <strong className="mr-auto">
-                        <span role="img" aria-label="das">
-                          🛒
-                        </span>{" "}
-                        Shopping cart
-                      </strong>
-                      <small>Just now</small>
-                    </Toast.Header>
-                    <Toast.Body>Item added to cart!</Toast.Body>
-                  </Toast>
                   <p style={styles.soldBy}>Sold by</p>
                   {this.props.post.message.account && (
                     <div style={{ marginBottom: "10px" }}>

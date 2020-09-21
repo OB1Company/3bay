@@ -9,7 +9,6 @@ import { BounceLoader } from "react-spinners";
 
 import MyStore from "./pages/MyStore";
 import Home from "./pages/Home";
-import Cart from "./pages/Cart";
 import AddListing from "./pages/AddListing";
 import Profile from "./pages/Profile";
 import Orders from "./pages/Orders";
@@ -91,15 +90,6 @@ export default class App extends Component {
     });
     this.setState({ inboxThread }, () => this.getInboxThread());
 
-    // Create and fetch the listings in the shopping cart
-    const shoppingCart = await space.joinThread("demo-shoppingCart-public", {
-      firstModerator: userMod,
-      members: true,
-      ghost: false,
-      confidential: false,
-    });
-    this.setState({ shoppingCart }, () => this.getShoppingCartThread());
-
     // Create and fetch the orders
     const orders = await space.joinThread("demo-orders-public", {
       firstModerator: userMod,
@@ -130,13 +120,6 @@ export default class App extends Component {
       "/orbitdb/zdpuAosv7kRPN49quPCwVr5p531SwjycjdxQeEbM9Y3SiNBp9/3box.thread.demo-marketplace.globalList"
     );
     this.setState({ globalThread }, () => this.getGlobalListingsThread());
-
-    // TEST: remove later
-    /*     const submarketThread = await space.joinThread("bbb", {
-      firstModerator: "0xf54D276a029a49458E71167EBc25D1cCa235ee6f",
-      members: false,
-    });
-    this.setState({ submarketThread }, () => this.getSubmarketThread()); */
   }
 
   /**
@@ -205,34 +188,6 @@ export default class App extends Component {
   }
 
   /**
-   * getShoppingCartThread => Fetch the cart items in a user's store
-   */
-  async getShoppingCartThread() {
-    if (!this.state.shoppingCart) {
-      console.error("shoppingCart thread not in react state");
-      return;
-    }
-
-    // Fetch the cart items and add them to state
-    const cartItems = await this.state.shoppingCart.getPosts();
-    this.setState({ cartItems });
-
-    // Update the shopping cart when new items are added
-    await this.state.shoppingCart.onUpdate(async () => {
-      const cartItems = await this.state.shoppingCart.getPosts();
-      this.setState({ cartItems });
-    });
-
-    // Fetch the order price and add it to state
-    const prices = this.state.cartItems.map((x) =>
-      parseFloat(x.message.message.price)
-    );
-    console.log(prices);
-    const orderPrice = prices.reduce((a, b) => a + b, 0).toFixed(2);
-    this.setState({ orderPrice });
-  }
-
-  /**
    * getOrdersThread => Fetch orders for a user
    */
   async getOrdersThread() {
@@ -241,11 +196,11 @@ export default class App extends Component {
       return;
     }
 
-    // Fetch the cart items and add them to state
+    // Fetch order list and add them to state
     const orderItems = await this.state.orders.getPosts();
     this.setState({ orderItems });
 
-    // Update the shopping cart when new items are added
+    // Update the order list when new items are added
     await this.state.orders.onUpdate(async () => {
       const orderItems = await this.state.orders.getPosts();
       this.setState({ orderItems });
@@ -261,11 +216,11 @@ export default class App extends Component {
       return;
     }
 
-    // Fetch the cart items and add them to state
+    // Fetch the receipt list and add them to state
     const testnetReceiptItems = await this.state.testnetReceipts.getPosts();
     this.setState({ testnetReceiptItems });
 
-    // Update the shopping cart when new items are added
+    // Update the receipt list when new items are added
     await this.state.testnetReceipts.onUpdate(async () => {
       const testnetReceiptItems = await this.state.testnetReceipts.getPosts();
       this.setState({ testnetReceiptItems });
@@ -308,7 +263,6 @@ export default class App extends Component {
       <Router>
         <div>
           <Nav
-            cartItems={this.state.cartItems}
             inboxMessages={this.state.inboxMessages}
             style={{ background: "#ffffff" }}
           />
@@ -369,23 +323,6 @@ export default class App extends Component {
                 }
               />
             </Route>
-            <Route path="/cart">
-              <Cart
-                space={this.state.space}
-                box={this.state.box}
-                cartItems={this.state.cartItems}
-                shoppingCart={this.state.shoppingCart}
-                getShoppingCartThread={this.getShoppingCartThread.bind(this)}
-                usersAddress={
-                  this.state.accounts ? this.state.accounts[0] : null
-                }
-                orderPrice={this.state.orderPrice}
-                orders={this.state.orders}
-                orderItems={this.state.orderItems}
-                getOrdersThread={this.getOrdersThread.bind(this)}
-                userMod={this.state.userMod}
-              />
-            </Route>
             <Route path="/orders">
               <Orders
                 space={this.state.space}
@@ -443,9 +380,6 @@ export default class App extends Component {
                 getGlobalListingsThread={this.getGlobalListingsThread.bind(
                   this
                 )}
-                cartItems={this.state.cartItems}
-                shoppingCart={this.state.shoppingCart}
-                getShoppingCartThread={this.getShoppingCartThread.bind(this)}
                 usersAddress={
                   this.state.accounts ? this.state.accounts[0] : null
                 }

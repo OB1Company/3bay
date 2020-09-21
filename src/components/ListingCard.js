@@ -214,9 +214,6 @@ export default class ListingCard extends Component {
           space={this.props.space}
           box={this.props.box}
           usersAddress={this.props.usersAddress}
-          shoppingCart={this.props.shoppingCart}
-          getShoppingCartThread={this.props.getShoppingCartThread}
-          cartItems={this.props.cartItems}
           handleClose={this.state.handleClose}
           handleShow={this.state.handleShow}
           handleToastShow={this.state.handleToastShow}
