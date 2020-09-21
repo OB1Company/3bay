@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { CardColumns, Row } from "react-bootstrap";
+import { CardColumns, Row, InputGroup, FormControl } from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
 import { Link } from "react-router-dom";
 
@@ -35,21 +35,44 @@ const styles = {
     textAlign: "left",
     color: "#000000",
   },
+  navInput: {
+    borderColor: "#000000",
+    borderWidth: "1",
+    borderStyle: "solid",
+  },
+  submarkets: {
+    fontSize: "15px",
+    textAlign: "center",
+    fontWeight: "bold",
+    padding: "0px",
+    margin: "0px",
+  },
 };
 
 export default class Home extends Component {
+  state = {
+    submarketName: "",
+  };
+
+  handleChange = (event) => {
+    this.setState(Object.assign({ [event.target.name]: event.target.value }));
+  };
+
+  goToSubmarket = () => {
+    console.log(this.state.submarketName);
+    this.props.history.push("/s/bbb");
+  };
+
   render() {
     return (
       <div className="container" style={styles.background}>
-        <h1 className="brand-font" style={{ fontSize: "4rem" }}>
-          Spendit
-        </h1>
-        <p className="brand-font">Reddit-style decentralized marketplace.</p>
-        <Row>
-          <Link
-            className="brand-font float-sm-left"
-            style={styles.path}
-            to="/">
+        <Row style={{ paddingBottom: "0px", justifyContent: "center" }}>
+          <p className="brand-font" style={styles.submarkets}>
+            Submarkets
+          </p>
+        </Row>
+        <Row style={{ justifyContent: "center" }}>
+          <Link className="brand-font float-sm-left" style={styles.path} to="/">
             all
           </Link>
           <p style={styles.slash}>/</p>
@@ -74,6 +97,38 @@ export default class Home extends Component {
             shirts
           </Link>
         </Row>
+        <Row style={{ justifyContent: "center" }}>
+          <InputGroup
+            className="mb-3"
+            size="sm"
+            style={{ width: "200px", fontSize: "13px" }}>
+            <FormControl
+              placeholder="Submarket name"
+              aria-label="Submarket name"
+              aria-describedby="basic-addon2"
+              className="brand-font"
+              name="submarketName"
+              value={this.state.submarketName}
+              onChange={this.handleChange}
+              style={styles.navInput}
+            />
+            <InputGroup.Append>
+              <Link
+                className="brand-font button btn"
+                variant="outline-secondary"
+                to={this.state.submarketName ? `/s/` + this.state.submarketName : `/`}
+                style={styles.navInput}>
+                Go
+              </Link>
+            </InputGroup.Append>
+          </InputGroup>
+        </Row>
+        <h1
+          className="brand-font"
+          style={{ fontSize: "4rem", marginTop: "20px" }}>
+          Spendit
+        </h1>
+        <p className="brand-font">Reddit-style decentralized marketplace.</p>
         <div className="row" style={{ marginTop: "50px" }}>
           {(!this.props.globalPosts || this.props.globalPosts.length < 1) && (
             <div style={{ width: "60px", margin: "auto" }}>

@@ -35,6 +35,13 @@ const styles = {
     textAlign: "left",
     color: "#000000",
   },
+  submarkets: {
+    fontSize: "15px",
+    textAlign: "left",
+    fontWeight: "bold",
+    padding: "0px",
+    margin: "0px",
+  },
 };
 
 export default ({
@@ -106,7 +113,12 @@ export default ({
           <p className="brand-font">Submarket</p>
         </div>
       )}
-      <Row>
+      <Row style={{ paddingBottom: "0px", justifyContent: "center" }}>
+        <p className="brand-font float-sm-left" style={styles.submarkets}>
+          Submarkets
+        </p>
+      </Row>
+      <Row style={{ justifyContent: "center" }}>
         <Link
           className="brand-font float-sm-left"
           to="/"

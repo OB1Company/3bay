@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Badge, Col, Row } from "react-bootstrap";
+import { Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const styles = {
@@ -17,6 +17,7 @@ export default class Nav extends Component {
       <div
         className="container"
         style={{
+          marginTop: "10px",
           paddingLeft: "0",
           paddingRight: "0",
           justifyContent: "space-evenly",
@@ -24,7 +25,7 @@ export default class Nav extends Component {
         <ul
           className="nav sticky-top nav-pills nav-justified"
           style={{
-            marginBottom: "5%",
+            marginBottom: "20px",
             background: "#ffffff",
           }}>
           <li className="nav-item">
