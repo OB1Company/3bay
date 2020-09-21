@@ -2,7 +2,9 @@ import React from "react";
 import { CardColumns, Row } from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
 import { Link } from "react-router-dom";
+
 import ListingCard from "../components/ListingCard.js";
+
 const styles = {
   column: {
     width: "100%",
@@ -34,6 +36,7 @@ const styles = {
     color: "#000000",
   },
 };
+
 export default ({
   space,
   match,
@@ -41,9 +44,6 @@ export default ({
   threeBox,
   box,
   usersAddress,
-  cartItems,
-  shoppingCart,
-  getShoppingCartThread,
   getGlobalListingsThread,
   admin,
   testnetReceipts,
@@ -56,40 +56,46 @@ export default ({
   const [submarketPosts, setSubmarketPosts] = React.useState();
   const [submarketThread, setSubmarketThread] = React.useState();
   const [threadId, setThreadId] = React.useState();
-  const getSubmarketPosts = async () => {
+  const getSubmarketPosts = React.useCallback(async () => {
     if (!submarketThread) {
       console.error("global listings thread not in react state");
       return;
     }
+
     // Fetch the listings and add them to state
     const threadPosts = await submarketThread.getPosts();
     setSubmarketPosts(threadPosts);
+
     // Update the state when new listings are added
     await submarketThread.onUpdate(async () => {
       const data = await submarketThread.getPosts();
       setSubmarketPosts(data);
     });
-  };
+  }, [submarketThread]); //eslint-disable-line react-hooks/exhaustive-deps
+
   const getSubmarketThread = React.useCallback(async () => {
     const result = await space.joinThread(threadId, {
       firstModerator: "0xf54D276a029a49458E71167EBc25D1cCa235ee6f",
       members: false,
     });
     setSubmarketThread(result);
-  }, [space]);
+  }, [space, threadId]); //eslint-disable-line react-hooks/exhaustive-deps
+
   React.useEffect(() => {
     setThreadId(match.params.threadId);
-  }, []);
+  }, [match]);
+
   React.useEffect(() => {
-    if (space) {
+    if (space && threadId) {
       getSubmarketThread();
     }
-  }, [space]);
+  }, [space, threadId]); //eslint-disable-line react-hooks/exhaustive-deps
+
   React.useEffect(() => {
     if (submarketThread) {
       getSubmarketPosts();
     }
-  }, [submarketThread]);
+  }, [submarketThread]); //eslint-disable-line react-hooks/exhaustive-deps
   return (
     <div className="container" style={styles.background}>
       {threadId && (
@@ -110,7 +116,7 @@ export default ({
         <p style={styles.slash}>/</p>
         <Link
           className="brand-font float-sm-left"
-          to="/"
+          to="/s/bbb"
           style={threadId === "bbb" ? styles.path : styles.link}>
           bbb
         </Link>
@@ -148,9 +154,6 @@ export default ({
                     space={space}
                     box={box}
                     usersAddress={usersAddress}
-                    cartItems={cartItems}
-                    shoppingCart={shoppingCart}
-                    getShoppingCartThread={getShoppingCartThread}
                     getGlobalListingsThread={getGlobalListingsThread}
                     i={i}
                     admin={admin}
