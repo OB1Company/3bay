@@ -75,6 +75,12 @@ export default class App extends Component {
     const space = await this.state.box.openSpace(SPACE_NAME);
     this.setState({ space });
 
+    // Fetch the listings in the thread of the global marketplace
+    const globalThread = await space.joinThreadByAddress(
+      "/orbitdb/zdpuAosv7kRPN49quPCwVr5p531SwjycjdxQeEbM9Y3SiNBp9/3box.thread.demo-marketplace.globalList"
+    );
+    this.setState({ globalThread }, () => this.getGlobalListingsThread());
+
     // Create and fetch the listings thread of the user's store
     const thread = await space.joinThread("listing_list", {
       firstModerator: userMod,
@@ -115,12 +121,6 @@ export default class App extends Component {
     // Join global chat
     const globalChat = await space.joinThread("globalListChat");
     this.setState({ globalChat });
-
-    // Fetch the listings in the thread of the global marketplace
-    const globalThread = await space.joinThreadByAddress(
-      "/orbitdb/zdpuAosv7kRPN49quPCwVr5p531SwjycjdxQeEbM9Y3SiNBp9/3box.thread.demo-marketplace.globalList"
-    );
-    this.setState({ globalThread }, () => this.getGlobalListingsThread());
   }
 
   /**

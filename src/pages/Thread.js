@@ -103,16 +103,9 @@ export default ({
       getSubmarketPosts();
     }
   }, [submarketThread]); //eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <div className="container" style={styles.background}>
-      {threadId && (
-        <div>
-          <h1 className="brand-font" style={{ fontSize: "4rem" }}>
-            s/{threadId}
-          </h1>
-          <p className="brand-font">Submarket</p>
-        </div>
-      )}
       <Row style={{ paddingBottom: "0px", justifyContent: "center" }}>
         <p className="brand-font float-sm-left" style={styles.submarkets}>
           Submarkets
@@ -135,18 +128,48 @@ export default ({
         <p style={styles.slash}>/</p>
         <Link
           className="brand-font float-sm-left"
-          to="/s/shoes"
-          style={threadId === "shoes" ? styles.path : styles.link}>
-          shoes
+          to="/s/womensclothing"
+          style={threadId === "womensclothing" ? styles.path : styles.link}>
+          women's clothing
         </Link>
         <p style={styles.slash}>/</p>
         <Link
           className="brand-font float-sm-left"
-          to="/s/shirts"
-          style={threadId === "shirts" ? styles.path : styles.link}>
-          shirts
+          to="/s/consumerelectronics"
+          style={
+            threadId === "consumerelectronics" ? styles.path : styles.link
+          }>
+          consumer electronics
+        </Link>
+        <p style={styles.slash}>/</p>
+        <Link
+          className="brand-font float-sm-left"
+          to="/s/sports"
+          style={threadId === "sports" ? styles.path : styles.link}>
+          sports
+        </Link>
+        <p style={styles.slash}>/</p>
+        <Link
+          className="brand-font float-sm-left"
+          to="/s/mensclothing"
+          style={threadId === "mensclothing" ? styles.path : styles.link}>
+          men's clothing
+        </Link>
+        <p style={styles.slash}>/</p>
+        <Link
+          className="brand-font float-sm-left"
+          to="/s/shoes"
+          style={threadId === "shoes" ? styles.path : styles.link}>
+          shoes
         </Link>
       </Row>
+      {threadId && (
+        <div>
+          <h1 className="brand-font" style={{ fontSize: "4rem" }}>
+            s/{threadId}
+          </h1>
+        </div>
+      )}
       <div className="row" style={{ marginTop: "50px" }}>
         {!submarketPosts && (
           <div style={{ width: "60px", margin: "auto" }}>
@@ -180,9 +203,11 @@ export default ({
                 );
               })}
             {submarketPosts.length === 0 && (
-              <p className="brand-font" style={{ textAlign: "left" }}>
-                Nothing here yet!
-              </p>
+              <div className="container">
+                <p className="brand-font" style={{ textAlign: "left" }}>
+                  Nothing here yet!
+                </p>
+              </div>
             )}
           </CardColumns>
         )}

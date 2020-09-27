@@ -58,11 +58,6 @@ export default class Home extends Component {
     this.setState(Object.assign({ [event.target.name]: event.target.value }));
   };
 
-  goToSubmarket = () => {
-    console.log(this.state.submarketName);
-    this.props.history.push("/s/bbb");
-  };
-
   render() {
     return (
       <div className="container" style={styles.background}>
@@ -85,16 +80,37 @@ export default class Home extends Component {
           <p style={styles.slash}>/</p>
           <Link
             className="brand-font float-sm-left"
-            to="/s/shoes"
+            to="/s/womensclothing"
             style={styles.link}>
-            shoes
+            women's clothing
           </Link>
           <p style={styles.slash}>/</p>
           <Link
             className="brand-font float-sm-left"
-            to="/s/shirts"
+            to="/s/consumerelectronics"
             style={styles.link}>
-            shirts
+            consumer electronics
+          </Link>
+          <p style={styles.slash}>/</p>
+          <Link
+            className="brand-font float-sm-left"
+            to="/s/sports"
+            style={styles.link}>
+            sports
+          </Link>
+          <p style={styles.slash}>/</p>
+          <Link
+            className="brand-font float-sm-left"
+            to="/s/mensclothing"
+            style={styles.link}>
+            men's clothing
+          </Link>
+          <p style={styles.slash}>/</p>
+          <Link
+            className="brand-font float-sm-left"
+            to="/s/shoes"
+            style={styles.link}>
+            shoes
           </Link>
         </Row>
         <Row style={{ justifyContent: "center" }}>
@@ -116,7 +132,11 @@ export default class Home extends Component {
               <Link
                 className="brand-font button btn"
                 variant="outline-secondary"
-                to={this.state.submarketName ? `/s/` + this.state.submarketName : `/`}
+                to={
+                  this.state.submarketName
+                    ? `/s/` + this.state.submarketName
+                    : `/`
+                }
                 style={styles.navInput}>
                 Go
               </Link>
@@ -126,7 +146,7 @@ export default class Home extends Component {
         <h1
           className="brand-font"
           style={{ fontSize: "4rem", marginTop: "20px" }}>
-          Spendit
+          Spendly
         </h1>
         <p className="brand-font">Reddit-style decentralized marketplace.</p>
         <div className="row" style={{ marginTop: "50px" }}>
