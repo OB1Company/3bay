@@ -128,8 +128,8 @@ export default class ListingCard extends Component {
     const postId = listing.postId;
     console.log(listing);
     console.log(postId);
-    await this.props.globalThread.deletePost(postId);
-    this.props.getGlobalListingsThread();
+    await this.props.submarketThread.deletePost(postId);
+    this.props.getSubmarketThread();
   };
 
   deletePost = async (e) => {

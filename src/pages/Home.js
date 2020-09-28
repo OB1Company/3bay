@@ -1,7 +1,12 @@
 import React, { Component } from "react";
-import { CardColumns, Row, InputGroup, FormControl } from "react-bootstrap";
+import {
+  Button,
+  CardColumns,
+  Row,
+  InputGroup,
+  FormControl,
+} from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
-import { Link } from "react-router-dom";
 
 import ListingCard from "../components/ListingCard.js";
 
@@ -54,6 +59,14 @@ export default class Home extends Component {
     submarketName: "",
   };
 
+  changeSubmarket = async (threadName) => {
+    console.log(this.props.threadId);
+    const threadId = threadName;
+    console.log(threadId);
+    this.setState({ threadId: threadId });
+    this.props.joinSubmarket(threadId);
+  };
+
   handleChange = (event) => {
     this.setState(Object.assign({ [event.target.name]: event.target.value }));
   };
@@ -67,51 +80,64 @@ export default class Home extends Component {
           </p>
         </Row>
         <Row style={{ justifyContent: "center" }}>
-          <Link className="brand-font float-sm-left" style={styles.path} to="/">
+          <p
+            className="brand-font float-sm-left"
+            style={this.props.threadId === "all" ? styles.path : styles.link}
+            onClick={() => this.changeSubmarket("all")}>
             all
-          </Link>
+          </p>
           <p style={styles.slash}>/</p>
-          <Link
+          <p
             className="brand-font float-sm-left"
-            to="/s/bbb"
-            style={styles.link}>
+            style={this.props.threadId === "bbb" ? styles.path : styles.link}
+            onClick={() => this.changeSubmarket("bbb")}>
             bbb
-          </Link>
+          </p>
           <p style={styles.slash}>/</p>
-          <Link
+          <p
             className="brand-font float-sm-left"
-            to="/s/womensclothing"
-            style={styles.link}>
+            style={
+              this.props.threadId === "womensclothing"
+                ? styles.path
+                : styles.link
+            }
+            onClick={() => this.changeSubmarket("womensclothing")}>
             women's clothing
-          </Link>
+          </p>
           <p style={styles.slash}>/</p>
-          <Link
+          <p
             className="brand-font float-sm-left"
-            to="/s/consumerelectronics"
-            style={styles.link}>
+            style={
+              this.props.threadId === "consumerelectronics"
+                ? styles.path
+                : styles.link
+            }
+            onClick={() => this.changeSubmarket("consumerelectronics")}>
             consumer electronics
-          </Link>
+          </p>
           <p style={styles.slash}>/</p>
-          <Link
+          <p
             className="brand-font float-sm-left"
-            to="/s/sports"
-            style={styles.link}>
+            style={this.props.threadId === "sports" ? styles.path : styles.link}
+            onClick={() => this.changeSubmarket("sports")}>
             sports
-          </Link>
+          </p>
           <p style={styles.slash}>/</p>
-          <Link
+          <p
             className="brand-font float-sm-left"
-            to="/s/mensclothing"
-            style={styles.link}>
+            style={
+              this.props.threadId === "mensclothing" ? styles.path : styles.link
+            }
+            onClick={() => this.changeSubmarket("mensclothing")}>
             men's clothing
-          </Link>
+          </p>
           <p style={styles.slash}>/</p>
-          <Link
+          <p
             className="brand-font float-sm-left"
-            to="/s/shoes"
-            style={styles.link}>
+            style={this.props.threadId === "shoes" ? styles.path : styles.link}
+            onClick={() => this.changeSubmarket("shoes")}>
             shoes
-          </Link>
+          </p>
         </Row>
         <Row style={{ justifyContent: "center" }}>
           <InputGroup
@@ -129,59 +155,89 @@ export default class Home extends Component {
               style={styles.navInput}
             />
             <InputGroup.Append>
-              <Link
+              <Button
                 className="brand-font button btn"
                 variant="outline-secondary"
-                to={
-                  this.state.submarketName
-                    ? `/s/` + this.state.submarketName
-                    : `/`
-                }
-                style={styles.navInput}>
+                style={styles.navInput}
+                onClick={() =>
+                  this.changeSubmarket(
+                    this.state.submarketName === ""
+                      ? "all"
+                      : this.state.submarketName
+                  )
+                }>
                 Go
-              </Link>
+              </Button>
             </InputGroup.Append>
           </InputGroup>
         </Row>
-        <h1
-          className="brand-font"
-          style={{ fontSize: "4rem", marginTop: "20px" }}>
-          Spendly
-        </h1>
-        <p className="brand-font">Reddit-style decentralized marketplace.</p>
-        <div className="row" style={{ marginTop: "50px" }}>
-          {(!this.props.globalPosts || this.props.globalPosts.length < 1) && (
+        {this.props.threadId && (
+          <div className="container">
+            <Row
+              style={{
+                justifyContent: "center",
+              }}>
+              <h1
+                className="brand-font"
+                style={{
+                  marginBottom: "0px",
+                }}>
+                {this.props.threadId}
+              </h1>
+            </Row>
+            <Row
+              style={{
+                justifyContent: "center",
+              }}>
+              <p className="brand-font" style={styles.link}>
+                Add a listing
+              </p>
+            </Row>
+          </div>
+        )}
+        <div className="row" style={{ marginTop: "10px" }}>
+          {!this.props.submarketPosts && (
             <div style={{ width: "60px", margin: "auto" }}>
               <BounceLoader color={"blue"} />
             </div>
           )}
-          <CardColumns style={styles.column}>
-            {this.props.globalPosts &&
-              this.props.globalPosts.map((post, i) => {
-                return (
-                  <ListingCard
-                    globalThread={this.props.globalThread}
-                    post={post}
-                    key={i}
-                    threeBox={this.props.threeBox}
-                    space={this.props.space}
-                    box={this.props.box}
-                    usersAddress={this.props.usersAddress}
-                    getGlobalListingsThread={this.props.getGlobalListingsThread}
-                    i={i}
-                    admin={this.props.admin}
-                    home={true}
-                    testnetReceipts={this.props.testnetReceipts}
-                    testnetReceiptItems={this.props.testnetReceiptItems}
-                    getTestnetReceipts={this.props.getTestnetReceipts}
-                    inboxThread={this.props.inboxThread}
-                    inboxMessages={this.props.inboxMessages}
-                    getInboxThread={this.props.getInboxThread}
-                  />
-                );
-              })}
-          </CardColumns>
+          {this.props.submarketPosts && (
+            <CardColumns style={styles.column}>
+              {this.props.submarketPosts.length >= 1 &&
+                this.props.submarketPosts.map((post, i) => {
+                  return (
+                    <ListingCard
+                      post={post}
+                      key={i}
+                      threeBox={this.props.threeBox}
+                      space={this.props.space}
+                      box={this.props.box}
+                      usersAddress={this.props.usersAddress}
+                      submarketThread={this.props.submarketThread}
+                      getSubmarketThread={this.props.getSubmarketThread}
+                      i={i}
+                      admin={this.props.admin}
+                      home={true}
+                      testnetReceipts={this.props.testnetReceipts}
+                      testnetReceiptItems={this.props.testnetReceiptItems}
+                      getTestnetReceipts={this.props.getTestnetReceipts}
+                      inboxThread={this.props.inboxThread}
+                      inboxMessages={this.props.inboxMessages}
+                      getInboxThread={this.props.getInboxThread}
+                      threadId={this.props.threadId}
+                    />
+                  );
+                })}
+            </CardColumns>
+          )}
         </div>
+        {this.props.submarketPosts && this.props.submarketPosts.length === 0 && (
+          <div className="row">
+            <p className="brand-font" style={{ textAlign: "left" }}>
+              Nothing here yet!
+            </p>
+          </div>
+        )}
       </div>
     );
   }

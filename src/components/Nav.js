@@ -33,7 +33,7 @@ export default class Nav extends Component {
               className="nav-link brand-font"
               to="/"
               style={styles.navHeading}>
-              Home
+              Spendly
             </Link>
           </li>
           <li className="nav-item">

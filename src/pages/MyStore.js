@@ -17,9 +17,7 @@ export default class MyStore extends Component {
   render() {
     return (
       <div className="container" style={styles.background}>
-        <h1 className="brand-font">
-          My store
-        </h1>
+        <h1 className="brand-font">My store</h1>
         <p className="brand-font">This is my store.</p>
         <div className="row" style={{ marginTop: "50px" }}>
           {!this.props.posts && (
@@ -33,7 +31,9 @@ export default class MyStore extends Component {
                 this.props.posts.map((post, i) => {
                   return (
                     <ListingCard
-                      globalThread={this.props.globalThread}
+                      i={i}
+                      admin={this.props.admin}
+                      home={false}
                       thread={this.props.thread}
                       post={post}
                       key={i}
@@ -42,19 +42,13 @@ export default class MyStore extends Component {
                       box={this.props.box}
                       usersAddress={this.props.usersAddress}
                       getListingsThread={this.props.getListingsThread}
-                      getGlobalListingsThread={
-                        this.props.getGlobalListingsThread
-                      }
-                      i={i}
-                      admin={this.props.admin}
-                      home={false}
+                      submarketThread={this.props.submarketThread}
+                      getSubmarketThread={this.props.getSubmarketThread}
                     />
                   );
                 })}
               {this.props.posts.length === 0 && (
-                <p style={{ textAlign: "left" }}>
-                  Nothing here yet!
-                </p>
+                <p style={{ textAlign: "left" }}>Nothing here yet!</p>
               )}
             </CardColumns>
           )}
