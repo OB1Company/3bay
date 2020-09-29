@@ -52,14 +52,6 @@ export default class Nav extends Component {
               My store
             </Link>
           </li>
-          <li className="nav-item">
-            <Link
-              className="nav-link brand-font"
-              to="/add-listing"
-              style={styles.navHeading}>
-              Add a listing
-            </Link>
-          </li>
           <li className="nav-item brand-font">
             <Link className="nav-link" to="/orders" style={styles.navHeading}>
               Orders

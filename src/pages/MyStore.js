@@ -48,7 +48,9 @@ export default class MyStore extends Component {
                   );
                 })}
               {this.props.posts.length === 0 && (
-                <p style={{ textAlign: "left" }}>Nothing here yet!</p>
+                <p className="brand-font" style={{ textAlign: "left" }}>
+                  Nothing here yet!
+                </p>
               )}
             </CardColumns>
           )}

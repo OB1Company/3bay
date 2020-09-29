@@ -9,6 +9,7 @@ import {
 import { BounceLoader } from "react-spinners";
 
 import ListingCard from "../components/ListingCard.js";
+import CreateListingModal from "../components/CreateListingModal.js";
 
 const styles = {
   column: {
@@ -28,6 +29,12 @@ const styles = {
     textAlign: "left",
     paddingLeft: "2px",
     paddingRight: "2px",
+  },
+  addListing: {
+    fontSize: "15px",
+    textAlign: "left",
+    cursor: "pointer",
+    color: "#0000EE",
   },
   link: {
     fontSize: "13px",
@@ -57,12 +64,23 @@ const styles = {
 export default class Home extends Component {
   state = {
     submarketName: "",
+    thread: null,
+    submarketThread: null,
+    show: false,
+    handleClose: () => this.setState({ show: false }),
+    handleShow: () => this.setState({ show: true }),
+  };
+
+  saveListing = async (formData) => {
+    formData.account = this.props.accounts[0];
+    await this.props.thread.post(formData);
+    await this.props.submarketThread.post(formData);
+    this.props.getListingsThread();
+    this.props.getSubmarketThread();
   };
 
   changeSubmarket = async (threadName) => {
-    console.log(this.props.threadId);
     const threadId = threadName;
-    console.log(threadId);
     this.setState({ threadId: threadId });
     this.props.joinSubmarket(threadId);
   };
@@ -143,7 +161,7 @@ export default class Home extends Component {
           <InputGroup
             className="mb-3"
             size="sm"
-            style={{ width: "200px", fontSize: "13px" }}>
+            style={{ width: "250px", fontSize: "13px" }}>
             <FormControl
               placeholder="Submarket name"
               aria-label="Submarket name"
@@ -176,6 +194,7 @@ export default class Home extends Component {
             <Row
               style={{
                 justifyContent: "center",
+                marginTop: "20px",
               }}>
               <h1
                 className="brand-font"
@@ -188,13 +207,33 @@ export default class Home extends Component {
             <Row
               style={{
                 justifyContent: "center",
+                marginTop: "5px",
               }}>
-              <p className="brand-font" style={styles.link}>
-                Add a listing
+              <p
+                className="brand-font"
+                style={styles.addListing}
+                onClick={this.state.handleShow}>
+                +Add a listing
               </p>
             </Row>
           </div>
         )}
+        <CreateListingModal
+          threeBox={this.props.threeBox}
+          accounts={this.props.accounts}
+          space={this.props.space}
+          box={this.props.box}
+          usersAddress={this.props.usersAddress}
+          handleClose={this.state.handleClose}
+          handleShow={this.state.handleShow}
+          show={this.state.show}
+          submarketThread={this.props.submarketThread}
+          getSubmarketThread={this.props.getSubmarketThread}
+          getListingsThread={this.props.getListingsThread}
+          threadId={this.props.threadId}
+          saveListing={this.saveListing}
+          inboxThreadAddress={this.props.inboxThreadAddress}
+        />
         <div className="row" style={{ marginTop: "10px" }}>
           {!this.props.submarketPosts && (
             <div style={{ width: "60px", margin: "auto" }}>

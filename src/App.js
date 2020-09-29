@@ -9,7 +9,6 @@ import { BounceLoader } from "react-spinners";
 
 import MyStore from "./pages/MyStore";
 import Home from "./pages/Home";
-import AddListing from "./pages/AddListing";
 import Profile from "./pages/Profile";
 import Orders from "./pages/Orders";
 import Inbox from "./pages/Inbox";
@@ -182,7 +181,6 @@ export default class App extends Component {
 
     // Save the thread address
     const inboxThreadAddress = this.state.inboxThread.address;
-    console.log(inboxThreadAddress);
     this.setState({ inboxThreadAddress });
 
     // Fetch the messages and add them to state
@@ -264,26 +262,6 @@ export default class App extends Component {
                 </div>
               )}
             </Route>
-            <Route path="/add-listing">
-              {this.state.accounts && (
-                <AddListing
-                  accounts={this.state.accounts}
-                  thread={this.state.thread}
-                  box={this.state.box}
-                  space={this.state.space}
-                  threadMembers={this.state.threadMembers}
-                  posts={this.state.posts}
-                  submarketThread={this.state.submarketThread}
-                  submarketPosts={this.state.submarketPosts}
-                  getSubmarketThread={this.getSubmarketThread.bind(this)}
-                  threeBoxProfile={this.state.threeBoxProfile}
-                  getListingsThread={this.getListingsThread.bind(this)}
-                  inboxThreadAddress={this.state.inboxThreadAddress}
-                  threadId={this.state.threadId}
-                />
-              )}
-              {!this.state.accounts && <h1>Login with metamask</h1>}
-            </Route>
             <Route path="/my-store">
               <MyStore
                 thread={this.state.thread}
@@ -331,16 +309,20 @@ export default class App extends Component {
                 usersAddress={
                   this.state.accounts ? this.state.accounts[0] : null
                 }
+                thread={this.state.thread}
+                accounts={this.state.accounts}
                 admin={this.state.admin}
                 testnetReceipts={this.state.testnetReceipts}
                 testnetReceiptItems={this.state.testnetReceiptItems}
                 getTestnetReceipts={this.getTestnetReceipts.bind(this)}
                 inboxThread={this.state.inboxThread}
                 inboxMessages={this.state.inboxMessages}
+                inboxThreadAddress={this.state.inboxThreadAddress}
                 getInboxThread={this.getInboxThread.bind(this)}
                 submarketThread={this.state.submarketThread}
                 submarketPosts={this.state.submarketPosts}
                 getSubmarketThread={this.getSubmarketThread.bind(this)}
+                getListingsThread={this.getListingsThread.bind(this)}
                 joinSubmarket={this.joinSubmarket.bind(this)}
                 threadId={this.state.threadId}
               />
