@@ -95,8 +95,6 @@ class InboxMessages extends Component {
     e.stopPropagation();
     const post = this.props.post;
     const postId = post.postId;
-    console.log(post);
-    console.log(postId);
     await this.props.inboxThread.deletePost(postId);
     this.props.getInboxThread();
   };

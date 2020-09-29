@@ -8,7 +8,7 @@ import daiIcon from "../assets/dai.png";
 import {
   SPACE_NAME,
   testnetDAI,
-  contractAddressDAI,
+  // contractAddressDAI,
   contractABIDAI,
   fontFamily,
 } from "../Constants";
@@ -89,7 +89,7 @@ const styles = {
 };
 
 export default class ListingDetails extends Component {
-  sendTransaction = async (_payTheMan) => {
+  /*   sendTransaction = async (_payTheMan) => {
     const url =
       "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=USD";
     const post = this.props.post;
@@ -173,7 +173,7 @@ export default class ListingDetails extends Component {
           console.log(hash);
         });
     }
-  };
+  }; */
 
   sendTestnetDAI = async (_payTheMan) => {
     // Get addresses
@@ -184,7 +184,6 @@ export default class ListingDetails extends Component {
     const fromAddress = this.props.usersAddress;
     const testnetReceipts = this.props.testnetReceipts;
     const getTestnetReceipts = () => this.props.getTestnetReceipts();
-    const testnetReceiptItems = this.props.testnetReceiptItems;
 
     // Get exchange rate for coin
     const url =
@@ -232,7 +231,6 @@ export default class ListingDetails extends Component {
           });
           await orderThread.addMember(post.message.account);
           const orderThreadAddress = orderThread.address;
-          console.log(orderThreadAddress);
 
           // 2. Create a transaction receipt
           receipt = {
@@ -247,19 +245,12 @@ export default class ListingDetails extends Component {
             txHash: hash,
           };
 
-          console.log("receiptItem:");
-          console.log(receipt);
-          console.log(testnetReceipts);
-
           // 2. Add transaction to order history [DONE]
           await testnetReceipts.post(receipt);
           getTestnetReceipts();
-          console.log(testnetReceiptItems);
 
           // 3. Add transaction to order thread [DONE]
           await orderThread.post(receipt);
-          console.log("Order thread:");
-          console.log(orderThread);
 
           // 4. Add order message to inbox of the seller [DONE]
           let message = {

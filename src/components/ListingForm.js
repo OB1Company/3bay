@@ -37,7 +37,6 @@ export default class ListingForm extends Component {
   handleChange = (event) => {
     this.setState(Object.assign({ [event.target.name]: event.target.value }));
     this.setState({ needsAddress: event.target.checked });
-    console.log(this.state.needsAddress);
   };
 
   // Todo: Add some actual validation

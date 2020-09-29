@@ -126,8 +126,6 @@ export default class ListingCard extends Component {
     e.stopPropagation();
     const listing = this.props.post;
     const postId = listing.postId;
-    console.log(listing);
-    console.log(postId);
     await this.props.submarketThread.deletePost(postId);
     this.props.getSubmarketThread();
   };
@@ -136,8 +134,6 @@ export default class ListingCard extends Component {
     e.stopPropagation();
     const listing = this.props.post;
     const postId = listing.postId;
-    console.log(listing);
-    console.log(postId);
     await this.props.thread.deletePost(postId);
     this.props.getListingsThread();
   };

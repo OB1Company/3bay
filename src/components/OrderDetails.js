@@ -124,7 +124,6 @@ export default class OrderDetails extends Component {
       type: "message",
       content: this.state.chatUserInput,
     };
-    console.log(message);
     await this.props.orderThread.post(message);
     this.props.getOrderThread();
     this.setState({

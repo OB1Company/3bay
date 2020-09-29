@@ -110,7 +110,6 @@ class OrderItems extends Component {
   deletePost = async (e) => {
     e.stopPropagation();
     const postId = this.props.post.postId;
-    console.log(postId);
     await this.props.testnetReceipts.deletePost(postId);
     this.props.getTestnetReceipts();
   };
