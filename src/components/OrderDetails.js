@@ -124,7 +124,6 @@ export default class OrderDetails extends Component {
       type: "message",
       content: this.state.chatUserInput,
     };
-    console.log(message);
     await this.props.orderThread.post(message);
     this.props.getOrderThread();
     this.setState({
@@ -165,7 +164,8 @@ export default class OrderDetails extends Component {
                 <Image
                   alt="Listing"
                   src={
-                    this.props.orderPreview && this.props.orderPreview.message.listingImage
+                    this.props.orderPreview &&
+                    this.props.orderPreview.message.listingImage
                       ? this.props.orderPreview.message.listingImage
                       : "https://via.placeholder.com/150"
                   }
@@ -179,7 +179,8 @@ export default class OrderDetails extends Component {
               <Col sm={9} style={{ marginTop: "5px" }}>
                 <Row>
                   <p style={styles.name}>
-                    {this.props.orderPreview && this.props.orderPreview.message.name
+                    {this.props.orderPreview &&
+                    this.props.orderPreview.message.name
                       ? this.props.orderPreview.message.name
                       : "Unnamed"}
                   </p>
@@ -187,29 +188,35 @@ export default class OrderDetails extends Component {
                 <Row style={{ marginTop: "5px" }}>
                   <p style={styles.price}>
                     $
-                    {this.props.orderPreview && this.props.orderPreview.message.price
+                    {this.props.orderPreview &&
+                    this.props.orderPreview.message.price
                       ? this.props.orderPreview.message.price
                       : "0"}
                   </p>
                 </Row>
                 <Row style={{ marginTop: "5px" }}>
                   <p style={styles.description}>
-                    {this.props.orderPreview && this.props.orderPreview.message.description
+                    {this.props.orderPreview &&
+                    this.props.orderPreview.message.description
                       ? this.props.orderPreview.message.description
                       : "No description."}
                   </p>
                 </Row>
-                {this.props.orderPreview && this.props.orderPreview.message.txHash && (
-                  <Row style={{ marginTop: "5px" }}>
-                    <a
-                      href={`https://etherscan.io/tx/` + this.props.orderPreview.message.txHash}
-                      style={styles.link}
-                      target="_blank"
-                      rel="noopener noreferrer">
-                      View on Etherscan
-                    </a>
-                  </Row>
-                )}
+                {this.props.orderPreview &&
+                  this.props.orderPreview.message.txHash && (
+                    <Row style={{ marginTop: "5px" }}>
+                      <a
+                        href={
+                          `https://etherscan.io/tx/` +
+                          this.props.orderPreview.message.txHash
+                        }
+                        style={styles.link}
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        View on Etherscan
+                      </a>
+                    </Row>
+                  )}
               </Col>
             </Row>
             <Row
@@ -253,7 +260,9 @@ export default class OrderDetails extends Component {
                         );
                       })}
                     {this.props.orderItems.length === 0 && (
-                      <p className="brand-font" style={{ textAlign: "left" }}>
+                      <p
+                        className="brand-font"
+                        style={{ textAlign: "left", marginBottom: "0" }}>
                         You have no messages!
                       </p>
                     )}

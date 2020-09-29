@@ -9,11 +9,9 @@ import { BounceLoader } from "react-spinners";
 
 import MyStore from "./pages/MyStore";
 import Home from "./pages/Home";
-import AddListing from "./pages/AddListing";
 import Profile from "./pages/Profile";
 import Orders from "./pages/Orders";
 import Inbox from "./pages/Inbox";
-import Thread from "./pages/Thread";
 import { SPACE_NAME } from "./Constants";
 import history from "./utils/history";
 
@@ -75,11 +73,8 @@ export default class App extends Component {
     const space = await this.state.box.openSpace(SPACE_NAME);
     this.setState({ space });
 
-    // Fetch the listings in the thread of the global marketplace
-    const globalThread = await space.joinThreadByAddress(
-      "/orbitdb/zdpuAosv7kRPN49quPCwVr5p531SwjycjdxQeEbM9Y3SiNBp9/3box.thread.demo-marketplace.globalList"
-    );
-    this.setState({ globalThread }, () => this.getGlobalListingsThread());
+    const threadId = "all";
+    this.setState({ threadId }, () => this.joinSubmarket(threadId));
 
     // Create and fetch the listings thread of the user's store
     const thread = await space.joinThread("listing_list", {
@@ -124,6 +119,38 @@ export default class App extends Component {
   }
 
   /**
+   * joinSubmarket => Join a submarket
+   */
+  async joinSubmarket(threadId) {
+    this.setState({ threadId: threadId });
+    const submarketThread = await this.state.space.joinThread(threadId, {
+      firstModerator: "0xf54D276a029a49458E71167EBc25D1cCa235ee6f",
+      members: false,
+    });
+    this.setState({ submarketThread }, () => this.getSubmarketThread());
+  }
+
+  /**
+   * getSubmarketThread => Fetch the listings from a thread
+   */
+  async getSubmarketThread() {
+    if (!this.state.submarketThread) {
+      console.error("submarket listings thread not in react state");
+      return;
+    }
+
+    // Fetch the listings and add them to state
+    const submarketPosts = await this.state.submarketThread.getPosts();
+    this.setState({ submarketPosts });
+
+    // Update the state when new listings are added
+    await this.state.submarketThread.onUpdate(async () => {
+      const submarketPosts = await this.state.submarketThread.getPosts();
+      this.setState({ submarketPosts });
+    });
+  }
+
+  /**
    * getListingsThread => Fetch the listings in a user's store
    */
   async getListingsThread() {
@@ -154,7 +181,6 @@ export default class App extends Component {
 
     // Save the thread address
     const inboxThreadAddress = this.state.inboxThread.address;
-    console.log(inboxThreadAddress);
     this.setState({ inboxThreadAddress });
 
     // Fetch the messages and add them to state
@@ -165,26 +191,6 @@ export default class App extends Component {
     await this.state.inboxThread.onUpdate(async () => {
       const inboxMessages = await this.state.inboxThread.getPosts();
       this.setState({ inboxMessages });
-    });
-  }
-
-  /**
-   * getGlobalListingsThread => Fetch the listings from the global marketplace
-   */
-  async getGlobalListingsThread() {
-    if (!this.state.globalThread) {
-      console.error("global listings thread not in react state");
-      return;
-    }
-
-    // Fetch the listings and add them to state
-    const globalPosts = await this.state.globalThread.getPosts();
-    this.setState({ globalPosts });
-
-    // Update the state when new listings are added
-    await this.state.globalThread.onUpdate(async () => {
-      const globalPosts = await this.state.globalThread.getPosts();
-      this.setState({ globalPosts });
     });
   }
 
@@ -228,33 +234,6 @@ export default class App extends Component {
     });
   }
 
-  async joinSubmarket() {
-    // Fetch the listings in the thread of the global marketplace
-    const space = this.state.space;
-    const submarketThread = await space.joinThread("bbb", {
-      firstModerator: "0xf54D276a029a49458E71167EBc25D1cCa235ee6f",
-      members: false,
-    });
-    this.setState({ submarketThread }, () => this.getSubmarketThread());
-  }
-
-  async getSubmarketThread() {
-    if (!this.state.submarketThread) {
-      console.error("global listings thread not in react state");
-      return;
-    }
-
-    // Fetch the listings and add them to state
-    const submarketPosts = await this.state.submarketThread.getPosts();
-    this.setState({ submarketPosts });
-
-    // Update the state when new listings are added
-    await this.state.submarketThread.onUpdate(async () => {
-      const submarketPosts = await this.state.submarketThread.getPosts();
-      this.setState({ submarketPosts });
-    });
-  }
-
   render() {
     if (this.state.needToAWeb3Browser) {
       return <h1>Please install metamask</h1>; //! Need something nice here
@@ -283,45 +262,20 @@ export default class App extends Component {
                 </div>
               )}
             </Route>
-            <Route path="/add-listing">
-              {this.state.accounts && (
-                <AddListing
-                  accounts={this.state.accounts}
-                  thread={this.state.thread}
-                  globalThread={this.state.globalThread}
-                  box={this.state.box}
-                  space={this.state.space}
-                  threadMembers={this.state.threadMembers}
-                  posts={this.state.posts}
-                  globalPosts={this.state.globalPosts}
-                  threeBoxProfile={this.state.threeBoxProfile}
-                  getListingsThread={this.getListingsThread.bind(this)}
-                  getGlobalListingsThread={this.getGlobalListingsThread.bind(
-                    this
-                  )}
-                  inboxThreadAddress={this.state.inboxThreadAddress}
-                  getSubmarketThread={this.getSubmarketThread.bind(this)}
-                  submarketThread={this.state.submarketThread}
-                  submarketPosts={this.state.submarketPosts}
-                />
-              )}
-              {!this.state.accounts && <h1>Login with metamask</h1>}
-            </Route>
             <Route path="/my-store">
               <MyStore
                 thread={this.state.thread}
                 posts={this.state.posts}
-                globalThread={this.state.globalThread}
-                globalPosts={this.state.globalPosts}
+                submarketThread={this.state.submarketThread}
+                submarketPosts={this.state.submarketPosts}
+                getSubmarketThread={this.getSubmarketThread.bind(this)}
                 space={this.state.space}
                 box={this.state.box}
-                getGlobalListingsThread={this.getGlobalListingsThread.bind(
-                  this
-                )}
                 getListingsThread={this.getListingsThread.bind(this)}
                 usersAddress={
                   this.state.accounts ? this.state.accounts[0] : null
                 }
+                threadId={this.state.threadId}
               />
             </Route>
             <Route path="/orders">
@@ -348,49 +302,29 @@ export default class App extends Component {
                 }
               />
             </Route>
-            <Route
-              path="/s/:threadId"
-              render={(props) => (
-                <Thread
-                  {...props}
-                  thread={this.state.thread}
-                  posts={this.state.posts}
-                  globalThread={this.state.globalThread}
-                  globalPosts={this.state.globalPosts}
-                  space={this.state.space}
-                  box={this.state.box}
-                  getGlobalListingsThread={this.getGlobalListingsThread.bind(
-                    this
-                  )}
-                  getListingsThread={this.getListingsThread.bind(this)}
-                  usersAddress={
-                    this.state.accounts ? this.state.accounts[0] : null
-                  }
-                  joinSubmarket={this.joinSubmarket.bind(this)}
-                  getSubmarketThread={this.getSubmarketThread.bind(this)}
-                  submarketThread={this.state.submarketThread}
-                  submarketPosts={this.state.submarketPosts}
-                />
-              )}></Route>
             <Route path="/">
               <Home
-                globalThread={this.state.globalThread}
-                globalPosts={this.state.globalPosts}
                 space={this.state.space}
                 box={this.state.box}
-                getGlobalListingsThread={this.getGlobalListingsThread.bind(
-                  this
-                )}
                 usersAddress={
                   this.state.accounts ? this.state.accounts[0] : null
                 }
+                thread={this.state.thread}
+                accounts={this.state.accounts}
                 admin={this.state.admin}
                 testnetReceipts={this.state.testnetReceipts}
                 testnetReceiptItems={this.state.testnetReceiptItems}
                 getTestnetReceipts={this.getTestnetReceipts.bind(this)}
                 inboxThread={this.state.inboxThread}
                 inboxMessages={this.state.inboxMessages}
+                inboxThreadAddress={this.state.inboxThreadAddress}
                 getInboxThread={this.getInboxThread.bind(this)}
+                submarketThread={this.state.submarketThread}
+                submarketPosts={this.state.submarketPosts}
+                getSubmarketThread={this.getSubmarketThread.bind(this)}
+                getListingsThread={this.getListingsThread.bind(this)}
+                joinSubmarket={this.joinSubmarket.bind(this)}
+                threadId={this.state.threadId}
               />
             </Route>
           </Switch>
@@ -413,7 +347,7 @@ export default class App extends Component {
               colorTheme="#181F21"
               currentUser3BoxProfile={this.state.threeBoxProfile}
               agentProfile={{
-                chatName: "Spendit chat",
+                chatName: "Spendly chat",
               }}
               openOnMount={false}
             />

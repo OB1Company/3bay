@@ -33,7 +33,7 @@ export default class Nav extends Component {
               className="nav-link brand-font"
               to="/"
               style={styles.navHeading}>
-              Home
+              Spendly
             </Link>
           </li>
           <li className="nav-item">
@@ -50,14 +50,6 @@ export default class Nav extends Component {
               to="/my-store"
               style={styles.navHeading}>
               My store
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link
-              className="nav-link brand-font"
-              to="/add-listing"
-              style={styles.navHeading}>
-              Add a listing
             </Link>
           </li>
           <li className="nav-item brand-font">

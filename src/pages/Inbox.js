@@ -95,8 +95,6 @@ class InboxMessages extends Component {
     e.stopPropagation();
     const post = this.props.post;
     const postId = post.postId;
-    console.log(post);
-    console.log(postId);
     await this.props.inboxThread.deletePost(postId);
     this.props.getInboxThread();
   };
@@ -185,6 +183,7 @@ export default class Inbox extends Component {
                     fontSize: "13px",
                     textAlign: "left",
                   }}>
+                  <span>Sales</span>/
                   <span
                     style={{
                       fontWeight: "bold",
@@ -192,9 +191,8 @@ export default class Inbox extends Component {
                       color: "#0000EE",
                       textDecoration: "underline",
                     }}>
-                    Sales
+                    Chat
                   </span>
-                  /<span>Chat</span>
                 </p>
               </Col>
               <Col sm={2}></Col>
@@ -222,7 +220,9 @@ export default class Inbox extends Component {
                     );
                   })}
                 {this.props.inboxMessages.length === 0 && (
-                  <p className="brand-font" style={{ textAlign: "left" }}>
+                  <p
+                    className="brand-font"
+                    style={{ textAlign: "left", marginBottom: "0" }}>
                     You have no messages!
                   </p>
                 )}

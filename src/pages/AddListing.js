@@ -16,18 +16,17 @@ const styles = {
 export default class AddListing extends Component {
   state = {
     thread: null,
-    globalThread: null,
+    submarketThread: null,
   };
 
   saveListing = async (formData) => {
     formData.account = this.props.accounts[0];
     await this.props.thread.post(formData);
-    await this.props.globalThread.post(formData);
     await this.props.submarketThread.post(formData);
     this.props.getListingsThread();
-    this.props.getGlobalListingsThread();
     this.props.getSubmarketThread();
   };
+  
   render() {
     return (
       <div className="container" style={styles.background}>
@@ -39,7 +38,7 @@ export default class AddListing extends Component {
             <BounceLoader color={"blue"} />
           </div>
         )}
-        {this.props.thread && this.props.globalThread && (
+        {this.props.thread && this.props.submarketThread && (
           <ListingForm
             saveListing={this.saveListing}
             inboxThreadAddress={this.props.inboxThreadAddress}
