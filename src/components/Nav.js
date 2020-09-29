@@ -54,7 +54,7 @@ export default class Nav extends Component {
           </li>
           <li className="nav-item brand-font">
             <Link className="nav-link" to="/orders" style={styles.navHeading}>
-              Orders
+              Purchases
             </Link>
           </li>
           <li className="nav-item">

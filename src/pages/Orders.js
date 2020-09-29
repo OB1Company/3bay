@@ -222,7 +222,7 @@ export default class Orders extends Component {
   render() {
     return (
       <div className="container" style={styles.background}>
-        <h1 className="brand-font">Orders</h1>
+        <h1 className="brand-font">Purchases</h1>
         <Container style={{ marginTop: "50px" }}>
           {!this.props.testnetReceiptItems && (
             <div style={{ width: "60px", margin: "auto" }}>
