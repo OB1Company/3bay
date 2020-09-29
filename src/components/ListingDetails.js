@@ -31,16 +31,15 @@ const styles = {
     fontSize: "20px",
     textAlign: "left",
     lineHeight: "20px",
-    margin: "0px",
     padding: "0px",
     fontFamily,
   },
   modalShippingAddress: {
-    marginTop: "10px",
     fontSize: "13px",
     textAlign: "left",
     lineHeight: "13px",
-    marginBottom: "10px",
+    marginTop: "20px",
+    marginBottom: "20px",
     marginLeft: "0px",
     marginRight: "0px",
     padding: "0px",
@@ -64,6 +63,7 @@ const styles = {
     marginTop: "5px",
     marginBottom: "5px",
     fontFamily,
+    fontSize: "20px",
   },
   modalPrice: {
     fontSize: "37px",
@@ -343,19 +343,10 @@ export default class ListingDetails extends Component {
                   <p style={styles.description}>
                     {this.props.post.message.description}
                   </p>
-                  {this.props.post.message.needsAddress === true && (
-                    <p style={styles.modalShippingAddress}>
-                      <span role="img" aria-label="das">
-                        📦
-                      </span>{" "}
-                      Shipping address required
-                    </p>
-                  )}
                   <Button
                     variant="dark"
                     // onClick={this.state.handleShow}
                     style={styles.buyNowButton}
-                    post={this.props.post}
                     onClick={this.sendTestnetDAI}>
                     BUY NOW
                   </Button>
@@ -371,6 +362,14 @@ export default class ListingDetails extends Component {
                       <p style={styles.paymentInfo}>All payments in DAI</p>
                     </Row>
                   </div>
+                  {this.props.post.message.needsAddress === true && (
+                    <p style={styles.modalShippingAddress}>
+                      <span role="img" aria-label="das">
+                        📦
+                      </span>{" "}
+                      Shipping address required
+                    </p>
+                  )}
                   <p style={styles.soldBy}>Sold by</p>
                   {this.props.post.message.account && (
                     <div style={{ marginBottom: "10px" }}>
