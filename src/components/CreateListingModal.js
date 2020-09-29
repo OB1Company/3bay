@@ -93,7 +93,10 @@ export default class CreateListingModal extends Component {
           show={this.props.show}
           animation={false}>
           <Modal.Header closeButton>
-            <Modal.Title style={styles.name}>Add listing</Modal.Title>
+            <Modal.Title style={styles.name}>
+              Add listing
+              {this.props.threadId ? ` to '${this.props.threadId}'` : ""}
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body
             className="show-grid"
@@ -227,7 +230,7 @@ export default class CreateListingModal extends Component {
               )}
               {this.state.submitted && (
                 <div className="jumbotron">
-                  <h1>Thank you for submiting</h1>
+                  <h1 className="brand-font">Thank you for submiting</h1>
                   <button
                     className="btn btn-dark"
                     onClick={() => this.setState({ submitted: false })}
