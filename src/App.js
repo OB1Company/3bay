@@ -8,6 +8,7 @@ import { BounceLoader } from "react-spinners";
 // import ChatBox from "3box-chatbox-react";
 
 import MyStore from "./pages/MyStore";
+import Store from "./pages/Stores";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Orders from "./pages/Orders";
@@ -73,6 +74,7 @@ export default class App extends Component {
     const space = await this.state.box.openSpace(SPACE_NAME);
     this.setState({ space });
 
+    // Set default threadId
     const threadId = "all";
     this.setState({ threadId }, () => this.joinSubmarket(threadId));
 
@@ -82,6 +84,17 @@ export default class App extends Component {
       members: true,
     });
     this.setState({ thread }, () => this.getListingsThread());
+
+    // Create and fetch the listings thread of a store
+    const storePosts = await Box.getThread(
+      SPACE_NAME,
+      "listing_list",
+      admin,
+      true
+    );
+    this.setState({ storePosts });
+    const storeProfile = await Box.getProfile(admin);
+    this.setState({ storeAccount: admin, storeProfile: storeProfile });
 
     // Create a public inbox for the user
     const inboxThread = await space.joinThread("inboxTestnet", {
@@ -168,6 +181,26 @@ export default class App extends Component {
       const posts = await this.state.thread.getPosts();
       this.setState({ posts });
     });
+  }
+
+  /**
+   * getListingsThread => Fetch the listings in a user's store
+   */
+  async getStorePosts(storeAccount) {
+    // Fetch the listings and add them to state
+    const storePosts = await Box.getThread(
+      SPACE_NAME,
+      "listing_list",
+      storeAccount,
+      true
+    );
+    this.setState({ storePosts });
+  }
+
+  async getStoreProfile(storeAccount) {
+    // Fetch the profile and add it to state
+    const storeProfile = await Box.getProfile(storeAccount);
+    this.setState({ storeProfile: storeProfile, storeAccount: storeAccount });
   }
 
   /**
@@ -262,6 +295,21 @@ export default class App extends Component {
                 </div>
               )}
             </Route>
+            <Route path="/store">
+              <Store
+                thread={this.state.thread}
+                storePosts={this.state.storePosts}
+                storeProfile={this.state.storeProfile}
+                storeAccount={this.state.storeAccount}
+                space={this.state.space}
+                box={this.state.box}
+                getStorePosts={this.getStorePosts.bind(this)}
+                getStoreProfile={this.getStoreProfile.bind(this)}
+                usersAddress={
+                  this.state.accounts ? this.state.accounts[0] : null
+                }
+              />
+            </Route>
             <Route path="/my-store">
               <MyStore
                 thread={this.state.thread}
@@ -325,6 +373,8 @@ export default class App extends Component {
                 getListingsThread={this.getListingsThread.bind(this)}
                 joinSubmarket={this.joinSubmarket.bind(this)}
                 threadId={this.state.threadId}
+                getStorePosts={this.getStorePosts.bind(this)}
+                getStoreProfile={this.getStoreProfile.bind(this)}
               />
             </Route>
           </Switch>

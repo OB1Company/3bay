@@ -3,6 +3,7 @@ import { Button, Image, Modal, Container, Row, Col } from "react-bootstrap";
 import CommentBox from "3box-comments-react";
 import ProfileHover from "profile-hover";
 import Web3 from "web3";
+import { Link } from "react-router-dom";
 import daiIcon from "../assets/dai.png";
 
 import {
@@ -266,6 +267,11 @@ export default class ListingDetails extends Component {
     }
   };
 
+  loadStorePosts = async (storeAccount) => {
+    this.props.getStorePosts(storeAccount);
+    this.props.getStoreProfile(storeAccount);
+  };
+
   render() {
     return (
       <>
@@ -380,12 +386,29 @@ export default class ListingDetails extends Component {
                       />
                     </div>
                   )}
+                  <div
+                    className="container d-flex justify-content-center"
+                    style={{ alignContent: "center" }}>
+                    <Row style={{ marginTop: "15px" }}>
+                      <Link
+                        className="brand-font"
+                        to="/store"
+                        onClick={() =>
+                          this.loadStorePosts(this.props.post.message.account)
+                        }>
+                        Visit store
+                      </Link>
+                    </Row>
+                  </div>
                 </Col>
               </Row>
             </Container>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.props.handleClose} variant="secondary">
+            <Button
+              className="brand-font"
+              onClick={this.props.handleClose}
+              variant="secondary">
               Close
             </Button>
           </Modal.Footer>

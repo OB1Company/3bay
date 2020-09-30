@@ -222,6 +222,8 @@ export default class ListingCard extends Component {
           inboxThread={this.props.inboxThread}
           inboxMessages={this.props.inboxMessages}
           getInboxThread={this.props.getInboxThread}
+          getStorePosts={this.props.getStorePosts}
+          getStoreProfile={this.props.getStoreProfile}
         />
 
         {(this.props.i + 1) % 3 === 0 && <div className="w-100"></div>}

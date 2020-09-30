@@ -264,6 +264,8 @@ export default class Home extends Component {
                       inboxMessages={this.props.inboxMessages}
                       getInboxThread={this.props.getInboxThread}
                       threadId={this.props.threadId}
+                      getStorePosts={this.props.getStorePosts}
+                      getStoreProfile={this.props.getStoreProfile}
                     />
                   );
                 })}
