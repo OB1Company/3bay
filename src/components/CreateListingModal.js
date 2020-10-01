@@ -58,7 +58,6 @@ export default class CreateListingModal extends Component {
   handleChange = (event) => {
     this.setState(Object.assign({ [event.target.name]: event.target.value }));
     this.setState({ needsAddress: event.target.checked });
-    console.log(this.state.needsAddress);
   };
 
   // Todo: Add some actual validation
@@ -230,7 +229,19 @@ export default class CreateListingModal extends Component {
               )}
               {this.state.submitted && (
                 <div className="jumbotron">
-                  <h1 className="brand-font">Thank you for submiting</h1>
+                  <h1 className="brand-font" style={{ marginBottom: "10px" }}>
+                    Published!
+                  </h1>
+                  <h5
+                    className="brand-font"
+                    style={{
+                      marginBottom: "20px",
+                      paddingLeft: "25%",
+                      paddingRight: "25%",
+                    }}>
+                    Your listing is syncing with the network and may take a few
+                    minutes to display on the submarket.
+                  </h5>
                   <button
                     className="btn btn-dark"
                     onClick={() => this.setState({ submitted: false })}

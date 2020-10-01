@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Image, Row, Col } from "react-bootstrap";
-import { fontFamily } from "../Constants.js"
+import { fontFamily } from "../Constants.js";
 
 const blankState = {
   name: "",
@@ -147,17 +147,17 @@ export default class ListingForm extends Component {
                     Price:
                   </label>
                   <input
-                      type="number"
-                      min="0.01"
-                      step="0.01"
-                      name="price"
-                      className="brand-font col-sm-10"
-                      aria-describedby="price"
-                      placeholder="Price in USD"
-                      value={this.state.price}
-                      onChange={this.handleChange}
-                      required
-                    />
+                    type="number"
+                    min="0.01"
+                    step="0.01"
+                    name="price"
+                    className="brand-font col-sm-10"
+                    aria-describedby="price"
+                    placeholder="Price in USD"
+                    value={this.state.price}
+                    onChange={this.handleChange}
+                    required
+                  />
                 </div>
                 <div className="form-group row">
                   <div
@@ -190,9 +190,12 @@ export default class ListingForm extends Component {
         )}
         {this.state.submitted && (
           <div className="jumbotron">
-            <h1>Thank you for submiting</h1>
+            <h1 className="brand-font">
+              Thank you for submiting! Your listing is syncing with the network
+              and may take a few minutes to show in a submarket.
+            </h1>
             <button
-              className="btn btn-dark"
+              className="btn btn-dark brand-font"
               onClick={() => this.setState({ submitted: false })}
               style={styles.button}>
               Add another listing{" "}

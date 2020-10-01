@@ -1,8 +1,14 @@
 import React, { Component } from "react";
-import { Badge } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const styles = {
+  logo: {
+    color: "#0c2845",
+    fontWeight: "bold",
+    fontSize: "17px",
+    lineHeight: "17px",
+  },
   navHeading: {
     color: "#0c2845",
     fontWeight: "bold",
@@ -17,7 +23,8 @@ export default class Nav extends Component {
       <div
         className="container"
         style={{
-          marginTop: "10px",
+          marginTop: "20px",
+          marginBottom: "20px",
           paddingLeft: "0",
           paddingRight: "0",
           justifyContent: "space-evenly",
@@ -25,54 +32,67 @@ export default class Nav extends Component {
         <ul
           className="nav sticky-top nav-pills nav-justified"
           style={{
-            marginBottom: "20px",
             background: "#ffffff",
+            alignItems: "center",
           }}>
-          <li className="nav-item">
-            <Link
-              className="nav-link brand-font"
-              to="/"
-              style={styles.navHeading}>
+          <Col sm={3}>
+            <Link className="nav-link brand-font" to="/" style={styles.logo}>
               Spendly
             </Link>
-          </li>
-          <li className="nav-item">
-            <Link
-              className="nav-link brand-font"
-              to="/profile"
-              style={styles.navHeading}>
-              Profile
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link
-              className="nav-link brand-font"
-              to="/my-store"
-              style={styles.navHeading}>
-              My store
-            </Link>
-          </li>
-          <li className="nav-item brand-font">
-            <Link className="nav-link" to="/orders" style={styles.navHeading}>
-              Purchases
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link
-              className="nav-link brand-font"
-              to="/inbox"
-              style={styles.navHeading}>
-              Inbox
-              {this.props.inboxMessages && this.props.inboxMessages.length > 0 && (
-                <Badge
-                  pill
-                  variant="success"
-                  style={{ marginLeft: "3px", marginBottom: "2px" }}>
-                  {this.props.inboxMessages.length}
-                </Badge>
-              )}
-            </Link>
-          </li>
+          </Col>
+          <Col sm={6}>
+            <Row>
+              <li className="nav-item">
+                <Link
+                  className="nav-link brand-font"
+                  to="/"
+                  style={styles.navHeading}>
+                  Home
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  className="nav-link brand-font"
+                  to="/profile"
+                  style={styles.navHeading}>
+                  Profile
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  className="nav-link brand-font"
+                  to="/my-store"
+                  style={styles.navHeading}>
+                  My store
+                </Link>
+              </li>
+              <li className="nav-item brand-font">
+                <Link
+                  className="nav-link"
+                  to="/orders"
+                  style={styles.navHeading}>
+                  Purchases
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  className="nav-link brand-font"
+                  to="/inbox"
+                  style={styles.navHeading}>
+                  Inbox
+                  {this.props.inboxMessages &&
+                    this.props.inboxMessages.length > 0 && (
+                      <span
+                        className="brand-font"
+                        style={{ paddingLeft: "2px", color: "red" }}>
+                        [{this.props.inboxMessages.length}]
+                      </span>
+                    )}
+                </Link>
+              </li>
+            </Row>
+          </Col>
+          <Col sm={3}></Col>
         </ul>
       </div>
     );
