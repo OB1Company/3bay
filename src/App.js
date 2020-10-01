@@ -51,6 +51,14 @@ export default class App extends Component {
     // Set the background color (need to move this out of here)
     document.body.style.backgroundColor = "#ffffff";
 
+    // Set admin
+    const admin = "0xf54d276a029a49458e71167ebc25d1cca235ee6f";
+    this.setState({ admin });
+
+    // Set default threadId
+    const threadId = "all";
+    this.setState({ threadId }, () => this.getSubmarketPosts(threadId));
+
     // Fetch the user's ethereum account
     await this.getAddressFromMetaMask();
 
@@ -61,8 +69,6 @@ export default class App extends Component {
     }
     const userMod = this.state.accounts[0];
     this.setState({ userMod });
-    const admin = "0xf54d276a029a49458e71167ebc25d1cca235ee6f";
-    this.setState({ admin });
 
     // Open the 3Box object of the user's account
     const box = await Box.openBox(this.state.accounts[0], window.ethereum);
@@ -73,10 +79,6 @@ export default class App extends Component {
     const space = await this.state.box.openSpace(SPACE_NAME);
     this.setState({ space });
 
-    // Set default threadId
-    const threadId = "all";
-    this.setState({ threadId }, () => this.joinSubmarket(threadId));
-
     // Create and fetch the listings thread of the user's store
     const thread = await space.joinThread("listing_list", {
       firstModerator: userMod,
@@ -84,7 +86,7 @@ export default class App extends Component {
     });
     this.setState({ thread }, () => this.getListingsThread());
 
-    // Create and fetch the listings thread of a store
+    // Create and fetch the listings thread of admin store
     const storePosts = await Box.getThread(
       SPACE_NAME,
       "listing_list",
@@ -131,15 +133,31 @@ export default class App extends Component {
   }
 
   /**
+   * viewSubmarket => Join a submarket
+   */
+  async getSubmarketPosts(threadId) {
+    this.setState({ threadId: threadId });
+    console.log(this.state.threadId);
+    console.log(this.state.admin);
+    const submarketPosts = await Box.getThread(
+      SPACE_NAME,
+      threadId,
+      this.state.admin,
+      false
+    );
+    this.setState({ submarketPosts });
+    console.log(this.state.submarketPosts);
+  }
+
+  /**
    * joinSubmarket => Join a submarket
    */
   async joinSubmarket(threadId) {
-    this.setState({ threadId: threadId });
     const submarketThread = await this.state.space.joinThread(threadId, {
       firstModerator: "0xf54D276a029a49458E71167EBc25D1cCa235ee6f",
       members: false,
     });
-    this.setState({ submarketThread }, () => this.getSubmarketThread());
+    this.setState({ submarketThread });
   }
 
   /**
@@ -359,6 +377,7 @@ export default class App extends Component {
                 thread={this.state.thread}
                 accounts={this.state.accounts}
                 admin={this.state.admin}
+                getSubmarketPosts={this.getSubmarketPosts.bind(this)}
                 testnetReceipts={this.state.testnetReceipts}
                 testnetReceiptItems={this.state.testnetReceiptItems}
                 getTestnetReceipts={this.getTestnetReceipts.bind(this)}

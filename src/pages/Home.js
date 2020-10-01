@@ -73,16 +73,17 @@ export default class Home extends Component {
 
   saveListing = async (formData) => {
     formData.account = this.props.accounts[0];
+    const threadId = this.props.threadId;
+    await this.props.joinSubmarket(threadId);
     await this.props.thread.post(formData);
     await this.props.submarketThread.post(formData);
     this.props.getListingsThread();
-    this.props.getSubmarketThread();
+    await this.props.getSubmarketPosts(threadId);
   };
 
   changeSubmarket = async (threadName) => {
     const threadId = threadName;
-    this.setState({ threadId: threadId });
-    this.props.joinSubmarket(threadId);
+    this.props.getSubmarketPosts(threadId);
   };
 
   handleChange = (event) => {

@@ -315,26 +315,28 @@ export default class ListingDetails extends Component {
                       borderColor: "#000000",
                     }}
                   />
-                  <div
-                    className="container d-flex justify-content-center"
-                    style={{
-                      width: "100%",
-                      paddingTop: "50px",
-                      justifyContent: "center",
-                      display: "flex",
-                      alignItems: "center",
-                    }}>
-                    <CommentBox
-                      spaceName={SPACE_NAME}
-                      threadName={this.props.post.postId}
-                      box={this.props.box}
-                      currentUserAddr={this.props.usersAddress}
-                      // currentUser3BoxProfile={this.props.threeBox}
-                      adminEthAddr={this.props.post.message.account}
-                      showCommentCount={10}
-                      useHovers={true}
-                    />
-                  </div>
+                  {this.props.box && (
+                    <div
+                      className="container d-flex justify-content-center"
+                      style={{
+                        width: "100%",
+                        paddingTop: "50px",
+                        justifyContent: "center",
+                        display: "flex",
+                        alignItems: "center",
+                      }}>
+                      <CommentBox
+                        spaceName={SPACE_NAME}
+                        threadName={this.props.post.postId}
+                        box={this.props.box}
+                        currentUserAddr={this.props.usersAddress}
+                        // currentUser3BoxProfile={this.props.threeBox}
+                        adminEthAddr={this.props.post.message.account}
+                        showCommentCount={10}
+                        useHovers={true}
+                      />
+                    </div>
+                  )}
                 </Col>
                 <Col
                   xs={6}
