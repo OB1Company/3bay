@@ -137,8 +137,6 @@ export default class App extends Component {
    */
   async getSubmarketPosts(threadId) {
     this.setState({ threadId: threadId });
-    console.log(this.state.threadId);
-    console.log(this.state.admin);
     const submarketPosts = await Box.getThread(
       SPACE_NAME,
       threadId,
@@ -146,7 +144,6 @@ export default class App extends Component {
       false
     );
     this.setState({ submarketPosts });
-    console.log(this.state.submarketPosts);
   }
 
   /**

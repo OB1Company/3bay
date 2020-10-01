@@ -32,7 +32,6 @@ export default class Nav extends Component {
         <ul
           className="nav sticky-top nav-pills nav-justified"
           style={{
-            background: "#ffffff",
             alignItems: "center",
           }}>
           <Col sm={3}>
