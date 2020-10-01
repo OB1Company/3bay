@@ -14,7 +14,6 @@ import Profile from "./pages/Profile";
 import Orders from "./pages/Orders";
 import Inbox from "./pages/Inbox";
 import { SPACE_NAME } from "./Constants";
-import history from "./utils/history";
 
 // 3Box identity
 const getThreeBox = async (address) => {
@@ -273,7 +272,7 @@ export default class App extends Component {
     }
 
     return (
-      <Router history={history}>
+      <Router>
         <div>
           <Nav
             inboxMessages={this.state.inboxMessages}
