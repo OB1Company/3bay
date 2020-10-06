@@ -4,15 +4,16 @@ import Box from "3box";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Nav from "./components/Nav";
-import { BounceLoader } from "react-spinners";
 // import ChatBox from "3box-chatbox-react";
 
+import ConnectWallet from "./pages/ConnectWallet";
 import MyStore from "./pages/MyStore";
 import Store from "./pages/Stores";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Orders from "./pages/Orders";
 import Inbox from "./pages/Inbox";
+import ConnectWalletModal from "./components/ConnectWalletModal";
 import { SPACE_NAME } from "./Constants";
 
 // 3Box identity
@@ -25,6 +26,14 @@ export default class App extends Component {
   // Changes to true if Metamask isn't detected, or there's a problem
   state = {
     needToAWeb3Browser: false,
+    showConnectWalletModal: false,
+    handleWalletConnectModalClose: () =>
+      this.setState({ showConnectWalletModal: false }),
+    handleWalletConnectModalShow: () =>
+      this.setState({ showConnectWalletModal: true }),
+    status: "connecting...",
+    onboarding: false,
+    walletConnected: false,
   };
 
   /**
@@ -59,33 +68,6 @@ export default class App extends Component {
     const threadId = "all";
     this.setState({ threadId }, () => this.getSubmarketPosts(threadId));
 
-    // Fetch the user's ethereum account
-    await this.getAddressFromMetaMask();
-
-    // Get 3Box profile of the ethereum account
-    if (this.state.accounts) {
-      const threeBoxProfile = await getThreeBox(this.state.accounts[0]);
-      this.setState({ threeBoxProfile });
-    }
-    const userMod = this.state.accounts[0];
-    this.setState({ userMod });
-
-    // Open the 3Box object of the user's account
-    const box = await Box.openBox(this.state.accounts[0], window.ethereum);
-    await box.syncDone;
-    this.setState({ box });
-
-    // Open the demo marketplace 'space' of the user
-    const space = await this.state.box.openSpace(SPACE_NAME);
-    this.setState({ space });
-
-    // Create and fetch the listings thread of the user's store
-    const thread = await space.joinThread("listing_list", {
-      firstModerator: userMod,
-      members: true,
-    });
-    this.setState({ thread }, () => this.getListingsThread());
-
     // Create and fetch the listings thread of admin store
     const storePosts = await Box.getThread(
       SPACE_NAME,
@@ -95,7 +77,60 @@ export default class App extends Component {
     );
     this.setState({ storePosts });
     const storeProfile = await Box.getProfile(admin);
-    this.setState({ storeAccount: admin, storeProfile: storeProfile });
+    this.setState({
+      storeAccount: admin,
+      storeProfile: storeProfile,
+    });
+  }
+
+  /**
+   * connectWallet => Connect Metamask and create/open space in 3Box
+   */
+  async connectWallet() {
+    // Set state to onboarding
+    this.setState({ onboarding: true });
+
+    // Fetch the user's ethereum account
+    await this.getAddressFromMetaMask();
+
+    // Status update
+    this.setState({ status: "fetching 3Box profile... [1/7]" });
+
+    // Get 3Box profile of the ethereum account
+    if (this.state.accounts) {
+      const threeBoxProfile = await getThreeBox(this.state.accounts[0]);
+      this.setState({ threeBoxProfile });
+    }
+    const userMod = this.state.accounts[0];
+    this.setState({ userMod });
+
+    // Status update
+    this.setState({ status: "syncing 3Box... [2/7]" });
+
+    // Open the 3Box object of the user's account
+    const box = await Box.openBox(this.state.accounts[0], window.ethereum);
+    await box.syncDone;
+    this.setState({ box });
+
+    // Status update
+    this.setState({ status: "Opening 'Spendly'... [3/7]" });
+
+    // Open the demo marketplace 'space' of the user
+    const space = await this.state.box.openSpace(SPACE_NAME);
+    this.setState({ space });
+
+    // Status update
+    this.setState({ status: "Loading your store... [4/7]" });
+
+    // Create and fetch the listings thread of the user's store
+    const thread = await space.joinThread("listing_list", {
+      firstModerator: userMod,
+      members: true,
+    });
+    this.setState({ thread }, () => this.getListingsThread());
+
+    // Status update
+    this.setState({ status: "Checking your mail... [5/7]" });
 
     // Create a public inbox for the user
     const inboxThread = await space.joinThread("inboxTestnet", {
@@ -106,6 +141,9 @@ export default class App extends Component {
     });
     this.setState({ inboxThread }, () => this.getInboxThread());
 
+    // Status update
+    this.setState({ status: "Loading orders... [6/7]" });
+
     // Create and fetch the orders
     const orders = await space.joinThread("demo-orders-public", {
       firstModerator: userMod,
@@ -114,6 +152,9 @@ export default class App extends Component {
       confidential: false,
     });
     this.setState({ orders }, () => this.getOrdersThread());
+
+    // Status update
+    this.setState({ status: "Loading purchases... [7/7]" });
 
     // Create and fetch the testnet receipts
     const testnetReceipts = await space.joinThread(
@@ -126,6 +167,15 @@ export default class App extends Component {
       }
     );
     this.setState({ testnetReceipts }, () => this.getTestnetReceipts());
+
+    // Status update
+    this.setState({
+      status: "Success, onboarding complete!",
+      walletConnected: true,
+    });
+
+    // Close modal
+    this.state.handleWalletConnectModalClose();
 
     // Join global chat
     const globalChat = await space.joinThread("globalListChat");
@@ -292,6 +342,16 @@ export default class App extends Component {
           <Nav
             inboxMessages={this.state.inboxMessages}
             style={{ background: "#ffffff" }}
+            handleWalletConnectModalShow={
+              this.state.handleWalletConnectModalShow
+            }
+            handleWalletConnectModalClose={
+              this.state.handleWalletConnectModalClose
+            }
+            walletConnected={this.state.walletConnected}
+            usersAddress={
+              this.state.accounts ? this.state.accounts[0] : null
+            }
           />
           <Switch>
             <Route path="/profile">
@@ -303,66 +363,74 @@ export default class App extends Component {
                   threeBoxProfile={this.state.threeBoxProfile}
                 />
               )}
-              {!this.state.space && (
-                <div style={{ width: "60px", margin: "auto" }}>
-                  <BounceLoader color={"blue"} />
-                </div>
-              )}
+              {!this.state.space && <ConnectWallet />}
             </Route>
             <Route path="/store">
-              <Store
-                thread={this.state.thread}
-                storePosts={this.state.storePosts}
-                storeProfile={this.state.storeProfile}
-                storeAccount={this.state.storeAccount}
-                space={this.state.space}
-                box={this.state.box}
-                getStorePosts={this.getStorePosts.bind(this)}
-                getStoreProfile={this.getStoreProfile.bind(this)}
-                usersAddress={
-                  this.state.accounts ? this.state.accounts[0] : null
-                }
-              />
+              {this.state.space && (
+                <Store
+                  thread={this.state.thread}
+                  storePosts={this.state.storePosts}
+                  storeProfile={this.state.storeProfile}
+                  storeAccount={this.state.storeAccount}
+                  space={this.state.space}
+                  box={this.state.box}
+                  getStorePosts={this.getStorePosts.bind(this)}
+                  getStoreProfile={this.getStoreProfile.bind(this)}
+                  usersAddress={
+                    this.state.accounts ? this.state.accounts[0] : null
+                  }
+                />
+              )}
+              {!this.state.space && <ConnectWallet />}
             </Route>
             <Route path="/my-store">
-              <MyStore
-                thread={this.state.thread}
-                posts={this.state.posts}
-                submarketThread={this.state.submarketThread}
-                submarketPosts={this.state.submarketPosts}
-                getSubmarketThread={this.getSubmarketThread.bind(this)}
-                space={this.state.space}
-                box={this.state.box}
-                getListingsThread={this.getListingsThread.bind(this)}
-                usersAddress={
-                  this.state.accounts ? this.state.accounts[0] : null
-                }
-                threadId={this.state.threadId}
-              />
+              {this.state.space && (
+                <MyStore
+                  thread={this.state.thread}
+                  posts={this.state.posts}
+                  submarketThread={this.state.submarketThread}
+                  submarketPosts={this.state.submarketPosts}
+                  getSubmarketThread={this.getSubmarketThread.bind(this)}
+                  space={this.state.space}
+                  box={this.state.box}
+                  getListingsThread={this.getListingsThread.bind(this)}
+                  usersAddress={
+                    this.state.accounts ? this.state.accounts[0] : null
+                  }
+                  threadId={this.state.threadId}
+                />
+              )}
+              {!this.state.space && <ConnectWallet />}
             </Route>
             <Route path="/orders">
-              <Orders
-                space={this.state.space}
-                box={this.state.box}
-                getTestnetReceipts={this.getTestnetReceipts.bind(this)}
-                testnetReceipts={this.state.testnetReceipts}
-                testnetReceiptItems={this.state.testnetReceiptItems}
-                usersAddress={
-                  this.state.accounts ? this.state.accounts[0] : null
-                }
-              />
+              {this.state.space && (
+                <Orders
+                  space={this.state.space}
+                  box={this.state.box}
+                  getTestnetReceipts={this.getTestnetReceipts.bind(this)}
+                  testnetReceipts={this.state.testnetReceipts}
+                  testnetReceiptItems={this.state.testnetReceiptItems}
+                  usersAddress={
+                    this.state.accounts ? this.state.accounts[0] : null
+                  }
+                />
+              )}
+              {!this.state.space && <ConnectWallet />}
             </Route>
             <Route path="/inbox">
-              <Inbox
-                space={this.state.space}
-                box={this.state.box}
-                inboxThread={this.state.inboxThread}
-                inboxMessages={this.state.inboxMessages}
-                getInboxThread={this.getInboxThread.bind(this)}
-                usersAddress={
-                  this.state.accounts ? this.state.accounts[0] : null
-                }
-              />
+              {this.state.space && (
+                <Inbox
+                  space={this.state.space}
+                  box={this.state.box}
+                  inboxThread={this.state.inboxThread}
+                  inboxMessages={this.state.inboxMessages}
+                  getInboxThread={this.getInboxThread.bind(this)}
+                  usersAddress={
+                    this.state.accounts ? this.state.accounts[0] : null
+                  }
+                />
+              )}
+              {!this.state.space && <ConnectWallet />}
             </Route>
             <Route path="/">
               <Home
@@ -418,6 +486,17 @@ export default class App extends Component {
             />
           )}
         </div> */}
+        <ConnectWalletModal
+          showConnectWalletModal={this.state.showConnectWalletModal}
+          handleWalletConnectModalClose={
+            this.state.handleWalletConnectModalClose
+          }
+          handleWalletConnectModalShow={this.state.handleWalletConnectModalShow}
+          connectWallet={this.connectWallet.bind(this)}
+          status={this.state.status}
+          onboarding={this.state.onboarding}
+          walletConnected={this.state.walletConnected}
+        />
       </Router>
     );
   }

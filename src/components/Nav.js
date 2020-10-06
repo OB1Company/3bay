@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const styles = {
@@ -14,6 +14,20 @@ const styles = {
     fontWeight: "bold",
     fontSize: "15px",
     lineHeight: "15px",
+  },
+  connected: {
+    backgroundColor: "#ffffff",
+    color: "#343a40",
+    borderColor: "#343a40",
+    borderWidth: "1px",
+  },
+  dot: {
+    height: "10px",
+    width: "10px",
+    marginLeft: "5px",
+    backgroundColor: "#00d395",
+    borderRadius: "50%",
+    display: "inline-block",
   },
 };
 
@@ -91,7 +105,28 @@ export default class Nav extends Component {
               </li>
             </Row>
           </Col>
-          <Col sm={3}></Col>
+          <Col sm={3}>
+            {this.props.walletConnected === false && (
+              <Button
+                className="btn btn-dark brand-font float-sm-right"
+                onClick={this.props.handleWalletConnectModalShow}
+                style={{ fontWeight: "bold" }}>
+                Connect wallet
+              </Button>
+            )}
+            {this.props.walletConnected === true && (
+              <Button
+                className="btn brand-font float-sm-right"
+                style={styles.connected}>
+                {this.props.usersAddress.substring(0, 3)}...
+                {this.props.usersAddress.substring(
+                  this.props.usersAddress.length - 3,
+                  this.props.usersAddress.length
+                )}
+                <span class="dot" style={styles.dot}></span>
+              </Button>
+            )}
+          </Col>
         </ul>
       </div>
     );
