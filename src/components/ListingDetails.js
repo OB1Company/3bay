@@ -406,14 +406,6 @@ export default class ListingDetails extends Component {
               </Row>
             </Container>
           </Modal.Body>
-          <Modal.Footer>
-            <Button
-              className="brand-font"
-              onClick={this.props.handleClose}
-              variant="secondary">
-              Close
-            </Button>
-          </Modal.Footer>
         </Modal>
       </>
     );

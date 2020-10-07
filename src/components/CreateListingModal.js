@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Image, Modal, Container, Row, Col } from "react-bootstrap";
+import { Image, Modal, Container, Row, Col } from "react-bootstrap";
 import { fontFamily } from "../Constants";
 
 const blankState = {
@@ -252,14 +252,6 @@ export default class CreateListingModal extends Component {
               )}
             </Container>
           </Modal.Body>
-          <Modal.Footer>
-            <Button
-              className="brand-font"
-              onClick={this.props.handleClose}
-              variant="secondary">
-              Close
-            </Button>
-          </Modal.Footer>
         </Modal>
       </>
     );

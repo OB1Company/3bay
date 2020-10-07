@@ -181,9 +181,7 @@ export default class App extends Component {
     this.setState({ globalChat });
   }
 
-  /**
-   * viewSubmarket => Join a submarket
-   */
+  // Get submarket posts without joining the thread
   async getSubmarketPosts(threadId) {
     this.setState({ threadId: threadId });
     const submarketPosts = await Box.getThread(
@@ -193,22 +191,19 @@ export default class App extends Component {
       false
     );
     this.setState({ submarketPosts });
+    console.log(submarketPosts);
   }
 
-  /**
-   * joinSubmarket => Join a submarket
-   */
+  // Join the submarket thread
   async joinSubmarket(threadId) {
     const submarketThread = await this.state.space.joinThread(threadId, {
-      firstModerator: "0xf54D276a029a49458E71167EBc25D1cCa235ee6f",
+      firstModerator: "0xf54d276a029a49458e71167ebc25d1cca235ee6f",
       members: false,
     });
     this.setState({ submarketThread });
   }
 
-  /**
-   * getSubmarketThread => Fetch the listings from a thread
-   */
+  // Get the posts in a submarket thread that you've joined
   async getSubmarketThread() {
     if (!this.state.submarketThread) {
       console.error("submarket listings thread not in react state");
@@ -226,9 +221,7 @@ export default class App extends Component {
     });
   }
 
-  /**
-   * getListingsThread => Fetch the listings in a user's store
-   */
+  // Get posts in the user's store thread
   async getListingsThread() {
     if (!this.state.thread) {
       console.error("listings thread not in react state");
@@ -246,9 +239,7 @@ export default class App extends Component {
     });
   }
 
-  /**
-   * getListingsThread => Fetch the listings in a user's store
-   */
+  // Get a store's posts without joining the thread
   async getStorePosts(storeAccount) {
     // Fetch the listings and add them to state
     const storePosts = await Box.getThread(
@@ -260,15 +251,14 @@ export default class App extends Component {
     this.setState({ storePosts });
   }
 
+  // Get a store's profile
   async getStoreProfile(storeAccount) {
     // Fetch the profile and add it to state
     const storeProfile = await Box.getProfile(storeAccount);
     this.setState({ storeProfile: storeProfile, storeAccount: storeAccount });
   }
 
-  /**
-   * getInboxThread => Fetch the messages in a user's inbox
-   */
+  // Get posts in the user's inbox thread
   async getInboxThread() {
     if (!this.state.inboxThread) {
       console.error("messages in inbox thread not in react state");
@@ -290,9 +280,7 @@ export default class App extends Component {
     });
   }
 
-  /**
-   * getOrdersThread => Fetch orders for a user
-   */
+  // Get posts in the user's sales thread
   async getOrdersThread() {
     if (!this.state.orders) {
       console.error("orders thread not in react state");
@@ -310,9 +298,7 @@ export default class App extends Component {
     });
   }
 
-  /**
-   * getTestnetReceiptsThread => Fetch receipts from testnet
-   */
+  // Get posts in the user's purchases thread
   async getTestnetReceipts() {
     if (!this.state.testnetReceipts) {
       console.error("testnet receipts thread not in react state");

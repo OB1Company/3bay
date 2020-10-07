@@ -12,17 +12,12 @@ import ListingCard from "../components/ListingCard.js";
 import CreateListingModal from "../components/CreateListingModal.js";
 
 const styles = {
-  column: {
-    width: "100%",
-    columnCount: "4",
-  },
   background: {
     textAlign: "center",
   },
-  wrapper: {
-    padding: "20px",
-    background: "rgb(0,0,0,0)",
-    borderWidth: "0",
+  column: {
+    width: "100%",
+    columnCount: "4",
   },
   slash: {
     fontSize: "13px",
@@ -71,16 +66,35 @@ export default class Home extends Component {
     handleShow: () => this.setState({ show: true }),
   };
 
+  // Save the listing to the user's store
   saveListing = async (formData) => {
     formData.account = this.props.accounts[0];
     const threadId = this.props.threadId;
-    await this.props.joinSubmarket(threadId);
-    await this.props.thread.post(formData);
-    await this.props.submarketThread.post(formData);
-    this.props.getListingsThread();
-    await this.props.getSubmarketPosts(threadId);
+    try {
+      await this.props.joinSubmarket(threadId);
+      await this.props.thread.post(formData);
+    } catch (err) {
+      console.log(err);
+      console.log("Error in saveListing");
+    }
+    this.saveListingtoThread(formData, threadId);
   };
 
+  // Save the listing to the correct thread
+  saveListingtoThread = async (formData, threadId) => {
+    console.log(formData);
+    try {
+      const postId = await this.props.submarketThread.post(formData);
+      console.log(postId);
+    } catch (err) {
+      console.log(err);
+      console.log("Error in saveListingtoThread");
+    }
+    this.props.getListingsThread();
+    this.props.getSubmarketPosts(threadId);
+  };
+
+  // Change the submarket
   changeSubmarket = async (threadName) => {
     const threadId = threadName;
     this.props.getSubmarketPosts(threadId);
@@ -267,6 +281,7 @@ export default class Home extends Component {
                       threadId={this.props.threadId}
                       getStorePosts={this.props.getStorePosts}
                       getStoreProfile={this.props.getStoreProfile}
+                      joinSubmarket={this.props.joinSubmarket}
                     />
                   );
                 })}

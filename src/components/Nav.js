@@ -47,6 +47,7 @@ export default class Nav extends Component {
           className="nav sticky-top nav-pills nav-justified"
           style={{
             alignItems: "center",
+            zIndex: "499",
           }}>
           <Col sm={3}>
             <Link className="nav-link brand-font" to="/" style={styles.logo}>
