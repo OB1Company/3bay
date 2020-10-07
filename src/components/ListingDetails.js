@@ -1,5 +1,13 @@
 import React, { Component } from "react";
-import { Button, Image, Modal, Container, Row, Col } from "react-bootstrap";
+import {
+  Button,
+  Image,
+  Modal,
+  Container,
+  Row,
+  Col,
+  Alert,
+} from "react-bootstrap";
 import CommentBox from "3box-comments-react";
 import ProfileHover from "profile-hover";
 import Web3 from "web3";
@@ -90,6 +98,14 @@ const styles = {
 };
 
 export default class ListingDetails extends Component {
+  state = {
+    alert: false,
+    alertStatus: "",
+    purchased: false,
+    handleAlertShow: () => this.setState({ alert: true }),
+    handleStatusChange: (status) => this.setState({ alertStatus: status }),
+    handlePurchased: () => this.setState({ purchased: true }),
+  };
   /*   sendTransaction = async (_payTheMan) => {
     const url =
       "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=USD";
@@ -178,6 +194,8 @@ export default class ListingDetails extends Component {
 
   sendTestnetDAI = async (_payTheMan) => {
     // Get addresses
+    this.state.handleAlertShow();
+    this.state.handleStatusChange("Working... (1/5)");
     const space = this.props.space;
     const userAddress = this.props.userAddress;
     const post = this.props.post;
@@ -185,6 +203,9 @@ export default class ListingDetails extends Component {
     const fromAddress = this.props.usersAddress;
     const testnetReceipts = this.props.testnetReceipts;
     const getTestnetReceipts = () => this.props.getTestnetReceipts();
+    const handleStatusChange = (status) =>
+      this.state.handleStatusChange(status);
+    const handlePurchased = () => this.state.handlePurchased();
 
     // Get exchange rate for coin
     const url =
@@ -222,6 +243,8 @@ export default class ListingDetails extends Component {
         .transfer(toAddress, value)
         .send({ from: fromAddress, gas: gasLimit })
         .on("transactionHash", async function(hash) {
+          handleStatusChange("Transaction sent. (2/5");
+
           // 1. Create a thread for the order [DONE]
           const orderNumber = new Date().getTime();
           const orderThread = await space.joinThread(orderNumber, {
@@ -249,9 +272,11 @@ export default class ListingDetails extends Component {
           // 2. Add transaction to order history [DONE]
           await testnetReceipts.post(receipt);
           getTestnetReceipts();
+          handleStatusChange("Purchase order saved. (3/5");
 
           // 3. Add transaction to order thread [DONE]
           await orderThread.post(receipt);
+          handleStatusChange("Order details saved. (4/5");
 
           // 4. Add order message to inbox of the seller [DONE]
           let message = {
@@ -263,8 +288,16 @@ export default class ListingDetails extends Component {
             post.message.inboxThreadAddress
           );
           await sellerInbox.post(message);
+          handleStatusChange("Purchase order message sent. (5/5");
+          handlePurchased();
+          handleStatusChange("Purchase complete!");
+          // handleToastShow();
         });
     }
+  };
+
+  connectAlert = async (_press) => {
+    alert("Please connect your wallet to purchase this item.");
   };
 
   loadStorePosts = async (storeAccount) => {
@@ -355,7 +388,9 @@ export default class ListingDetails extends Component {
                     variant="dark"
                     // onClick={this.state.handleShow}
                     style={styles.buyNowButton}
-                    onClick={this.sendTestnetDAI}>
+                    onClick={
+                      this.props.space ? this.sendTestnetDAI : this.connectAlert
+                    }>
                     BUY NOW
                   </Button>
                   <div
@@ -406,6 +441,16 @@ export default class ListingDetails extends Component {
               </Row>
             </Container>
           </Modal.Body>
+          <Modal.Footer>
+            <Alert
+              delay={3000}
+              show={this.state.alert}
+              variant={this.state.purchased === false ? "secondary" : "success"}
+              className="brand-font"
+              style={{ width: "100%", fontSize: "14px" }}>
+              {this.state.alertStatus}
+            </Alert>
+          </Modal.Footer>
         </Modal>
       </>
     );

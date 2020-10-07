@@ -7,6 +7,7 @@ import {
   FormControl,
 } from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
+import { Link } from "react-router-dom";
 
 import ListingCard from "../components/ListingCard.js";
 import CreateListingModal from "../components/CreateListingModal.js";
@@ -224,12 +225,21 @@ export default class Home extends Component {
                 justifyContent: "center",
                 marginTop: "5px",
               }}>
-              <p
-                className="brand-font"
-                style={styles.addListing}
-                onClick={this.state.handleShow}>
-                +Add a listing
-              </p>
+              {this.props.space ? (
+                <p
+                  className="brand-font"
+                  style={styles.addListing}
+                  onClick={this.state.handleShow}>
+                  +Add a listing
+                </p>
+              ) : (
+                <Link
+                  className="brand-font"
+                  style={styles.addListing}
+                  to="connect-wallet">
+                  +Add a listing
+                </Link>
+              )}
             </Row>
           </div>
         )}
