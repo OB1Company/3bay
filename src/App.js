@@ -191,7 +191,6 @@ export default class App extends Component {
       false
     );
     this.setState({ submarketPosts });
-    console.log(submarketPosts);
   }
 
   // Join the submarket thread
