@@ -167,69 +167,89 @@ export default class Inbox extends Component {
     return (
       <div className="container" style={styles.background}>
         <h1 className="brand-font">Inbox</h1>
-        <Container style={{ marginTop: "50px" }}>
-          {!this.props.inboxMessages && (
-            <div style={{ width: "60px", margin: "auto" }}>
-              <BounceLoader color={"blue"} />
-            </div>
-          )}
-          {this.props.inboxMessages && (
-            <Row>
-              <Col sm={2}></Col>
-              <Col sm={8}>
-                <p
-                  className="brand-font"
-                  style={{
-                    fontSize: "13px",
-                    textAlign: "left",
-                  }}>
-                  <span>Sales</span>/
-                  <span
-                    style={{
-                      fontWeight: "bold",
-                      cursor: "pointer",
-                      color: "#0000EE",
-                      textDecoration: "underline",
-                    }}>
-                    Chat
-                  </span>
-                </p>
-              </Col>
-              <Col sm={2}></Col>
-            </Row>
-          )}
-          {this.props.inboxMessages && (
-            <Row>
-              <Col sm={12}>
-                {this.props.inboxMessages.length >= 1 &&
-                  this.props.inboxMessages.map((post, i) => {
-                    return (
-                      <InboxMessages
-                        post={post}
-                        item={post.message}
-                        key={i}
-                        threeBox={this.props.threeBox}
-                        space={this.props.space}
-                        box={this.props.box}
-                        usersAddress={this.props.usersAddress}
-                        inboxMessages={this.props.inboxMessages}
-                        inboxThread={this.props.inboxThread}
-                        getInboxThread={this.props.getInboxThread}
-                        i={i}
-                      />
-                    );
-                  })}
-                {this.props.inboxMessages.length === 0 && (
+        {!this.props.space ? (
+          <Row>
+            <Col sm={2}></Col>
+            <Col sm={8}>
+              <p
+                className="brand-font"
+                style={{ marginTop: "20px", fontSize: "18px" }}>
+                Please connect wallet
+              </p>
+            </Col>
+            <Col sm={2}></Col>
+          </Row>
+        ) : (
+          <Container style={{ marginTop: "50px" }}>
+            {!this.props.inboxMessages && (
+              <div style={{ width: "60px", margin: "auto" }}>
+                <BounceLoader color={"blue"} />
+              </div>
+            )}
+            {this.props.inboxMessages && (
+              <Row>
+                <Col sm={2}></Col>
+                <Col sm={8}>
                   <p
                     className="brand-font"
-                    style={{ textAlign: "left", marginBottom: "0" }}>
-                    You have no messages!
+                    style={{
+                      fontSize: "13px",
+                      textAlign: "left",
+                    }}>
+                    <span>Sales</span>/
+                    <span
+                      style={{
+                        fontWeight: "bold",
+                        cursor: "pointer",
+                        color: "#0000EE",
+                        textDecoration: "underline",
+                      }}>
+                      Chat
+                    </span>
                   </p>
-                )}
-              </Col>
-            </Row>
-          )}
-        </Container>
+                </Col>
+                <Col sm={2}></Col>
+              </Row>
+            )}
+            {this.props.inboxMessages && (
+              <Row>
+                <Col sm={12}>
+                  {this.props.inboxMessages.length >= 1 &&
+                    this.props.inboxMessages.map((post, i) => {
+                      return (
+                        <InboxMessages
+                          post={post}
+                          item={post.message}
+                          key={i}
+                          threeBox={this.props.threeBox}
+                          space={this.props.space}
+                          box={this.props.box}
+                          usersAddress={this.props.usersAddress}
+                          inboxMessages={this.props.inboxMessages}
+                          inboxThread={this.props.inboxThread}
+                          getInboxThread={this.props.getInboxThread}
+                          i={i}
+                        />
+                      );
+                    })}
+                  {this.props.inboxMessages.length === 0 && (
+                    <Row>
+                      <Col sm={2}></Col>
+                      <Col sm={8}>
+                        <p
+                          className="brand-font"
+                          style={{ textAlign: "left", marginBottom: "0" }}>
+                          You have no messages!
+                        </p>
+                      </Col>
+                      <Col sm={2}></Col>
+                    </Row>
+                  )}
+                </Col>
+              </Row>
+            )}
+          </Container>
+        )}
       </div>
     );
   }

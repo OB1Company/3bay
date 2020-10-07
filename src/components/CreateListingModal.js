@@ -91,7 +91,7 @@ export default class CreateListingModal extends Component {
           size="xl"
           show={this.props.show}
           animation={false}>
-          <Modal.Header closeButton>
+          <Modal.Header closeButton={false}>
             <Modal.Title style={styles.name}>
               Add listing
               {this.props.threadId ? ` to '${this.props.threadId}'` : ""}

@@ -33,7 +33,7 @@ export default class ConnectWalletModal extends Component {
           onHide={this.props.handleWalletConnectModalClose}
           size="lg"
           show={this.props.showConnectWalletModal}
-          backdrop={false}
+          enforceFocus={false}
           animation={false}
           centered
           style={{ background: "rgb(0,0,0,0.7)" }}>

@@ -13,7 +13,6 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Orders from "./pages/Orders";
 import Inbox from "./pages/Inbox";
-import ConnectWalletModal from "./components/ConnectWalletModal";
 import { SPACE_NAME } from "./Constants";
 
 // 3Box identity
@@ -349,88 +348,91 @@ export default class App extends Component {
               this.state.handleWalletConnectModalClose
             }
             walletConnected={this.state.walletConnected}
-            usersAddress={
-              this.state.accounts ? this.state.accounts[0] : null
-            }
+            usersAddress={this.state.accounts ? this.state.accounts[0] : null}
           />
           <Switch>
             <Route path="/profile">
-              {this.state.space && (
-                <Profile
-                  box={this.state.box}
-                  space={this.state.space}
-                  accounts={this.state.accounts}
-                  threeBoxProfile={this.state.threeBoxProfile}
-                />
-              )}
-              {!this.state.space && <ConnectWallet />}
+              <Profile
+                box={this.state.box}
+                space={this.state.space}
+                accounts={this.state.accounts}
+                threeBoxProfile={this.state.threeBoxProfile}
+                walletConnected={this.state.walletConnected}
+              />
             </Route>
             <Route path="/store">
-              {this.state.space && (
-                <Store
-                  thread={this.state.thread}
-                  storePosts={this.state.storePosts}
-                  storeProfile={this.state.storeProfile}
-                  storeAccount={this.state.storeAccount}
-                  space={this.state.space}
-                  box={this.state.box}
-                  getStorePosts={this.getStorePosts.bind(this)}
-                  getStoreProfile={this.getStoreProfile.bind(this)}
-                  usersAddress={
-                    this.state.accounts ? this.state.accounts[0] : null
-                  }
-                />
-              )}
-              {!this.state.space && <ConnectWallet />}
+              <Store
+                thread={this.state.thread}
+                storePosts={this.state.storePosts}
+                storeProfile={this.state.storeProfile}
+                storeAccount={this.state.storeAccount}
+                space={this.state.space}
+                box={this.state.box}
+                getStorePosts={this.getStorePosts.bind(this)}
+                getStoreProfile={this.getStoreProfile.bind(this)}
+                usersAddress={
+                  this.state.accounts ? this.state.accounts[0] : null
+                }
+                walletConnected={this.state.walletConnected}
+              />
             </Route>
             <Route path="/my-store">
-              {this.state.space && (
-                <MyStore
-                  thread={this.state.thread}
-                  posts={this.state.posts}
-                  submarketThread={this.state.submarketThread}
-                  submarketPosts={this.state.submarketPosts}
-                  getSubmarketThread={this.getSubmarketThread.bind(this)}
-                  space={this.state.space}
-                  box={this.state.box}
-                  getListingsThread={this.getListingsThread.bind(this)}
-                  usersAddress={
-                    this.state.accounts ? this.state.accounts[0] : null
-                  }
-                  threadId={this.state.threadId}
-                />
-              )}
-              {!this.state.space && <ConnectWallet />}
+              <MyStore
+                thread={this.state.thread}
+                posts={this.state.posts}
+                submarketThread={this.state.submarketThread}
+                submarketPosts={this.state.submarketPosts}
+                getSubmarketThread={this.getSubmarketThread.bind(this)}
+                space={this.state.space}
+                box={this.state.box}
+                getListingsThread={this.getListingsThread.bind(this)}
+                usersAddress={
+                  this.state.accounts ? this.state.accounts[0] : null
+                }
+                threadId={this.state.threadId}
+                walletConnected={this.state.walletConnected}
+              />
             </Route>
             <Route path="/orders">
-              {this.state.space && (
-                <Orders
-                  space={this.state.space}
-                  box={this.state.box}
-                  getTestnetReceipts={this.getTestnetReceipts.bind(this)}
-                  testnetReceipts={this.state.testnetReceipts}
-                  testnetReceiptItems={this.state.testnetReceiptItems}
-                  usersAddress={
-                    this.state.accounts ? this.state.accounts[0] : null
-                  }
-                />
-              )}
-              {!this.state.space && <ConnectWallet />}
+              <Orders
+                space={this.state.space}
+                box={this.state.box}
+                getTestnetReceipts={this.getTestnetReceipts.bind(this)}
+                testnetReceipts={this.state.testnetReceipts}
+                testnetReceiptItems={this.state.testnetReceiptItems}
+                usersAddress={
+                  this.state.accounts ? this.state.accounts[0] : null
+                }
+                walletConnected={this.state.walletConnected}
+              />
             </Route>
             <Route path="/inbox">
-              {this.state.space && (
-                <Inbox
-                  space={this.state.space}
-                  box={this.state.box}
-                  inboxThread={this.state.inboxThread}
-                  inboxMessages={this.state.inboxMessages}
-                  getInboxThread={this.getInboxThread.bind(this)}
-                  usersAddress={
-                    this.state.accounts ? this.state.accounts[0] : null
-                  }
-                />
-              )}
-              {!this.state.space && <ConnectWallet />}
+              <Inbox
+                space={this.state.space}
+                box={this.state.box}
+                inboxThread={this.state.inboxThread}
+                inboxMessages={this.state.inboxMessages}
+                getInboxThread={this.getInboxThread.bind(this)}
+                usersAddress={
+                  this.state.accounts ? this.state.accounts[0] : null
+                }
+                walletConnected={this.state.walletConnected}
+              />
+            </Route>
+            <Route path="/connect-wallet">
+              <ConnectWallet
+                showConnectWalletModal={this.state.showConnectWalletModal}
+                handleWalletConnectModalClose={
+                  this.state.handleWalletConnectModalClose
+                }
+                handleWalletConnectModalShow={
+                  this.state.handleWalletConnectModalShow
+                }
+                connectWallet={this.connectWallet.bind(this)}
+                status={this.state.status}
+                onboarding={this.state.onboarding}
+                walletConnected={this.state.walletConnected}
+              />
             </Route>
             <Route path="/">
               <Home
@@ -458,6 +460,7 @@ export default class App extends Component {
                 threadId={this.state.threadId}
                 getStorePosts={this.getStorePosts.bind(this)}
                 getStoreProfile={this.getStoreProfile.bind(this)}
+                walletConnected={this.state.walletConnected}
               />
             </Route>
           </Switch>
@@ -486,17 +489,6 @@ export default class App extends Component {
             />
           )}
         </div> */}
-        <ConnectWalletModal
-          showConnectWalletModal={this.state.showConnectWalletModal}
-          handleWalletConnectModalClose={
-            this.state.handleWalletConnectModalClose
-          }
-          handleWalletConnectModalShow={this.state.handleWalletConnectModalShow}
-          connectWallet={this.connectWallet.bind(this)}
-          status={this.state.status}
-          onboarding={this.state.onboarding}
-          walletConnected={this.state.walletConnected}
-        />
       </Router>
     );
   }

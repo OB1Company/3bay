@@ -223,42 +223,64 @@ export default class Orders extends Component {
     return (
       <div className="container" style={styles.background}>
         <h1 className="brand-font">Purchases</h1>
-        <Container style={{ marginTop: "50px" }}>
-          {!this.props.testnetReceiptItems && (
-            <div style={{ width: "60px", margin: "auto" }}>
-              <BounceLoader color={"blue"} />
-            </div>
-          )}
-          {this.props.testnetReceiptItems && (
-            <Row>
-              <Col sm={12}>
-                {this.props.testnetReceiptItems.length >= 1 &&
-                  this.props.testnetReceiptItems.map((post, i) => {
-                    return (
-                      <OrderItems
-                        post={post}
-                        item={post.message}
-                        key={i}
-                        threeBox={this.props.threeBox}
-                        space={this.props.space}
-                        box={this.props.box}
-                        usersAddress={this.props.usersAddress}
-                        getTestnetReceipts={this.props.getTestnetReceipts}
-                        testnetReceipts={this.props.testnetReceipts}
-                        testnetReceiptItems={this.props.testnetReceiptItems}
-                        i={i}
-                      />
-                    );
-                  })}
-                {this.props.testnetReceiptItems.length === 0 && (
-                  <p className="brand-font" style={{ textAlign: "left" }}>
-                    You have no orders!
-                  </p>
-                )}
-              </Col>
-            </Row>
-          )}
-        </Container>
+        {!this.props.space ? (
+          <Row>
+            <Col sm={2}></Col>
+            <Col sm={8}>
+              <p
+                className="brand-font"
+                style={{ marginTop: "20px", fontSize: "18px" }}>
+                Please connect wallet
+              </p>
+            </Col>
+            <Col sm={2}></Col>
+          </Row>
+        ) : (
+          <Container style={{ marginTop: "50px" }}>
+            {!this.props.testnetReceiptItems && (
+              <div style={{ width: "60px", margin: "auto" }}>
+                <BounceLoader color={"blue"} />
+              </div>
+            )}
+            {this.props.testnetReceiptItems && (
+              <Row>
+                <Col sm={12}>
+                  {this.props.testnetReceiptItems.length >= 1 &&
+                    this.props.testnetReceiptItems.map((post, i) => {
+                      return (
+                        <OrderItems
+                          post={post}
+                          item={post.message}
+                          key={i}
+                          threeBox={this.props.threeBox}
+                          space={this.props.space}
+                          box={this.props.box}
+                          usersAddress={this.props.usersAddress}
+                          getTestnetReceipts={this.props.getTestnetReceipts}
+                          testnetReceipts={this.props.testnetReceipts}
+                          testnetReceiptItems={this.props.testnetReceiptItems}
+                          i={i}
+                        />
+                      );
+                    })}
+                  {this.props.testnetReceiptItems.length === 0 && (
+                    <Row>
+                      <Col sm={2}></Col>
+                      <Col sm={8}>
+                        <p
+                          className="brand-font"
+                          style={{ textAlign: "left", marginBottom: "0" }}>
+                          You have no purchases yet!
+                        </p>
+                      </Col>
+                      <Col sm={2}></Col>
+                    </Row>
+                  )}
+                </Col>
+              </Row>
+            )}
+          </Container>
+        )}
       </div>
     );
   }

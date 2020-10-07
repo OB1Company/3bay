@@ -107,24 +107,28 @@ export default class Nav extends Component {
           </Col>
           <Col sm={3}>
             {this.props.walletConnected === false && (
-              <Button
-                className="btn btn-dark brand-font float-sm-right"
-                onClick={this.props.handleWalletConnectModalShow}
-                style={{ fontWeight: "bold" }}>
-                Connect wallet
-              </Button>
+              <Link to="/connect-wallet">
+                <Button
+                  className="btn btn-dark brand-font float-sm-right"
+                  // onClick={this.props.handleWalletConnectModalShow}
+                  style={{ fontWeight: "bold" }}>
+                  Connect wallet
+                </Button>
+              </Link>
             )}
             {this.props.walletConnected === true && (
-              <Button
-                className="btn brand-font float-sm-right"
-                style={styles.connected}>
-                {this.props.usersAddress.substring(0, 3)}...
-                {this.props.usersAddress.substring(
-                  this.props.usersAddress.length - 3,
-                  this.props.usersAddress.length
-                )}
-                <span class="dot" style={styles.dot}></span>
-              </Button>
+              <Link to="/connect-wallet">
+                <Button
+                  className="btn brand-font float-sm-right"
+                  style={styles.connected}>
+                  {this.props.usersAddress.substring(0, 3)}...
+                  {this.props.usersAddress.substring(
+                    this.props.usersAddress.length - 3,
+                    this.props.usersAddress.length
+                  )}
+                  <span className="dot" style={styles.dot}></span>
+                </Button>
+              </Link>
             )}
           </Col>
         </ul>

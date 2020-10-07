@@ -26,7 +26,7 @@
 }
 /* TODO Fix this  */
 .modal {
-  width : 100% !important;
+  width: 100% !important;
   z-index: 2000 !important;
 }
 .modal-content {
@@ -43,6 +43,6 @@
   max-width: 100% !important;
 }
 
-.comments_footer { 
+.comments_footer {
   display: none !important;
 }
