@@ -2,9 +2,63 @@
 
 # Spendly
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Spendly is a web-based decentralized marketplace built with 3Box + IPFS, using the DAI stablecoin as the medium-of-exchange.
 
-## Available Scripts
+**Features:**
+
++ Submarkets => topically themed markets that aggregate similar goods and services
++ Offline asynchronous messaging and orders (i.e. you can get messages/orders while you're AFK)
++ Store data (i.e. listings, orders, messages) follow your ETH account
++ Web and mobile-web accessible
+
+**To do:**
+
+- [ ] Support escrowed payments
+- [ ] Generalized chat messaging
+- [ ] Custom store name, header image etc
+- [ ] Prompt for shipping address in purchase flow
+- [ ] Display shipping address in order message
+- [ ] Support layer-2 payments (e.g. optimisic rollup, Loopring, xDAI etc)
+- [ ] Display admins in Home sidebar
+- [ ] Submarket directory
+- [ ] URL paths for stores and listings
+- [ ] Support other ETH wallets
+- [ ] Support disconnecting a wallet
+- [ ] Support caching ETH account login status
+
+**Ideas:**
+
+- Governing DAO for the marketplace
+  - Membership in DAO based on holding a token
+  - Tokens are distributed to buyers/sellers interacting via escrow smart contract
+  - Marketplace takes a transaction fee that goes into DAO treasury
+  - DAO members vote on spending treasury funds for maintenance of the protocol
+    - Treasury can be used to supply liquidity to other DeFi protocols, earning interest pro-rata for DAO members
+- Account receivable market
+  - Alice is a seller
+  - Alice makes a sale of $20 DAI to Bob (the buyer)
+  - Bob deposits $20 DAI into the escrow smart contract
+  - This $20 DAI, which is an account receivable, isn't released to the Alice until after 30 days
+    - Bob has 30 days to dispute the transaction if something goes wrong
+  - Alice turns around and sells her $20 DAI account receivable for $18 DAI
+    - She needs to stake collateral in another stablecoin to do this (e.g $20 of USDC)
+  - Charlie comes along and pays $18 DAI immediately to Alice in exchange for $20 DAI to be delivered in 30 days
+  - If the order isn't disputed after 30 days:
+    - Charlie gets $20 DAI, and he only had to pay $18 DAI and wait 30 days to get it
+    - Alice gets her collateral back, which she can reuse for future transactions
+  - If the order is disputed and Alice is found at fault:
+    - Charlie would still receive $20 DAI
+    - Charlie would have her collateral (i.e. $20 USDC) slashed to reimburse Bob
+  
+## License
+
+MIT licensed 
+
+---
+
+## Build instructions
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 In the project directory, you can run:
 
