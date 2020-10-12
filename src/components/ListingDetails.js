@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {
   Button,
+  Form,
   Image,
   Modal,
   Container,
@@ -95,6 +96,29 @@ const styles = {
     paddingLeft: "10px",
     fontFamily,
   },
+  addressName: {
+    fontSize: "20px",
+    fontWeight: "bold",
+    textAlign: "left",
+    height: "32px",
+    lineHeight: "25px",
+    margin: "0px",
+    padding: "0px",
+    fontFamily,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  },
+};
+
+const blankAddress = {
+  name: "",
+  address1: "",
+  address2: "",
+  city: "",
+  state: "",
+  zip: "",
+  country: "",
 };
 
 export default class ListingDetails extends Component {
@@ -102,10 +126,25 @@ export default class ListingDetails extends Component {
     alert: false,
     alertStatus: "",
     purchased: false,
+    addressModal: false,
+    handleAddressShow: () => this.setState({ addressModal: true }),
+    handleAddressClose: () => this.setState({ addressModal: false }),
     handleAlertShow: () => this.setState({ alert: true }),
     handleStatusChange: (status) => this.setState({ alertStatus: status }),
     handlePurchased: () => this.setState({ purchased: true }),
+    name: "",
+    address1: "",
+    address2: "",
+    city: "",
+    state: "",
+    zip: "",
+    country: "",
   };
+
+  handleChange = (event) => {
+    this.setState(Object.assign({ [event.target.name]: event.target.value }));
+  };
+
   /*   sendTransaction = async (_payTheMan) => {
     const url =
       "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=USD";
@@ -192,7 +231,36 @@ export default class ListingDetails extends Component {
     }
   }; */
 
-  sendTestnetDAI = async (_payTheMan) => {
+  // Check if the listing requires a shipping address; trigger modal if so
+  checkShippingAddress = async (_getShippingAddress) => {
+    if (this.props.post.message.needsAddress === true) {
+      this.state.handleAddressShow();
+    } else {
+      this.sendTestnetDAI();
+    }
+  };
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    this.sendTestnetDAI({
+      name: this.state.name,
+      address1: this.state.address1,
+      address2: this.state.address2,
+      city: this.state.city,
+      state: this.state.state,
+      zip: this.state.zip,
+      country: this.state.country,
+    });
+
+    this.setState(Object.assign({}, blankAddress));
+    this.state.handleAddressClose();
+  };
+
+  report = async (_shippingAddress) => {
+    console.log(_shippingAddress);
+  };
+
+  sendTestnetDAI = async (_shippingAddress) => {
     // Get addresses
     this.state.handleAlertShow();
     this.state.handleStatusChange("Working... (1/5)");
@@ -206,6 +274,12 @@ export default class ListingDetails extends Component {
     const handleStatusChange = (status) =>
       this.state.handleStatusChange(status);
     const handlePurchased = () => this.state.handlePurchased();
+    let shippingAddress = blankAddress;
+
+    // Create an empty shipping address object for non-physical listings
+    if (_shippingAddress) {
+      shippingAddress = _shippingAddress;
+    }
 
     // Get exchange rate for coin
     const url =
@@ -243,7 +317,7 @@ export default class ListingDetails extends Component {
         .transfer(toAddress, value)
         .send({ from: fromAddress, gas: gasLimit })
         .on("transactionHash", async function(hash) {
-          handleStatusChange("Transaction sent. (2/5");
+          handleStatusChange("Transaction sent... (2/5)");
 
           // 1. Create a thread for the order [DONE]
           const orderNumber = new Date().getTime();
@@ -267,16 +341,19 @@ export default class ListingDetails extends Component {
             inboxThreadAddress: post.message.inboxThreadAddress,
             orderThreadAddress: orderThreadAddress,
             txHash: hash,
+            shippingAddress: shippingAddress,
           };
 
           // 2. Add transaction to order history [DONE]
-          await testnetReceipts.post(receipt);
+          const addTestnetReceipt = await testnetReceipts.post(receipt);
+          console.log(addTestnetReceipt);
           getTestnetReceipts();
-          handleStatusChange("Purchase order saved. (3/5");
+          handleStatusChange("Purchase order saved... (3/5)");
 
           // 3. Add transaction to order thread [DONE]
-          await orderThread.post(receipt);
-          handleStatusChange("Order details saved. (4/5");
+          const addReceiptToOrder = await orderThread.post(receipt);
+          console.log(addReceiptToOrder);
+          handleStatusChange("Order details saved... (4/5)");
 
           // 4. Add order message to inbox of the seller [DONE]
           let message = {
@@ -287,8 +364,9 @@ export default class ListingDetails extends Component {
           const sellerInbox = await space.joinThreadByAddress(
             post.message.inboxThreadAddress
           );
-          await sellerInbox.post(message);
-          handleStatusChange("Purchase order message sent. (5/5");
+          const addMessageToInbox = await sellerInbox.post(message);
+          console.log(addMessageToInbox);
+          handleStatusChange("Purchase order message sent... (5/5)");
           handlePurchased();
           handleStatusChange("Purchase complete!");
           // handleToastShow();
@@ -389,7 +467,9 @@ export default class ListingDetails extends Component {
                     // onClick={this.state.handleShow}
                     style={styles.buyNowButton}
                     onClick={
-                      this.props.space ? this.sendTestnetDAI : this.connectAlert
+                      this.props.space
+                        ? this.checkShippingAddress
+                        : this.connectAlert
                     }>
                     BUY NOW
                   </Button>
@@ -451,6 +531,109 @@ export default class ListingDetails extends Component {
               {this.state.alertStatus}
             </Alert>
           </Modal.Footer>
+        </Modal>
+        <Modal
+          onHide={this.state.handleAddressClose}
+          className="my-modal"
+          size="lg"
+          show={this.state.addressModal}
+          animation={false}
+          style={{ background: "rgb(0,0,0,0.7)" }}>
+          <Modal.Header closeButton>
+            <Modal.Title style={styles.name}>Address</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form
+              className="brand-font"
+              style={{ marginTop: "10px" }}
+              onSubmit={this.handleSubmit}
+              autoComplete="off">
+              <Form.Group controlId="formGridName">
+                <Form.Label className="float-sm-left">Name</Form.Label>
+                <Form.Control
+                  placeholder="Enter name"
+                  name="name"
+                  value={this.state.name}
+                  onChange={this.handleChange}
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group controlId="formGridAddress1">
+                <Form.Label className="float-sm-left">
+                  Address line 1
+                </Form.Label>
+                <Form.Control
+                  placeholder="1234 Main St"
+                  name="address1"
+                  value={this.state.address1}
+                  onChange={this.handleChange}
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group controlId="formGridAddress2">
+                <Form.Label className="float-sm-left">
+                  Address line 2
+                </Form.Label>
+                <Form.Control
+                  placeholder="Apartment, studio, or floor"
+                  name="address2"
+                  value={this.state.address2}
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+
+              <Form.Group controlId="formGridCity">
+                <Form.Label className="float-sm-left">City</Form.Label>
+                <Form.Control
+                  placeholder="Enter city"
+                  name="city"
+                  value={this.state.city}
+                  onChange={this.handleChange}
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group controlId="formGridState">
+                <Form.Label className="float-sm-left">State</Form.Label>
+                <Form.Control
+                  placeholder="Enter state"
+                  name="state"
+                  value={this.state.state}
+                  onChange={this.handleChange}
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group controlId="formGridZip">
+                <Form.Label className="float-sm-left">Zip/Postcode</Form.Label>
+                <Form.Control
+                  placeholder="Enter zip or postcode"
+                  name="zip"
+                  value={this.state.zip}
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+
+              <Form.Group
+                controlId="formGridCountry"
+                style={{ marginBottom: "30px" }}>
+                <Form.Label className="float-sm-left">Country</Form.Label>
+                <Form.Control
+                  placeholder="Enter country"
+                  name="country"
+                  value={this.state.country}
+                  onChange={this.handleChange}
+                  required
+                />
+              </Form.Group>
+
+              <Button className="brand-font" variant="dark" type="submit">
+                Submit
+              </Button>
+            </Form>
+          </Modal.Body>
         </Modal>
       </>
     );
