@@ -19,8 +19,8 @@ Spendly is a web-based decentralized marketplace built with 3Box + IPFS, using t
 - [ ] Support escrowed payments
 - [ ] Generalized chat messaging
 - [ ] Custom store name, header image etc
-- [ ] Prompt for shipping address in purchase flow
-- [ ] Display shipping address in order message
+- [x] Prompt for shipping address in purchase flow
+- [x] Display shipping address in order message
 - [ ] Support layer-2 payments (e.g. optimisic rollup, Loopring, xDAI etc)
 - [ ] Display admins in Home sidebar
 - [ ] Submarket directory
