@@ -59,13 +59,12 @@ class InboxMessages extends Component {
   };
 
   loadTheOrder = async (_stuff) => {
-    // To do: add logic to open order thread here, add to state, and pass it to OrderDetails
+    this.setState({ show: true });
     const space = this.props.space;
     const orderNumber = this.props.item.messageId;
     this.setState({ orderNumber });
     const orderThread = await space.joinThreadByAddress(orderNumber);
     this.setState({ orderThread }, () => this.getOrderThread());
-    this.setState({ show: true });
   };
 
   async getOrderThread() {
