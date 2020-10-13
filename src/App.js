@@ -4,6 +4,7 @@ import Box from "3box";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Nav from "./components/Nav";
+import history from "./utils/history";
 // import ChatBox from "3box-chatbox-react";
 
 import ConnectWallet from "./pages/ConnectWallet";
@@ -68,7 +69,7 @@ export default class App extends Component {
     this.setState({ threadId }, () => this.getSubmarketPosts(threadId));
 
     // Create and fetch the listings thread of admin store
-    const storePosts = await Box.getThread(
+/*     const storePosts = await Box.getThread(
       SPACE_NAME,
       "listing_list",
       admin,
@@ -79,7 +80,7 @@ export default class App extends Component {
     this.setState({
       storeAccount: admin,
       storeProfile: storeProfile,
-    });
+    }); */
   }
 
   /**
@@ -321,7 +322,7 @@ export default class App extends Component {
     }
 
     return (
-      <Router>
+      <Router history={history}>
         <div>
           <Nav
             inboxMessages={this.state.inboxMessages}
@@ -336,6 +337,25 @@ export default class App extends Component {
             usersAddress={this.state.accounts ? this.state.accounts[0] : null}
           />
           <Switch>
+            <Route
+              path="/store/:threadId"
+              render={(props) => (
+                <Store
+                  {...props}
+                  thread={this.state.thread}
+                  storePosts={this.state.storePosts}
+                  storeProfile={this.state.storeProfile}
+                  storeAccount={this.state.storeAccount}
+                  space={this.state.space}
+                  box={this.state.box}
+                  getStorePosts={this.getStorePosts.bind(this)}
+                  getStoreProfile={this.getStoreProfile.bind(this)}
+                  usersAddress={
+                    this.state.accounts ? this.state.accounts[0] : null
+                  }
+                  walletConnected={this.state.walletConnected}
+                />
+              )}></Route>
             <Route path="/profile">
               <Profile
                 box={this.state.box}

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { CardColumns } from "react-bootstrap";
+import { CardColumns, Col } from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
 
 import ListingCard from "../components/ListingCard.js";
@@ -14,6 +14,19 @@ const styles = {
 };
 
 export default class Store extends Component {
+  async componentDidMount() {
+    if (this.props.match && this.props.match.params) {
+      const storeAccount = this.props.match.params.threadId;
+      console.log(storeAccount);
+      // this.props.getStorePosts(this.props.match.params.threadId);
+      this.setState(
+        { storeAccount: storeAccount },
+        () => this.props.getStorePosts(storeAccount),
+        this.props.getStoreProfile(storeAccount)
+      );
+    }
+  }
+
   render() {
     return (
       <div className="container" style={styles.background}>
@@ -30,12 +43,24 @@ export default class Store extends Component {
                 )}`}
           </h1>
         )}
+        {!this.props.match && <h1 className="brand-font">Store not found</h1>}
         <p className="brand-font">Storefront</p>
         <div className="row" style={{ marginTop: "50px" }}>
-          {!this.props.storePosts && (
-            <div style={{ width: "60px", margin: "auto" }}>
-              <BounceLoader color={"blue"} />
-            </div>
+          {this.props.match &&
+            this.props.params &&
+            this.props.params.threadId &&
+            !this.props.storePosts && (
+              <div style={{ width: "60px", margin: "auto" }}>
+                <BounceLoader color={"black"} />
+              </div>
+            )}
+          {!this.props.match && (
+            <Col sm={12}>
+              <p className="brand-font">
+                Please include a store account in the url path (e.g.
+                /store/0xd664d46e6adc48a66244310223bfbb89ed42b12c).
+              </p>
+            </Col>
           )}
           {this.props.storePosts && (
             <CardColumns style={styles.column}>

@@ -509,10 +509,7 @@ export default class ListingDetails extends Component {
                     <Row style={{ marginTop: "15px" }}>
                       <Link
                         className="brand-font"
-                        to="/store"
-                        onClick={() =>
-                          this.loadStorePosts(this.props.post.message.account)
-                        }>
+                        to={`/store/` + this.props.post.message.account}>
                         Visit store
                       </Link>
                     </Row>
