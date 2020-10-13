@@ -173,7 +173,7 @@ export default ({
       <div className="row" style={{ marginTop: "50px" }}>
         {!submarketPosts && (
           <div style={{ width: "60px", margin: "auto" }}>
-            <BounceLoader color={"blue"} />
+            <BounceLoader color={"black"} />
           </div>
         )}
         {submarketPosts && (

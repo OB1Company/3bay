@@ -239,7 +239,7 @@ export default class Orders extends Component {
           <Container style={{ marginTop: "50px" }}>
             {!this.props.testnetReceiptItems && (
               <div style={{ width: "60px", margin: "auto" }}>
-                <BounceLoader color={"blue"} />
+                <BounceLoader color={"black"} />
               </div>
             )}
             {this.props.testnetReceiptItems && (

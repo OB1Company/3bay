@@ -35,7 +35,7 @@ export default class AddListing extends Component {
         </h1>
         {!this.props.thread && (
           <div style={{ width: "100px", margin: "auto" }}>
-            <BounceLoader color={"blue"} />
+            <BounceLoader color={"black"} />
           </div>
         )}
         {this.props.thread && this.props.submarketThread && (

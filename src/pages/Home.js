@@ -262,7 +262,7 @@ export default class Home extends Component {
         <div className="row" style={{ marginTop: "10px" }}>
           {!this.props.submarketPosts && (
             <div style={{ width: "60px", margin: "auto" }}>
-              <BounceLoader color={"blue"} />
+              <BounceLoader color={"black"} />
             </div>
           )}
           {this.props.submarketPosts && (

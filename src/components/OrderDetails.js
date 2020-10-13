@@ -280,7 +280,7 @@ export default class OrderDetails extends Component {
                 <Col sm={12}>
                   {!this.props.orderItems && (
                     <div style={{ width: "60px", margin: "auto" }}>
-                      <BounceLoader color={"blue"} />
+                      <BounceLoader color={"black"} />
                     </div>
                   )}
                   {this.props.orderItems && (

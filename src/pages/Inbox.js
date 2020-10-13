@@ -182,7 +182,7 @@ export default class Inbox extends Component {
           <Container style={{ marginTop: "50px" }}>
             {!this.props.inboxMessages && (
               <div style={{ width: "60px", margin: "auto" }}>
-                <BounceLoader color={"blue"} />
+                <BounceLoader color={"black"} />
               </div>
             )}
             {this.props.inboxMessages && (

@@ -35,7 +35,7 @@ export default class MyStore extends Component {
             <Row style={{ marginTop: "50px" }}>
               {!this.props.posts && (
                 <div style={{ width: "60px", margin: "auto" }}>
-                  <BounceLoader color={"blue"} />
+                  <BounceLoader color={"black"} />
                 </div>
               )}
               {this.props.posts && (
