@@ -109,10 +109,24 @@ const styles = {
     overflow: "hidden",
     textOverflow: "ellipsis",
   },
+  shippingAddressModalTitle: {
+    fontSize: "20px",
+    fontWeight: "bold",
+    textAlign: "left",
+    height: "32px",
+    lineHeight: "25px",
+    margin: "0px",
+    padding: "0px",
+    fontFamily,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  },
 };
 
 const blankAddress = {
   name: "",
+  email: "",
   address1: "",
   address2: "",
   city: "",
@@ -133,6 +147,7 @@ export default class ListingDetails extends Component {
     handleStatusChange: (status) => this.setState({ alertStatus: status }),
     handlePurchased: () => this.setState({ purchased: true }),
     name: "",
+    email: "",
     address1: "",
     address2: "",
     city: "",
@@ -244,6 +259,7 @@ export default class ListingDetails extends Component {
     event.preventDefault();
     this.sendTestnetDAI({
       name: this.state.name,
+      email: this.state.email,
       address1: this.state.address1,
       address2: this.state.address2,
       city: this.state.city,
@@ -390,7 +406,8 @@ export default class ListingDetails extends Component {
           onHide={this.props.handleClose}
           size="xl"
           show={this.props.show}
-          animation={false}>
+          animation={false}
+          style={{ background: "rgb(0,0,0,0.3)" }}>
           <Modal.Header closeButton>
             <Modal.Title style={styles.name}>
               {this.props.post.message.name
@@ -535,9 +552,11 @@ export default class ListingDetails extends Component {
           size="lg"
           show={this.state.addressModal}
           animation={false}
-          style={{ background: "rgb(0,0,0,0.7)" }}>
+          style={{ background: "rgb(0,0,0,0)" }}>
           <Modal.Header closeButton>
-            <Modal.Title style={styles.name}>Address</Modal.Title>
+            <Modal.Title style={styles.shippingAddressModalTitle}>
+              Please enter your shipping address
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form
@@ -546,7 +565,9 @@ export default class ListingDetails extends Component {
               onSubmit={this.handleSubmit}
               autoComplete="off">
               <Form.Group controlId="formGridName">
-                <Form.Label className="float-sm-left">Name</Form.Label>
+                <Form.Label className="float-sm-left">
+                  Name<span style={{ color: "red" }}>*</span>
+                </Form.Label>
                 <Form.Control
                   placeholder="Enter name"
                   name="name"
@@ -556,9 +577,23 @@ export default class ListingDetails extends Component {
                 />
               </Form.Group>
 
+              <Form.Group controlId="formGridEmail">
+                <Form.Label className="float-sm-left">
+                  Email<span style={{ color: "red" }}>*</span>
+                </Form.Label>
+                <Form.Control
+                  placeholder="satoshi@nakamoto.com"
+                  name="email"
+                  type="email"
+                  value={this.state.email}
+                  onChange={this.handleChange}
+                  required
+                />
+              </Form.Group>
+
               <Form.Group controlId="formGridAddress1">
                 <Form.Label className="float-sm-left">
-                  Address line 1
+                  Address line 1<span style={{ color: "red" }}>*</span>
                 </Form.Label>
                 <Form.Control
                   placeholder="1234 Main St"
@@ -582,7 +617,9 @@ export default class ListingDetails extends Component {
               </Form.Group>
 
               <Form.Group controlId="formGridCity">
-                <Form.Label className="float-sm-left">City</Form.Label>
+                <Form.Label className="float-sm-left">
+                  City<span style={{ color: "red" }}>*</span>
+                </Form.Label>
                 <Form.Control
                   placeholder="Enter city"
                   name="city"
@@ -593,7 +630,9 @@ export default class ListingDetails extends Component {
               </Form.Group>
 
               <Form.Group controlId="formGridState">
-                <Form.Label className="float-sm-left">State</Form.Label>
+                <Form.Label className="float-sm-left">
+                  State<span style={{ color: "red" }}>*</span>
+                </Form.Label>
                 <Form.Control
                   placeholder="Enter state"
                   name="state"
@@ -616,7 +655,9 @@ export default class ListingDetails extends Component {
               <Form.Group
                 controlId="formGridCountry"
                 style={{ marginBottom: "30px" }}>
-                <Form.Label className="float-sm-left">Country</Form.Label>
+                <Form.Label className="float-sm-left">
+                  Country<span style={{ color: "red" }}>*</span>
+                </Form.Label>
                 <Form.Control
                   placeholder="Enter country"
                   name="country"
@@ -627,7 +668,7 @@ export default class ListingDetails extends Component {
               </Form.Group>
 
               <Button className="brand-font" variant="dark" type="submit">
-                Submit
+                Confirm
               </Button>
             </Form>
           </Modal.Body>

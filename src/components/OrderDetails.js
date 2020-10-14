@@ -240,6 +240,11 @@ export default class OrderDetails extends Component {
                           ""}
                       </pre>
                       <pre style={styles.shippingAddress}>
+                        Email:{"            "}
+                        {this.props.orderPreview.message.shippingAddress
+                          .email || ""}
+                      </pre>
+                      <pre style={styles.shippingAddress}>
                         Address line 1:{"   "}
                         {this.props.orderPreview.message.shippingAddress
                           .address1 || ""}
