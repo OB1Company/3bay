@@ -90,7 +90,8 @@ export default class CreateListingModal extends Component {
           onHide={this.props.handleClose}
           size="xl"
           show={this.props.show}
-          animation={false}>
+          animation={false}
+          style={{ background: "rgb(0,0,0,0)" }}>
           <Modal.Header closeButton={false}>
             <Modal.Title style={styles.name}>
               Add listing

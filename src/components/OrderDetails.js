@@ -143,7 +143,9 @@ export default class OrderDetails extends Component {
           onHide={this.props.handleClose}
           size="lg"
           aria-labelledby="contained-modal-title-vcenter"
-          show={this.props.show}>
+          show={this.props.show}
+          animation={false}
+          style={{ background: "rgb(0,0,0,0)" }}>
           <Modal.Header closeButton>
             <Modal.Title style={styles.name}>
               {this.props.orderPreview && this.props.orderPreview.message.name

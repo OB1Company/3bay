@@ -407,7 +407,7 @@ export default class ListingDetails extends Component {
           size="xl"
           show={this.props.show}
           animation={false}
-          style={{ background: "rgb(0,0,0,0.3)" }}>
+          style={{ background: "rgb(0,0,0,0)" }}>
           <Modal.Header closeButton>
             <Modal.Title style={styles.name}>
               {this.props.post.message.name
