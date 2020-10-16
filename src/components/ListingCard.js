@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Button, Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import ListingDetails from "./ListingDetails.js";
 import { fontFamily } from "../Constants.js";
@@ -142,67 +143,71 @@ export default class ListingCard extends Component {
   render() {
     return (
       <>
-        <Card style={styles.wrapper} onClick={this.state.handleShow}>
-          <div style={styles.cardWrapper2}>
-            <div style={styles.imageContainer}>
-              <img
-                alt="Listing"
-                style={styles.image}
-                src={
-                  this.props.post.message.listingImage
-                    ? this.props.post.message.listingImage
-                    : "https://via.placeholder.com/200"
-                }
-                onError={(ev) =>
-                  (ev.target.src =
-                    "https://stleos.uq.edu.au/wp-content/uploads/2016/08/image-placeholder-350x350.png")
-                }
-              />
-              {this.props.post.message.needsAddress === true && (
-                <div style={styles.bottomRight}>
-                  <p style={styles.shippingAddress}>
-                    <span role="img" aria-label="dasShipping">
-                      📦
-                    </span>
-                  </p>
-                </div>
-              )}
-              {[this.props.post.message.account, this.props.admin].includes(
-                this.props.usersAddress
-              ) && (
-                <div style={styles.topRight}>
-                  <Button
-                    style={styles.button}
-                    onClick={
-                      this.props.home === true
-                        ? this.deleteGlobalPost
-                        : this.deletePost
-                    }>
-                    <span role="img" aria-label="dasButton">
-                      🗑️
-                    </span>
-                  </Button>
-                </div>
-              )}
+        <Link
+          to={`/` + this.props.post.message.account + `/` + this.props.post.postId}
+          style={{ color: "black" }}>
+          <Card style={styles.wrapper}>
+            <div style={styles.cardWrapper2}>
+              <div style={styles.imageContainer}>
+                <img
+                  alt="Listing"
+                  style={styles.image}
+                  src={
+                    this.props.post.message.listingImage
+                      ? this.props.post.message.listingImage
+                      : "https://via.placeholder.com/200"
+                  }
+                  onError={(ev) =>
+                    (ev.target.src =
+                      "https://stleos.uq.edu.au/wp-content/uploads/2016/08/image-placeholder-350x350.png")
+                  }
+                />
+                {this.props.post.message.needsAddress === true && (
+                  <div style={styles.bottomRight}>
+                    <p style={styles.shippingAddress}>
+                      <span role="img" aria-label="dasShipping">
+                        📦
+                      </span>
+                    </p>
+                  </div>
+                )}
+                {[this.props.post.message.account, this.props.admin].includes(
+                  this.props.usersAddress
+                ) && (
+                  <div style={styles.topRight}>
+                    <Button
+                      style={styles.button}
+                      onClick={
+                        this.props.home === true
+                          ? this.deleteGlobalPost
+                          : this.deletePost
+                      }>
+                      <span role="img" aria-label="dasButton">
+                        🗑️
+                      </span>
+                    </Button>
+                  </div>
+                )}
+              </div>
+              <div style={styles.copyWrapper}>
+                <p style={styles.name}>
+                  {this.props.post.message.name
+                    ? this.props.post.message.name
+                    : "Unnamed"}
+                </p>
+                <p style={styles.price}>
+                  $
+                  {this.props.post.message.price
+                    ? this.props.post.message.price
+                    : "0"}
+                </p>
+                <p style={styles.description}>
+                  {this.props.post.message.description}
+                </p>
+              </div>
             </div>
-            <div style={styles.copyWrapper}>
-              <p style={styles.name}>
-                {this.props.post.message.name
-                  ? this.props.post.message.name
-                  : "Unnamed"}
-              </p>
-              <p style={styles.price}>
-                $
-                {this.props.post.message.price
-                  ? this.props.post.message.price
-                  : "0"}
-              </p>
-              <p style={styles.description}>
-                {this.props.post.message.description}
-              </p>
-            </div>
-          </div>
-        </Card>
+          </Card>
+        </Link>
 
         <ListingDetails
           app={this.props.post.message}

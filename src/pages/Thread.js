@@ -1,28 +1,36 @@
-import React from "react";
-import { CardColumns, Row } from "react-bootstrap";
+import React, { Component } from "react";
+import {
+  Button,
+  CardColumns,
+  Row,
+  InputGroup,
+  FormControl,
+} from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
 import { Link } from "react-router-dom";
 
 import ListingCard from "../components/ListingCard.js";
+import CreateListingModal from "../components/CreateListingModal.js";
 
 const styles = {
-  column: {
-    width: "100%",
-    columnCount: "4",
-  },
   background: {
     textAlign: "center",
   },
-  wrapper: {
-    padding: "20px",
-    background: "rgb(0,0,0,0)",
-    borderWidth: "0",
+  column: {
+    width: "100%",
+    columnCount: "4",
   },
   slash: {
     fontSize: "13px",
     textAlign: "left",
     paddingLeft: "2px",
     paddingRight: "2px",
+  },
+  addListing: {
+    fontSize: "15px",
+    textAlign: "left",
+    cursor: "pointer",
+    color: "#0000EE",
   },
   link: {
     fontSize: "13px",
@@ -35,183 +43,291 @@ const styles = {
     textAlign: "left",
     color: "#000000",
   },
+  navInput: {
+    borderColor: "#000000",
+    borderWidth: "1",
+    borderStyle: "solid",
+  },
   submarkets: {
     fontSize: "15px",
-    textAlign: "left",
+    textAlign: "center",
     fontWeight: "bold",
     padding: "0px",
     margin: "0px",
   },
 };
 
-export default ({
-  space,
-  match,
-  globalThread,
-  threeBox,
-  box,
-  usersAddress,
-  getGlobalListingsThread,
-  admin,
-  testnetReceipts,
-  testnetReceiptItems,
-  getTestnetReceipts,
-  inboxThread,
-  inboxMessages,
-  getInboxThread,
-}) => {
-  const [submarketPosts, setSubmarketPosts] = React.useState();
-  const [submarketThread, setSubmarketThread] = React.useState();
-  const [threadId, setThreadId] = React.useState();
-  const getSubmarketPosts = React.useCallback(async () => {
-    if (!submarketThread) {
-      console.error("global listings thread not in react state");
-      return;
+export default class Home extends Component {
+  state = {
+    submarketName: "",
+    thread: null,
+    submarketThread: null,
+    show: false,
+    handleClose: () => this.setState({ show: false }),
+    handleShow: () => this.setState({ show: true }),
+  };
+
+  async componentDidMount() {
+    if (this.props.match && this.props.match.params) {
+      const threadId = this.props.match.params.threadId;
+      console.log(threadId);
+      this.setState({ threadId: threadId }, () =>
+        this.props.getSubmarketPosts(threadId)
+      );
     }
+  }
 
-    // Fetch the listings and add them to state
-    const threadPosts = await submarketThread.getPosts();
-    setSubmarketPosts(threadPosts);
-
-    // Update the state when new listings are added
-    await submarketThread.onUpdate(async () => {
-      const data = await submarketThread.getPosts();
-      setSubmarketPosts(data);
-    });
-  }, [submarketThread]); //eslint-disable-line react-hooks/exhaustive-deps
-
-  const getSubmarketThread = React.useCallback(async () => {
-    const result = await space.joinThread(threadId, {
-      firstModerator: "0xf54D276a029a49458E71167EBc25D1cCa235ee6f",
-      members: false,
-    });
-    setSubmarketThread(result);
-  }, [space, threadId]); //eslint-disable-line react-hooks/exhaustive-deps
-
-  React.useEffect(() => {
-    setThreadId(match.params.threadId);
-  }, [match]);
-
-  React.useEffect(() => {
-    if (space && threadId) {
-      getSubmarketThread();
+  async componentDidUpdate(prevProps) {
+    if (prevProps.match.params.threadId !== this.props.match.params.threadId) {
+      const threadId = this.props.match.params.threadId;
+      this.setState(
+        {
+          threadId: this.props.match.params.threadId,
+        },
+        () => this.props.getSubmarketPosts(threadId)
+      );
     }
-  }, [space, threadId]); //eslint-disable-line react-hooks/exhaustive-deps
+  }
 
-  React.useEffect(() => {
-    if (submarketThread) {
-      getSubmarketPosts();
+  // Save the listing to the user's store
+  saveListing = async (formData) => {
+    formData.account = this.props.accounts[0];
+    const threadId = this.props.threadId;
+    try {
+      await this.props.joinSubmarket(threadId);
+      await this.props.thread.post(formData);
+    } catch (err) {
+      console.log(err);
+      console.log("Error in saveListing");
     }
-  }, [submarketThread]); //eslint-disable-line react-hooks/exhaustive-deps
+    this.saveListingtoThread(formData, threadId);
+  };
 
-  return (
-    <div className="container" style={styles.background}>
-      <Row style={{ paddingBottom: "0px", justifyContent: "center" }}>
-        <p className="brand-font float-sm-left" style={styles.submarkets}>
-          Submarkets
-        </p>
-      </Row>
-      <Row style={{ justifyContent: "center" }}>
-        <Link
-          className="brand-font float-sm-left"
-          to="/"
-          style={threadId === "all" ? styles.path : styles.link}>
-          all
-        </Link>
-        <p style={styles.slash}>/</p>
-        <Link
-          className="brand-font float-sm-left"
-          to="/s/bbb"
-          style={threadId === "bbb" ? styles.path : styles.link}>
-          bbb
-        </Link>
-        <p style={styles.slash}>/</p>
-        <Link
-          className="brand-font float-sm-left"
-          to="/s/womensclothing"
-          style={threadId === "womensclothing" ? styles.path : styles.link}>
-          women's clothing
-        </Link>
-        <p style={styles.slash}>/</p>
-        <Link
-          className="brand-font float-sm-left"
-          to="/s/consumerelectronics"
-          style={
-            threadId === "consumerelectronics" ? styles.path : styles.link
-          }>
-          consumer electronics
-        </Link>
-        <p style={styles.slash}>/</p>
-        <Link
-          className="brand-font float-sm-left"
-          to="/s/sports"
-          style={threadId === "sports" ? styles.path : styles.link}>
-          sports
-        </Link>
-        <p style={styles.slash}>/</p>
-        <Link
-          className="brand-font float-sm-left"
-          to="/s/mensclothing"
-          style={threadId === "mensclothing" ? styles.path : styles.link}>
-          men's clothing
-        </Link>
-        <p style={styles.slash}>/</p>
-        <Link
-          className="brand-font float-sm-left"
-          to="/s/shoes"
-          style={threadId === "shoes" ? styles.path : styles.link}>
-          shoes
-        </Link>
-      </Row>
-      {threadId && (
-        <div>
-          <h1 className="brand-font" style={{ fontSize: "4rem" }}>
-            s/{threadId}
-          </h1>
-        </div>
-      )}
-      <div className="row" style={{ marginTop: "50px" }}>
-        {!submarketPosts && (
-          <div style={{ width: "60px", margin: "auto" }}>
-            <BounceLoader color={"black"} />
+  // Save the listing to the correct thread
+  saveListingtoThread = async (formData, threadId) => {
+    console.log(formData);
+    try {
+      const postId = await this.props.submarketThread.post(formData);
+      console.log(postId);
+    } catch (err) {
+      console.log(err);
+      console.log("Error in saveListingtoThread");
+    }
+    this.props.getListingsThread();
+    this.props.getSubmarketPosts(threadId);
+  };
+
+  // Change the submarket
+  changeSubmarket = async (threadName) => {
+    const threadId = threadName;
+    this.props.getSubmarketPosts(threadId);
+  };
+
+  handleChange = (event) => {
+    this.setState(Object.assign({ [event.target.name]: event.target.value }));
+  };
+
+  render() {
+    return (
+      <div className="container" style={styles.background}>
+        <Row style={{ paddingBottom: "0px", justifyContent: "center" }}>
+          <p className="brand-font" style={styles.submarkets}>
+            Submarkets
+          </p>
+        </Row>
+        <Row style={{ justifyContent: "center" }}>
+          <Link
+            className="brand-font float-sm-left"
+            style={this.props.threadId === "all" ? styles.path : styles.link}
+            to="/">
+            all
+          </Link>
+          <p style={styles.slash}>/</p>
+          <Link
+            className="brand-font float-sm-left"
+            style={this.props.threadId === "bbb" ? styles.path : styles.link}
+            to="/s/bbb">
+            bbb
+          </Link>
+          <p style={styles.slash}>/</p>
+          <Link
+            className="brand-font float-sm-left"
+            style={
+              this.props.threadId === "womensclothing"
+                ? styles.path
+                : styles.link
+            }
+            to="/s/womensclothing">
+            women's clothing
+          </Link>
+          <p style={styles.slash}>/</p>
+          <Link
+            className="brand-font float-sm-left"
+            style={
+              this.props.threadId === "consumerelectronics"
+                ? styles.path
+                : styles.link
+            }
+            to="/s/consumerelectronics">
+            consumer electronics
+          </Link>
+          <p style={styles.slash}>/</p>
+          <Link
+            className="brand-font float-sm-left"
+            style={this.props.threadId === "sports" ? styles.path : styles.link}
+            to="/s/sports">
+            sports
+          </Link>
+          <p style={styles.slash}>/</p>
+          <Link
+            className="brand-font float-sm-left"
+            style={
+              this.props.threadId === "mensclothing" ? styles.path : styles.link
+            }
+            to="/s/mensclothing">
+            men's clothing
+          </Link>
+          <p style={styles.slash}>/</p>
+          <Link
+            className="brand-font float-sm-left"
+            style={this.props.threadId === "shoes" ? styles.path : styles.link}
+            to="/s/shoes">
+            shoes
+          </Link>
+        </Row>
+        <Row style={{ justifyContent: "center" }}>
+          <InputGroup
+            className="mb-3"
+            size="sm"
+            style={{ width: "250px", fontSize: "13px" }}>
+            <FormControl
+              placeholder="Submarket name"
+              aria-label="Submarket name"
+              aria-describedby="basic-addon2"
+              className="brand-font"
+              name="submarketName"
+              value={this.state.submarketName}
+              onChange={this.handleChange}
+              style={styles.navInput}
+            />
+            <InputGroup.Append>
+              <Button
+                className="brand-font button btn"
+                variant="outline-secondary"
+                style={styles.navInput}
+                onClick={() =>
+                  this.changeSubmarket(
+                    this.state.submarketName === ""
+                      ? "all"
+                      : this.state.submarketName
+                  )
+                }>
+                Go
+              </Button>
+            </InputGroup.Append>
+          </InputGroup>
+        </Row>
+        {this.props.threadId && (
+          <div className="container">
+            <Row
+              style={{
+                justifyContent: "center",
+                marginTop: "20px",
+              }}>
+              <h1
+                className="brand-font"
+                style={{
+                  marginBottom: "0px",
+                }}>
+                {this.props.threadId}
+              </h1>
+            </Row>
+            <Row
+              style={{
+                justifyContent: "center",
+                marginTop: "5px",
+              }}>
+              {this.props.space ? (
+                <p
+                  className="brand-font"
+                  style={styles.addListing}
+                  onClick={this.state.handleShow}>
+                  +Add a listing
+                </p>
+              ) : (
+                <Link
+                  className="brand-font"
+                  style={styles.addListing}
+                  to="connect-wallet">
+                  +Add a listing
+                </Link>
+              )}
+            </Row>
           </div>
         )}
-        {submarketPosts && (
-          <CardColumns style={styles.column}>
-            {submarketPosts.length >= 1 &&
-              submarketPosts.map((post, i) => {
-                return (
-                  <ListingCard
-                    globalThread={globalThread}
-                    post={post}
-                    key={i}
-                    threeBox={threeBox}
-                    space={space}
-                    box={box}
-                    usersAddress={usersAddress}
-                    getGlobalListingsThread={getGlobalListingsThread}
-                    i={i}
-                    admin={admin}
-                    home={true}
-                    testnetReceipts={testnetReceipts}
-                    testnetReceiptItems={testnetReceiptItems}
-                    getTestnetReceipts={getTestnetReceipts}
-                    inboxThread={inboxThread}
-                    inboxMessages={inboxMessages}
-                    getInboxThread={getInboxThread}
-                  />
-                );
-              })}
-            {submarketPosts.length === 0 && (
-              <div className="container">
-                <p className="brand-font" style={{ textAlign: "left" }}>
-                  Nothing here yet!
-                </p>
-              </div>
-            )}
-          </CardColumns>
+        <CreateListingModal
+          threeBox={this.props.threeBox}
+          accounts={this.props.accounts}
+          space={this.props.space}
+          box={this.props.box}
+          usersAddress={this.props.usersAddress}
+          handleClose={this.state.handleClose}
+          handleShow={this.state.handleShow}
+          show={this.state.show}
+          submarketThread={this.props.submarketThread}
+          getSubmarketThread={this.props.getSubmarketThread}
+          getListingsThread={this.props.getListingsThread}
+          threadId={this.props.threadId}
+          saveListing={this.saveListing}
+          inboxThreadAddress={this.props.inboxThreadAddress}
+        />
+        <div className="row" style={{ marginTop: "10px" }}>
+          {!this.props.submarketPosts && (
+            <div style={{ width: "60px", margin: "auto" }}>
+              <BounceLoader color={"black"} />
+            </div>
+          )}
+          {this.props.submarketPosts && (
+            <CardColumns style={styles.column}>
+              {this.props.submarketPosts.length >= 1 &&
+                this.props.submarketPosts.map((post, i) => {
+                  return (
+                    <ListingCard
+                      post={post}
+                      key={i}
+                      threeBox={this.props.threeBox}
+                      space={this.props.space}
+                      box={this.props.box}
+                      usersAddress={this.props.usersAddress}
+                      submarketThread={this.props.submarketThread}
+                      getSubmarketThread={this.props.getSubmarketThread}
+                      i={i}
+                      admin={this.props.admin}
+                      home={true}
+                      testnetReceipts={this.props.testnetReceipts}
+                      testnetReceiptItems={this.props.testnetReceiptItems}
+                      getTestnetReceipts={this.props.getTestnetReceipts}
+                      inboxThread={this.props.inboxThread}
+                      inboxMessages={this.props.inboxMessages}
+                      getInboxThread={this.props.getInboxThread}
+                      threadId={this.props.threadId}
+                      getStorePosts={this.props.getStorePosts}
+                      getStoreProfile={this.props.getStoreProfile}
+                      joinSubmarket={this.props.joinSubmarket}
+                    />
+                  );
+                })}
+            </CardColumns>
+          )}
+        </div>
+        {this.props.submarketPosts && this.props.submarketPosts.length === 0 && (
+          <div className="row">
+            <p className="brand-font" style={{ textAlign: "left" }}>
+              Nothing here yet!
+            </p>
+          </div>
         )}
       </div>
-    </div>
-  );
-};
+    );
+  }
+}

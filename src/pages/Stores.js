@@ -16,9 +16,9 @@ const styles = {
 export default class Store extends Component {
   async componentDidMount() {
     if (this.props.match && this.props.match.params) {
-      const storeAccount = this.props.match.params.threadId;
+      const storeAccount = this.props.match.params.account;
       console.log(storeAccount);
-      // this.props.getStorePosts(this.props.match.params.threadId);
+      // this.props.getStorePosts(this.props.match.params.account);
       this.setState(
         { storeAccount: storeAccount },
         () => this.props.getStorePosts(storeAccount),
@@ -48,7 +48,7 @@ export default class Store extends Component {
         <div className="row" style={{ marginTop: "50px" }}>
           {this.props.match &&
             this.props.params &&
-            this.props.params.threadId &&
+            this.props.params.account &&
             !this.props.storePosts && (
               <div style={{ width: "60px", margin: "auto" }}>
                 <BounceLoader color={"black"} />

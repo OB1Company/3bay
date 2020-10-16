@@ -11,9 +11,11 @@ import ConnectWallet from "./pages/ConnectWallet";
 import MyStore from "./pages/MyStore";
 import Store from "./pages/Stores";
 import Home from "./pages/Home";
+import Thread from "./pages/Thread";
 import Profile from "./pages/Profile";
 import Orders from "./pages/Orders";
 import Inbox from "./pages/Inbox";
+import ListingDetails from "./pages/ListingDetails";
 import { SPACE_NAME } from "./Constants";
 
 // 3Box identity
@@ -64,12 +66,8 @@ export default class App extends Component {
     const admin = "0xf54d276a029a49458e71167ebc25d1cca235ee6f";
     this.setState({ admin });
 
-    // Set default threadId
-    const threadId = "all";
-    this.setState({ threadId }, () => this.getSubmarketPosts(threadId));
-
     // Create and fetch the listings thread of admin store
-/*     const storePosts = await Box.getThread(
+    /*     const storePosts = await Box.getThread(
       SPACE_NAME,
       "listing_list",
       admin,
@@ -182,6 +180,11 @@ export default class App extends Component {
     this.setState({ globalChat });
   }
 
+  // Change threadId
+  async changeThread(threadId) {
+    this.setState({ threadId: threadId });
+  }
+
   // Get submarket posts without joining the thread
   async getSubmarketPosts(threadId) {
     this.setState({ threadId: threadId });
@@ -256,6 +259,15 @@ export default class App extends Component {
     // Fetch the profile and add it to state
     const storeProfile = await Box.getProfile(storeAccount);
     this.setState({ storeProfile: storeProfile, storeAccount: storeAccount });
+  }
+
+  // Get a post from a thread without joining the thread
+  async getPost(postId) {
+    // Fetch the post and add it to state
+    const ipfs = await Box.getIPFS();
+    const data = await ipfs.dag.get(postId);
+    const threadPost = data.value.payload.value;
+    this.setState({ threadPost });
   }
 
   // Get posts in the user's inbox thread
@@ -337,23 +349,74 @@ export default class App extends Component {
             usersAddress={this.state.accounts ? this.state.accounts[0] : null}
           />
           <Switch>
+            <Route path="/connect-wallet">
+              <ConnectWallet
+                showConnectWalletModal={this.state.showConnectWalletModal}
+                handleWalletConnectModalClose={
+                  this.state.handleWalletConnectModalClose
+                }
+                handleWalletConnectModalShow={
+                  this.state.handleWalletConnectModalShow
+                }
+                connectWallet={this.connectWallet.bind(this)}
+                status={this.state.status}
+                onboarding={this.state.onboarding}
+                walletConnected={this.state.walletConnected}
+              />
+            </Route>
             <Route
-              path="/store/:threadId"
+              path="/s/:threadId"
               render={(props) => (
-                <Store
+                <Thread
                   {...props}
-                  thread={this.state.thread}
-                  storePosts={this.state.storePosts}
-                  storeProfile={this.state.storeProfile}
-                  storeAccount={this.state.storeAccount}
                   space={this.state.space}
                   box={this.state.box}
-                  getStorePosts={this.getStorePosts.bind(this)}
-                  getStoreProfile={this.getStoreProfile.bind(this)}
                   usersAddress={
                     this.state.accounts ? this.state.accounts[0] : null
                   }
+                  thread={this.state.thread}
+                  accounts={this.state.accounts}
+                  admin={this.state.admin}
+                  getSubmarketPosts={this.getSubmarketPosts.bind(this)}
+                  testnetReceipts={this.state.testnetReceipts}
+                  testnetReceiptItems={this.state.testnetReceiptItems}
+                  getTestnetReceipts={this.getTestnetReceipts.bind(this)}
+                  inboxThread={this.state.inboxThread}
+                  inboxMessages={this.state.inboxMessages}
+                  inboxThreadAddress={this.state.inboxThreadAddress}
+                  getInboxThread={this.getInboxThread.bind(this)}
+                  submarketThread={this.state.submarketThread}
+                  submarketPosts={this.state.submarketPosts}
+                  getSubmarketThread={this.getSubmarketThread.bind(this)}
+                  getListingsThread={this.getListingsThread.bind(this)}
+                  joinSubmarket={this.joinSubmarket.bind(this)}
+                  threadId={this.state.threadId}
+                  getStorePosts={this.getStorePosts.bind(this)}
+                  getStoreProfile={this.getStoreProfile.bind(this)}
                   walletConnected={this.state.walletConnected}
+                />
+              )}></Route>
+            <Route
+              path="/:account/:postId"
+              render={(props) => (
+                <ListingDetails
+                  {...props}
+                  threeBox={this.state.threeBox}
+                  space={this.state.space}
+                  box={this.state.box}
+                  usersAddress={
+                    this.state.accounts ? this.state.accounts[0] : null
+                  }
+                  testnetReceipts={this.state.testnetReceipts}
+                  testnetReceiptItems={this.state.testnetReceiptItems}
+                  getTestnetReceipts={this.getTestnetReceipts.bind(this)}
+                  inboxThread={this.state.inboxThread}
+                  inboxMessages={this.state.inboxMessages}
+                  getInboxThread={this.state.getInboxThread}
+                  getStorePosts={this.getStorePosts.bind(this)}
+                  getStoreProfile={this.getStoreProfile.bind(this)}
+                  getPost={this.getPost.bind(this)}
+                  threadPost={this.state.threadPost}
                 />
               )}></Route>
             <Route path="/profile">
@@ -424,21 +487,25 @@ export default class App extends Component {
                 walletConnected={this.state.walletConnected}
               />
             </Route>
-            <Route path="/connect-wallet">
-              <ConnectWallet
-                showConnectWalletModal={this.state.showConnectWalletModal}
-                handleWalletConnectModalClose={
-                  this.state.handleWalletConnectModalClose
-                }
-                handleWalletConnectModalShow={
-                  this.state.handleWalletConnectModalShow
-                }
-                connectWallet={this.connectWallet.bind(this)}
-                status={this.state.status}
-                onboarding={this.state.onboarding}
-                walletConnected={this.state.walletConnected}
-              />
-            </Route>
+            <Route
+              path="/:account"
+              render={(props) => (
+                <Store
+                  {...props}
+                  thread={this.state.thread}
+                  storePosts={this.state.storePosts}
+                  storeProfile={this.state.storeProfile}
+                  storeAccount={this.state.storeAccount}
+                  space={this.state.space}
+                  box={this.state.box}
+                  getStorePosts={this.getStorePosts.bind(this)}
+                  getStoreProfile={this.getStoreProfile.bind(this)}
+                  usersAddress={
+                    this.state.accounts ? this.state.accounts[0] : null
+                  }
+                  walletConnected={this.state.walletConnected}
+                />
+              )}></Route>
             <Route path="/">
               <Home
                 space={this.state.space}
@@ -449,6 +516,7 @@ export default class App extends Component {
                 thread={this.state.thread}
                 accounts={this.state.accounts}
                 admin={this.state.admin}
+                changeThread={this.changeThread.bind(this)}
                 getSubmarketPosts={this.getSubmarketPosts.bind(this)}
                 testnetReceipts={this.state.testnetReceipts}
                 testnetReceiptItems={this.state.testnetReceiptItems}

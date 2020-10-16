@@ -67,10 +67,17 @@ export default class Home extends Component {
     handleShow: () => this.setState({ show: true }),
   };
 
+  async componentDidMount() {
+    // Set default threadId
+    const threadId = "all";
+    this.setState({ threadId }, () => this.props.getSubmarketPosts(threadId));
+  }
+
   // Save the listing to the user's store
   saveListing = async (formData) => {
     formData.account = this.props.accounts[0];
     const threadId = this.props.threadId;
+    formData.submarket = threadId;
     try {
       await this.props.joinSubmarket(threadId);
       await this.props.thread.post(formData);
@@ -105,6 +112,12 @@ export default class Home extends Component {
     this.setState(Object.assign({ [event.target.name]: event.target.value }));
   };
 
+  addToAll = async (_all) => {
+    const threadId = "all";
+    this.props.changeThread(threadId);
+    this.setState({ show: true });
+  };
+
   render() {
     return (
       <div className="container" style={styles.background}>
@@ -114,64 +127,51 @@ export default class Home extends Component {
           </p>
         </Row>
         <Row style={{ justifyContent: "center" }}>
-          <p
-            className="brand-font float-sm-left"
-            style={this.props.threadId === "all" ? styles.path : styles.link}
-            onClick={() => this.changeSubmarket("all")}>
+          <p className="brand-font float-sm-left" style={styles.path}>
             all
           </p>
           <p style={styles.slash}>/</p>
-          <p
+          <Link
             className="brand-font float-sm-left"
-            style={this.props.threadId === "bbb" ? styles.path : styles.link}
-            onClick={() => this.changeSubmarket("bbb")}>
+            style={styles.link}
+            to="/s/bbb">
             bbb
-          </p>
+          </Link>
           <p style={styles.slash}>/</p>
-          <p
+          <Link
             className="brand-font float-sm-left"
-            style={
-              this.props.threadId === "womensclothing"
-                ? styles.path
-                : styles.link
-            }
-            onClick={() => this.changeSubmarket("womensclothing")}>
+            style={styles.link}
+            to="/s/womensclothing">
             women's clothing
-          </p>
+          </Link>
           <p style={styles.slash}>/</p>
-          <p
+          <Link
             className="brand-font float-sm-left"
-            style={
-              this.props.threadId === "consumerelectronics"
-                ? styles.path
-                : styles.link
-            }
-            onClick={() => this.changeSubmarket("consumerelectronics")}>
+            style={styles.link}
+            to="/s/consumerelectronics">
             consumer electronics
-          </p>
+          </Link>
           <p style={styles.slash}>/</p>
-          <p
+          <Link
             className="brand-font float-sm-left"
-            style={this.props.threadId === "sports" ? styles.path : styles.link}
-            onClick={() => this.changeSubmarket("sports")}>
+            style={styles.link}
+            to="/s/sports">
             sports
-          </p>
+          </Link>
           <p style={styles.slash}>/</p>
-          <p
+          <Link
             className="brand-font float-sm-left"
-            style={
-              this.props.threadId === "mensclothing" ? styles.path : styles.link
-            }
-            onClick={() => this.changeSubmarket("mensclothing")}>
+            style={styles.link}
+            to="/s/mensclothing">
             men's clothing
-          </p>
+          </Link>
           <p style={styles.slash}>/</p>
-          <p
+          <Link
             className="brand-font float-sm-left"
-            style={this.props.threadId === "shoes" ? styles.path : styles.link}
-            onClick={() => this.changeSubmarket("shoes")}>
+            style={styles.link}
+            to="/s/shoes">
             shoes
-          </p>
+          </Link>
         </Row>
         <Row style={{ justifyContent: "center" }}>
           <InputGroup
@@ -205,44 +205,42 @@ export default class Home extends Component {
             </InputGroup.Append>
           </InputGroup>
         </Row>
-        {this.props.threadId && (
-          <div className="container">
-            <Row
+        <div className="container">
+          <Row
+            style={{
+              justifyContent: "center",
+              marginTop: "20px",
+            }}>
+            <h1
+              className="brand-font"
               style={{
-                justifyContent: "center",
-                marginTop: "20px",
+                marginBottom: "0px",
               }}>
-              <h1
+              all
+            </h1>
+          </Row>
+          <Row
+            style={{
+              justifyContent: "center",
+              marginTop: "5px",
+            }}>
+            {this.props.space ? (
+              <p
                 className="brand-font"
-                style={{
-                  marginBottom: "0px",
-                }}>
-                {this.props.threadId}
-              </h1>
-            </Row>
-            <Row
-              style={{
-                justifyContent: "center",
-                marginTop: "5px",
-              }}>
-              {this.props.space ? (
-                <p
-                  className="brand-font"
-                  style={styles.addListing}
-                  onClick={this.state.handleShow}>
-                  +Add a listing
-                </p>
-              ) : (
-                <Link
-                  className="brand-font"
-                  style={styles.addListing}
-                  to="connect-wallet">
-                  +Add a listing
-                </Link>
-              )}
-            </Row>
-          </div>
-        )}
+                style={styles.addListing}
+                onClick={this.state.handleShow}>
+                +Add a listing
+              </p>
+            ) : (
+              <Link
+                className="brand-font"
+                style={styles.addListing}
+                to="/connect-wallet">
+                +Add a listing
+              </Link>
+            )}
+          </Row>
+        </div>
         <CreateListingModal
           threeBox={this.props.threeBox}
           accounts={this.props.accounts}
