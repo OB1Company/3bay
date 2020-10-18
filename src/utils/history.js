@@ -1,3 +1,3 @@
-// Inside /utils/history.js
-import createHistory from "history/createBrowserHistory";
-export default createHistory();
+import { createBrowserHistory as history } from "history";
+
+export default history();

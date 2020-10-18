@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import {
-  Button,
   CardColumns,
   Row,
   InputGroup,
@@ -9,6 +8,7 @@ import {
 import { BounceLoader } from "react-spinners";
 import { Link } from "react-router-dom";
 
+import history from "../utils/history.js";
 import ListingCard from "../components/ListingCard.js";
 import CreateListingModal from "../components/CreateListingModal.js";
 
@@ -104,8 +104,7 @@ export default class Home extends Component {
 
   // Change the submarket
   changeSubmarket = async (threadName) => {
-    const threadId = threadName;
-    this.props.getSubmarketPosts(threadId);
+    history.push("/s/" + threadName);
   };
 
   handleChange = (event) => {
@@ -189,19 +188,17 @@ export default class Home extends Component {
               style={styles.navInput}
             />
             <InputGroup.Append>
-              <Button
+              <Link
                 className="brand-font button btn"
                 variant="outline-secondary"
-                style={styles.navInput}
-                onClick={() =>
-                  this.changeSubmarket(
-                    this.state.submarketName === ""
-                      ? "all"
-                      : this.state.submarketName
-                  )
-                }>
+                to={
+                  this.state.submarketName
+                    ? `/s/` + this.state.submarketName
+                    : `/`
+                }
+                style={styles.navInput}>
                 Go
-              </Button>
+              </Link>
             </InputGroup.Append>
           </InputGroup>
         </Row>
