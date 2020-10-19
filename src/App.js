@@ -365,6 +365,25 @@ export default class App extends Component {
               />
             </Route>
             <Route
+              path="/store/:account"
+              render={(props) => (
+                <Store
+                  {...props}
+                  thread={this.state.thread}
+                  storePosts={this.state.storePosts}
+                  storeProfile={this.state.storeProfile}
+                  storeAccount={this.state.storeAccount}
+                  space={this.state.space}
+                  box={this.state.box}
+                  getStorePosts={this.getStorePosts.bind(this)}
+                  getStoreProfile={this.getStoreProfile.bind(this)}
+                  usersAddress={
+                    this.state.accounts ? this.state.accounts[0] : null
+                  }
+                  walletConnected={this.state.walletConnected}
+                />
+              )}></Route>
+            <Route
               path="/s/:threadId"
               render={(props) => (
                 <Thread
@@ -487,25 +506,6 @@ export default class App extends Component {
                 walletConnected={this.state.walletConnected}
               />
             </Route>
-            <Route
-              path="/:account"
-              render={(props) => (
-                <Store
-                  {...props}
-                  thread={this.state.thread}
-                  storePosts={this.state.storePosts}
-                  storeProfile={this.state.storeProfile}
-                  storeAccount={this.state.storeAccount}
-                  space={this.state.space}
-                  box={this.state.box}
-                  getStorePosts={this.getStorePosts.bind(this)}
-                  getStoreProfile={this.getStoreProfile.bind(this)}
-                  usersAddress={
-                    this.state.accounts ? this.state.accounts[0] : null
-                  }
-                  walletConnected={this.state.walletConnected}
-                />
-              )}></Route>
             <Route path="/">
               <Home
                 space={this.state.space}
