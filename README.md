@@ -22,12 +22,31 @@ Spendly is a web-based decentralized marketplace built with 3Box + IPFS, using t
 - [x] Prompt for shipping address in purchase flow
 - [x] Display shipping address in order message
 - [ ] Support layer-2 payments (e.g. optimisic rollup, Loopring, xDAI etc)
-- [ ] Display admins in Home sidebar
+- [ ] Create About page
 - [ ] Submarket directory
-- [ ] URL paths for stores and listings
-- [ ] Support other ETH wallets
+- [x] URL paths for stores and listings
+- [ ] Integrate [Web3 modal](https://github.com/Web3Modal/web3modal)
 - [ ] Support disconnecting a wallet
 - [ ] Support caching ETH account login status
+
+**Architecture**
+
+- Spendly is built on top of [3Box](https://3box.io), a decentralized user identity and data storage system built with [IPFS](https://ipfs.io/) and [OrbitDB](https://github.com/orbitdb/orbit-db)
+  - 3Box leverages popular web3 wallets to create decentralized identity and storage provision over IPFS and OrbitDB, the latter enabling serverless storage and messaging for decentralized applications
+  - In short, using a web3 wallet like Metamask allows you to create public and private storage/messaging spaces for your account and for decentralized applications
+- Spendly is using temporary a decentralized storage space during its testing phase: `demo_marketplace`
+- Within this space, the following storage and messaging components are created:
+
+| Name | Type | Description | Write-access |
+| :---: |  :---: | :---: | :---: |
+| `listing_list` | `public` | A _thread_ containing the user's listings. | User |
+| `inboxTestnet` | `public` | A _thread_ containing message notifications for _private_ threads the user has been added to, created by other users. | All |
+| `demo-orders-public` | `public` | A _thread_ containing sales order details and messages. | User + buyer |
+| `demo-testnet-receipts-public` | `public` | A _thread_ containing purchase order details and messages. | User + seller |
+| `globalListChat` | `public` | A _thread_ containing the global trollbox chat messages for the marketplace. | All |
+
+⭐️ Both `demo-orders-public` and `demo-testnet-receipts-public` need to be switched to `private` encrypted threads prior to launch.
+⭐️⭐️ Even though anyone can leave you a message in `inboxTestnet`, it must adhere to a specific format that is filtered client-side. The approved format doesn't reveal the message contents, but does publicly display the sender and type of message (order, chat). This isn't an ideal approach from a privacy perspective, but presently there isn't any other way for the user to know they've been added to a thread a public or private thread.  
 
 **Ideas:**
 

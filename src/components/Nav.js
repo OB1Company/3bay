@@ -49,12 +49,12 @@ export default class Nav extends Component {
             alignItems: "center",
             zIndex: "499",
           }}>
-          <Col sm={3}>
+          <Col sm={2}>
             <Link className="nav-link brand-font" to="/" style={styles.logo}>
               Spendly
             </Link>
           </Col>
-          <Col sm={6}>
+          <Col sm={8}>
             <Row>
               <li className="nav-item">
                 <Link
@@ -104,9 +104,17 @@ export default class Nav extends Component {
                     )}
                 </Link>
               </li>
+              <li className="nav-item brand-font">
+                <Link
+                  className="nav-link"
+                  to="/about"
+                  style={styles.navHeading}>
+                  About
+                </Link>
+              </li>
             </Row>
           </Col>
-          <Col sm={3}>
+          <Col sm={2}>
             {this.props.walletConnected === false && (
               <Link to="/connect-wallet">
                 <Button

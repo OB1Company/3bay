@@ -15,6 +15,7 @@ import Thread from "./pages/Thread";
 import Profile from "./pages/Profile";
 import Orders from "./pages/Orders";
 import Inbox from "./pages/Inbox";
+import About from "./pages/About";
 import ListingDetails from "./pages/ListingDetails";
 import { SPACE_NAME } from "./Constants";
 
@@ -505,6 +506,9 @@ export default class App extends Component {
                 }
                 walletConnected={this.state.walletConnected}
               />
+            </Route>
+            <Route path="/about">
+              <About admin={this.state.admin} />
             </Route>
             <Route path="/">
               <Home
