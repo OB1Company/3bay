@@ -169,8 +169,8 @@ class OrderItems extends Component {
                 </a>
               </Row>
             )}
-            <Row style={{ marginTop: "10px" }}>
-              {this.props.item && this.props.item.seller && (
+            {this.props.item && this.props.item.seller && (
+              <Row style={{ marginTop: "10px" }}>
                 <div>
                   <ProfileHover
                     address={this.props.item.seller}
@@ -178,8 +178,8 @@ class OrderItems extends Component {
                     showName={true}
                   />
                 </div>
-              )}
-            </Row>
+              </Row>
+            )}
           </Col>
           <Col sm={2} style={{ cursor: "pointer" }}>
             <div style={styles.topRight}>

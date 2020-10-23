@@ -13,8 +13,8 @@ export default class Home extends Component {
       <Container fluid style={styles.background}>
         <h1 className="brand-font">About</h1>
         <Row>
-          <Col sm={3}></Col>
-          <Col sm={6}>
+          <Col sm={4}></Col>
+          <Col sm={4}>
             <Row>
               <h3
                 className="brand-font"
@@ -58,8 +58,9 @@ export default class Home extends Component {
               <p className="brand-font" style={{ textAlign: "left" }}>
                 Admins moderate listings posted on the public submarkets. If
                 there are listings that could be considered illegal, they will
-                be removed by the admins. Listings sold by users on their own
-                store page cannot be removed by the admins.
+                be removed by the admins. However, listings sold by users on
+                their own store page cannot be removed by the admins, as they are
+                published in a storage space belonging solely to the user.
               </p>
             </Row>
             <Row>
@@ -88,7 +89,7 @@ export default class Home extends Component {
               </a>
             </Row>
           </Col>
-          <Col sm={3}></Col>
+          <Col sm={4}></Col>
         </Row>
       </Container>
     );

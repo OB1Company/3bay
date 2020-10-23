@@ -52,37 +52,49 @@ export default class ConnectWallet extends Component {
                 src={metamaskLogo}
                 style={{ width: "50px" }}
               />
-              {this.props.onboarding === false && (
-                <Card.Body>
-                  <Card.Title className="brand-font">Metamask</Card.Title>
-                  <Button
-                    className="brand-font"
-                    variant="dark"
-                    onClick={this.props.connectWallet}>
-                    Select
-                  </Button>
-                </Card.Body>
-              )}
-              {this.props.onboarding === true && (
-                <Card.Body>
-                  <Row style={styles.loader}>
-                    {this.props.walletConnected === false ? (
-                      <BarLoader color={"black"} />
-                    ) : (
-                      <p
-                        className="brand-font"
-                        style={{ marginBottom: "0px", fontSize: "17px" }}>
-                        <span role="img" description="emoji" aria-label="emoji">
-                          ✅
-                        </span>{" "}
-                        Connected
-                      </p>
-                    )}
-                  </Row>
-                  <Row>
-                    <p className="brand-font">{this.props.status}</p>
-                  </Row>
-                </Card.Body>
+              {this.props.onboarding === false &&
+                this.props.needToAWeb3Browser === false && (
+                  <Card.Body>
+                    <Card.Title className="brand-font">Metamask</Card.Title>
+                    <Button
+                      className="brand-font"
+                      variant="dark"
+                      onClick={this.props.connectWallet}>
+                      Select
+                    </Button>
+                  </Card.Body>
+                )}
+              {this.props.onboarding === true &&
+                this.props.needToAWeb3Browser === false && (
+                  <Card.Body>
+                    <Row style={styles.loader}>
+                      {this.props.walletConnected === false ? (
+                        <BarLoader color={"black"} />
+                      ) : (
+                        <p
+                          className="brand-font"
+                          style={{ marginBottom: "0px", fontSize: "17px" }}>
+                          <span
+                            role="img"
+                            description="emoji"
+                            aria-label="emoji">
+                            ✅
+                          </span>{" "}
+                          Connected
+                        </p>
+                      )}
+                    </Row>
+                    <Row>
+                      <p className="brand-font">{this.props.status}</p>
+                    </Row>
+                  </Card.Body>
+                )}
+              {this.props.needToAWeb3Browser === true && (
+                <Row>
+                  <p className="brand-font" style={{ marginTop: "20px" }}>
+                    Please install Metamask and refresh the page.
+                  </p>
+                </Row>
               )}
             </Card>
           </Col>

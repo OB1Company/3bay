@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import {
   CardColumns,
+  Col,
+  Container,
   Row,
   InputGroup,
   FormControl,
@@ -18,7 +20,7 @@ const styles = {
   },
   column: {
     width: "100%",
-    columnCount: "4",
+    columnCount: "5",
   },
   slash: {
     fontSize: "13px",
@@ -119,7 +121,7 @@ export default class Home extends Component {
 
   render() {
     return (
-      <div className="container" style={styles.background}>
+      <Container fluid style={styles.background}>
         <Row style={{ paddingBottom: "0px", justifyContent: "center" }}>
           <p className="brand-font" style={styles.submarkets}>
             Submarkets
@@ -202,42 +204,40 @@ export default class Home extends Component {
             </InputGroup.Append>
           </InputGroup>
         </Row>
-        <div className="container">
-          <Row
+        <Row
+          style={{
+            justifyContent: "center",
+            marginTop: "20px",
+          }}>
+          <h1
+            className="brand-font"
             style={{
-              justifyContent: "center",
-              marginTop: "20px",
+              marginBottom: "0px",
             }}>
-            <h1
+            all
+          </h1>
+        </Row>
+        <Row
+          style={{
+            justifyContent: "center",
+            marginTop: "5px",
+          }}>
+          {this.props.space ? (
+            <p
               className="brand-font"
-              style={{
-                marginBottom: "0px",
-              }}>
-              all
-            </h1>
-          </Row>
-          <Row
-            style={{
-              justifyContent: "center",
-              marginTop: "5px",
-            }}>
-            {this.props.space ? (
-              <p
-                className="brand-font"
-                style={styles.addListing}
-                onClick={this.state.handleShow}>
-                +Add a listing
-              </p>
-            ) : (
-              <Link
-                className="brand-font"
-                style={styles.addListing}
-                to="/connect-wallet">
-                +Add a listing
-              </Link>
-            )}
-          </Row>
-        </div>
+              style={styles.addListing}
+              onClick={this.state.handleShow}>
+              +Add a listing
+            </p>
+          ) : (
+            <Link
+              className="brand-font"
+              style={styles.addListing}
+              to="/connect-wallet">
+              +Add a listing
+            </Link>
+          )}
+        </Row>
         <CreateListingModal
           threeBox={this.props.threeBox}
           accounts={this.props.accounts}
@@ -254,7 +254,7 @@ export default class Home extends Component {
           saveListing={this.saveListing}
           inboxThreadAddress={this.props.inboxThreadAddress}
         />
-        <div className="row" style={{ marginTop: "10px" }}>
+        <Row style={{ marginTop: "10px" }}>
           {!this.props.submarketPosts && (
             <div style={{ width: "60px", margin: "auto" }}>
               <BounceLoader color={"black"} />
@@ -292,15 +292,19 @@ export default class Home extends Component {
                 })}
             </CardColumns>
           )}
-        </div>
+        </Row>
         {this.props.submarketPosts && this.props.submarketPosts.length === 0 && (
-          <div className="row">
-            <p className="brand-font" style={{ textAlign: "left" }}>
-              Nothing here yet!
-            </p>
-          </div>
+          <Row style={{ marginTop: "10px" }}>
+            <Col sm={2}></Col>
+            <Col sm={8}>
+              <p className="brand-font" style={{ textAlign: "left" }}>
+                Nothing here yet!
+              </p>
+            </Col>
+            <Col sm={2}></Col>
+          </Row>
         )}
-      </div>
+      </Container>
     );
   }
 }

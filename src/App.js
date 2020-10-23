@@ -3,6 +3,7 @@ import "./App.css";
 import Box from "3box";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Container } from "react-bootstrap";
 import Nav from "./components/Nav";
 import history from "./utils/history";
 // import ChatBox from "3box-chatbox-react";
@@ -91,6 +92,11 @@ export default class App extends Component {
 
     // Fetch the user's ethereum account
     await this.getAddressFromMetaMask();
+
+    // Check if wallet is connected
+    if (this.state.needToAWeb3Browser === true) {
+      return;
+    }
 
     // Status update
     this.setState({ status: "fetching 3Box profile... [1/7]" });
@@ -330,13 +336,9 @@ export default class App extends Component {
   }
 
   render() {
-    if (this.state.needToAWeb3Browser) {
-      return <h1>Please install metamask</h1>; //! Need something nice here
-    }
-
     return (
       <Router history={history}>
-        <div>
+        <Container fluid>
           <Nav
             inboxMessages={this.state.inboxMessages}
             style={{ background: "#ffffff" }}
@@ -363,6 +365,7 @@ export default class App extends Component {
                 status={this.state.status}
                 onboarding={this.state.onboarding}
                 walletConnected={this.state.walletConnected}
+                needToAWeb3Browser={this.state.needToAWeb3Browser}
               />
             </Route>
             <Route
@@ -541,7 +544,7 @@ export default class App extends Component {
               />
             </Route>
           </Switch>
-        </div>
+        </Container>
         {/*         <div className="userscontainer">
           {this.state.space && (
             <ChatBox

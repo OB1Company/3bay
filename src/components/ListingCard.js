@@ -43,7 +43,7 @@ const styles = {
     right: "8px",
   },
   image: {
-    width: "100%",
+    maxWidth: "100%",
   },
   copyWrapper: {
     paddingTop: "10px",

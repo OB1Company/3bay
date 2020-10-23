@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Container, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const styles = {
@@ -8,6 +8,11 @@ const styles = {
     fontWeight: "bold",
     fontSize: "17px",
     lineHeight: "17px",
+    textAlign: "center",
+  },
+  navStyle: {
+    maxWidth: "150px",
+    fontFamily: "monospace",
   },
   navHeading: {
     color: "#0c2845",
@@ -34,29 +39,30 @@ const styles = {
 export default class Nav extends Component {
   render() {
     return (
-      <div
-        className="container"
+      <Container
+        fluid
         style={{
-          marginTop: "20px",
-          marginBottom: "20px",
+          marginTop: "10px",
+          marginBottom: "10px",
           paddingLeft: "0",
           paddingRight: "0",
-          justifyContent: "space-evenly",
+          justifyContent: "center",
         }}>
-        <ul
-          className="nav sticky-top nav-pills nav-justified"
-          style={{
-            alignItems: "center",
-            zIndex: "499",
-          }}>
+        <Row style={{ alignItem: "center" }}>
           <Col sm={2}>
             <Link className="nav-link brand-font" to="/" style={styles.logo}>
               Spendly
             </Link>
           </Col>
           <Col sm={8}>
-            <Row>
-              <li className="nav-item">
+            <ul
+              className="nav sticky-top nav-pills nav-justified"
+              style={{
+                alignItems: "center",
+                zIndex: "499",
+                justifyContent: "center",
+              }}>
+              <li className="nav-item" style={styles.navStyle}>
                 <Link
                   className="nav-link brand-font"
                   to="/"
@@ -64,7 +70,7 @@ export default class Nav extends Component {
                   Home
                 </Link>
               </li>
-              <li className="nav-item">
+              <li className="nav-item" style={styles.navStyle}>
                 <Link
                   className="nav-link brand-font"
                   to="/profile"
@@ -72,7 +78,7 @@ export default class Nav extends Component {
                   Profile
                 </Link>
               </li>
-              <li className="nav-item">
+              <li className="nav-item" style={styles.navStyle}>
                 <Link
                   className="nav-link brand-font"
                   to="/my-store"
@@ -80,7 +86,7 @@ export default class Nav extends Component {
                   My store
                 </Link>
               </li>
-              <li className="nav-item brand-font">
+              <li className="nav-item" style={styles.navStyle}>
                 <Link
                   className="nav-link"
                   to="/orders"
@@ -88,7 +94,7 @@ export default class Nav extends Component {
                   Purchases
                 </Link>
               </li>
-              <li className="nav-item">
+              <li className="nav-item" style={styles.navStyle}>
                 <Link
                   className="nav-link brand-font"
                   to="/inbox"
@@ -104,7 +110,7 @@ export default class Nav extends Component {
                     )}
                 </Link>
               </li>
-              <li className="nav-item brand-font">
+              <li className="nav-item" style={styles.navStyle}>
                 <Link
                   className="nav-link"
                   to="/about"
@@ -112,13 +118,16 @@ export default class Nav extends Component {
                   About
                 </Link>
               </li>
-            </Row>
+            </ul>
           </Col>
-          <Col sm={2}>
+          <Col
+            sm={2}
+            className="text-center"
+            style={{ justifyContent: "center" }}>
             {this.props.walletConnected === false && (
               <Link to="/connect-wallet">
                 <Button
-                  className="btn btn-dark brand-font float-sm-right"
+                  className="btn btn-dark brand-font "
                   // onClick={this.props.handleWalletConnectModalShow}
                   style={{ fontWeight: "bold" }}>
                   Connect wallet
@@ -127,9 +136,7 @@ export default class Nav extends Component {
             )}
             {this.props.walletConnected === true && (
               <Link to="/connect-wallet">
-                <Button
-                  className="btn brand-font float-sm-right"
-                  style={styles.connected}>
+                <Button className="btn brand-font" style={styles.connected}>
                   {this.props.usersAddress.substring(0, 3)}...
                   {this.props.usersAddress.substring(
                     this.props.usersAddress.length - 3,
@@ -140,8 +147,8 @@ export default class Nav extends Component {
               </Link>
             )}
           </Col>
-        </ul>
-      </div>
+        </Row>
+      </Container>
     );
   }
 }
