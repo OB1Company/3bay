@@ -149,29 +149,33 @@ export default class App extends Component {
     // Status update
     this.setState({ status: "Loading purchases... [6/6]" });
 
-    // Create and fetch the orders
-    const orders = await space.joinThread("demo-orders-public", {
-      firstModerator: userMod,
-      members: true,
-      ghost: false,
-      confidential: false,
-    });
-    this.setState({ orders }, () => this.getOrdersThread());
-
-    // Status update
-    this.setState({ status: "Loading purchases... [7/7]" });
-
     // Create and fetch the testnet receipts
-    const testnetReceipts = await space.joinThread(
-      "demo-testnet-receipts-public",
-      {
-        firstModerator: userMod,
-        members: true,
-        ghost: false,
-        confidential: false,
-      }
+    const testnetReceiptsAddress = await space.private.get(
+      "testnetReceiptsAddress"
     );
-    this.setState({ testnetReceipts }, () => this.getTestnetReceipts());
+    if (testnetReceiptsAddress) {
+      // Private testnet receipts exists => fetch posts
+      const testnetReceipts = await space.joinThreadByAddress(
+        testnetReceiptsAddress
+      );
+      this.setState({ testnetReceipts }, () => this.getTestnetReceipts());
+    } else {
+      // Private testnet receipts doesn't exists => create it
+      const testnetReceipts = await space.joinThread(
+        "demo-testnet-receipts-private",
+        {
+          firstModerator: userMod,
+          members: true,
+          ghost: false,
+          confidential: true,
+        }
+      );
+      await space.private.set(
+        "testnetReceiptsAddress",
+        testnetReceipts.address
+      );
+      this.setState({ testnetReceipts }, () => this.getTestnetReceipts());
+    }
 
     // Status update
     this.setState({
