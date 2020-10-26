@@ -99,7 +99,7 @@ export default class App extends Component {
     }
 
     // Status update
-    this.setState({ status: "fetching 3Box profile... [1/7]" });
+    this.setState({ status: "fetching 3Box profile... [1/6]" });
 
     // Get 3Box profile of the ethereum account
     if (this.state.accounts) {
@@ -110,7 +110,7 @@ export default class App extends Component {
     this.setState({ userMod });
 
     // Status update
-    this.setState({ status: "syncing 3Box... [2/7]" });
+    this.setState({ status: "syncing 3Box... [2/6]" });
 
     // Open the 3Box object of the user's account
     const box = await Box.openBox(this.state.accounts[0], window.ethereum);
@@ -118,14 +118,14 @@ export default class App extends Component {
     this.setState({ box });
 
     // Status update
-    this.setState({ status: "Opening 'Spendly'... [3/7]" });
+    this.setState({ status: "Opening 'Spendly'... [3/6]" });
 
     // Open the demo marketplace 'space' of the user
     const space = await this.state.box.openSpace(SPACE_NAME);
     this.setState({ space });
 
     // Status update
-    this.setState({ status: "Loading your store... [4/7]" });
+    this.setState({ status: "Loading your store... [4/6]" });
 
     // Create and fetch the listings thread of the user's store
     const thread = await space.joinThread("listing_list", {
@@ -135,7 +135,7 @@ export default class App extends Component {
     this.setState({ thread }, () => this.getListingsThread());
 
     // Status update
-    this.setState({ status: "Checking your mail... [5/7]" });
+    this.setState({ status: "Checking your mail... [5/6]" });
 
     // Create a public inbox for the user
     const inboxThread = await space.joinThread("inboxTestnet", {
@@ -147,7 +147,7 @@ export default class App extends Component {
     this.setState({ inboxThread }, () => this.getInboxThread());
 
     // Status update
-    this.setState({ status: "Loading orders... [6/7]" });
+    this.setState({ status: "Loading purchases... [6/6]" });
 
     // Create and fetch the orders
     const orders = await space.joinThread("demo-orders-public", {
@@ -296,24 +296,6 @@ export default class App extends Component {
     await this.state.inboxThread.onUpdate(async () => {
       const inboxMessages = await this.state.inboxThread.getPosts();
       this.setState({ inboxMessages });
-    });
-  }
-
-  // Get posts in the user's sales thread
-  async getOrdersThread() {
-    if (!this.state.orders) {
-      console.error("orders thread not in react state");
-      return;
-    }
-
-    // Fetch order list and add them to state
-    const orderItems = await this.state.orders.getPosts();
-    this.setState({ orderItems });
-
-    // Update the order list when new items are added
-    await this.state.orders.onUpdate(async () => {
-      const orderItems = await this.state.orders.getPosts();
-      this.setState({ orderItems });
     });
   }
 
