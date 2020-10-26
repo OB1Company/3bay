@@ -355,7 +355,7 @@ export default class ListingDetails extends Component {
             firstModerator: userAddress,
             members: true,
             ghost: false,
-            confidential: false,
+            confidential: true,
           });
           await orderThread.addMember(post.message.account);
           const orderThreadAddress = orderThread.address;
