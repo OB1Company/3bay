@@ -67,20 +67,6 @@ export default class App extends Component {
     // Set admin
     const admin = "0xf54d276a029a49458e71167ebc25d1cca235ee6f";
     this.setState({ admin });
-
-    // Create and fetch the listings thread of admin store
-    /*     const storePosts = await Box.getThread(
-      SPACE_NAME,
-      "listing_list",
-      admin,
-      true
-    );
-    this.setState({ storePosts });
-    const storeProfile = await Box.getProfile(admin);
-    this.setState({
-      storeAccount: admin,
-      storeProfile: storeProfile,
-    }); */
   }
 
   /**
@@ -118,7 +104,7 @@ export default class App extends Component {
     this.setState({ box });
 
     // Status update
-    this.setState({ status: "Opening 'Spendly'... [3/6]" });
+    this.setState({ status: "Opening '3Bay'... [3/6]" });
 
     // Open the demo marketplace 'space' of the user
     const space = await this.state.box.openSpace(SPACE_NAME);
@@ -179,7 +165,7 @@ export default class App extends Component {
 
     // Status update
     this.setState({
-      status: "Success, onboarding complete!",
+      status: "Success, syncing complete!",
       walletConnected: true,
     });
 
@@ -549,7 +535,7 @@ export default class App extends Component {
               colorTheme="#181F21"
               currentUser3BoxProfile={this.state.threeBoxProfile}
               agentProfile={{
-                chatName: "Spendly chat",
+                chatName: "3Bay chat",
               }}
               openOnMount={false}
             />

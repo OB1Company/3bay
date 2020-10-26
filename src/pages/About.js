@@ -19,12 +19,12 @@ export default class Home extends Component {
               <h3
                 className="brand-font"
                 style={{ textAlign: "left", marginTop: "20px" }}>
-                What is Spendly?
+                What is 3Bay?
               </h3>
             </Row>
             <Row>
               <p className="brand-font" style={{ textAlign: "left" }}>
-                Spendly is built on top of{" "}
+                3Bay is built on top of{" "}
                 <span>
                   <a
                     href="https://3box.io"

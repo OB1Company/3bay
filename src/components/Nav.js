@@ -51,7 +51,7 @@ export default class Nav extends Component {
         <Row style={{ alignItem: "center" }}>
           <Col sm={2}>
             <Link className="nav-link brand-font" to="/" style={styles.logo}>
-              Spendly
+              3Bay
             </Link>
           </Col>
           <Col sm={8}>
