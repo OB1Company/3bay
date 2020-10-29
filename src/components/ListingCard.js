@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Button, Card } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 
-import ListingDetails from "./ListingDetails.js";
 import { fontFamily } from "../Constants.js";
 
 const styles = {
@@ -217,29 +216,6 @@ export default class ListingCard extends Component {
             </div>
           </div>
         </Card>
-
-        <ListingDetails
-          app={this.props.post.message}
-          post={this.props.post}
-          threeBox={this.props.threeBox}
-          space={this.props.space}
-          box={this.props.box}
-          usersAddress={this.props.usersAddress}
-          handleClose={this.state.handleClose}
-          handleShow={this.state.handleShow}
-          handleToastShow={this.state.handleToastShow}
-          handleToastClose={this.state.handleToastClose}
-          show={this.state.show}
-          toast={this.state.toast}
-          testnetReceipts={this.props.testnetReceipts}
-          testnetReceiptItems={this.props.testnetReceiptItems}
-          getTestnetReceipts={this.props.getTestnetReceipts}
-          inboxThread={this.props.inboxThread}
-          inboxMessages={this.props.inboxMessages}
-          getInboxThread={this.props.getInboxThread}
-          getStorePosts={this.props.getStorePosts}
-          getStoreProfile={this.props.getStoreProfile}
-        />
 
         {(this.props.i + 1) % 3 === 0 && <div className="w-100"></div>}
       </>
