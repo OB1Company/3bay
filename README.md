@@ -4,7 +4,9 @@
 
 3Bay is a web-based decentralized marketplace built with 3Box + IPFS + web3, using the DAI stablecoin as the medium-of-exchange.
 
-![image](https://user-images.githubusercontent.com/3887694/95544636-09e2ad80-0a3f-11eb-9a02-06864654024e.png)
+❗️ **WARNING:** 3Bay is not in production and uses Ropsten testnet DAI at this stage.
+
+![image](https://user-images.githubusercontent.com/3887694/97576253-a514e480-1a39-11eb-9f49-dfb8e66e74ab.png)
 
 ### Features
 
@@ -20,7 +22,10 @@
   - [x] Individual orders
 - [ ] Support escrowed payments
 - [ ] Generalized chat messaging
-- [ ] Custom store name, header image etc
+- [ ] Custom store data (i.e. name, description, avatar + header images)
+  - [ ] User can set their store data
+  - [ ] User can see their store data in 'My Store'
+  - [x] User can see store data on a store page
 - [x] Prompt for shipping address in purchase flow
 - [x] Display shipping address in order message
 - [ ] Support layer-2 payments (e.g. optimisic rollup, Loopring, xDAI etc)
@@ -44,6 +49,8 @@
 | :----------------------- | :-------: | :----------------------------------------------------------------------: |
 | `storeName`              | `public`  |                         Name of the user's store                         |
 | `storeDescription`       | `public`  |                     Description of the user's store                      |
+| `storeAvatar`            | `public`  |                     URL to the store's avatar image                      |
+| `storeHeader`            | `public`  |                     URL to the store's header image                      |
 | `testnetReceiptsAddress` | `private` | Address for the _private_ thread containing the user's purchase history. |
 
 #### Threads
