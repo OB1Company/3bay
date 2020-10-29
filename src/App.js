@@ -144,6 +144,7 @@ export default class App extends Component {
       const testnetReceipts = await space.joinThreadByAddress(
         testnetReceiptsAddress
       );
+      this.setState({ testnetReceiptsAddress });
       this.setState({ testnetReceipts }, () => this.getTestnetReceipts());
     } else {
       // Private testnet receipts doesn't exists => create it
@@ -251,14 +252,29 @@ export default class App extends Component {
     this.setState({ storePosts });
   }
 
-  // Get a store's profile
+  // Get a store's profile and data
   async getStoreProfile(storeAccount) {
     // Fetch the profile and add it to state
     const storeProfile = await Box.getProfile(storeAccount);
-    this.setState({ storeProfile: storeProfile, storeAccount: storeAccount });
+    const space = await Box.getSpace(storeAccount, SPACE_NAME);
+    const storeName = space.storeName;
+    const storeDescription = space.storeDescription;
+    const storeHeader = space.storeHeader;
+    const storeAvatar = space.storeAvatar;
+    this.setState({
+      storeProfile: storeProfile,
+      storeAccount: storeAccount,
+      storeObject: {
+        storeName: storeName,
+        storeDescription: storeDescription,
+        storeHeader: storeHeader,
+        storeAvatar: storeAvatar,
+      },
+    });
   }
 
   // Get a post from a thread without joining the thread
+  // Todo: Fix problem fetching listing
   async getPost(postId) {
     // Fetch the post and add it to state
     const ipfs = await Box.getIPFS();
@@ -348,6 +364,7 @@ export default class App extends Component {
                   thread={this.state.thread}
                   storePosts={this.state.storePosts}
                   storeProfile={this.state.storeProfile}
+                  storeObject={this.state.storeObject}
                   storeAccount={this.state.storeAccount}
                   space={this.state.space}
                   box={this.state.box}
@@ -428,6 +445,7 @@ export default class App extends Component {
                 thread={this.state.thread}
                 storePosts={this.state.storePosts}
                 storeProfile={this.state.storeProfile}
+                storeObject={this.state.storeObject}
                 storeAccount={this.state.storeAccount}
                 space={this.state.space}
                 box={this.state.box}

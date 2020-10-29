@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { CardColumns, Col } from "react-bootstrap";
+import { CardColumns, Col, Container, Image } from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
+import makeBlockie from "ethereum-blockies-base64";
 
 import ListingCard from "../components/ListingCard.js";
 
@@ -10,6 +11,7 @@ const styles = {
   },
   background: {
     textAlign: "center",
+    position: "relative",
   },
 };
 
@@ -30,21 +32,71 @@ export default class Store extends Component {
   render() {
     return (
       <div className="container" style={styles.background}>
+        <Container
+          style={{
+            position: "relative",
+            padding: "0px",
+            marginBottom: "60px",
+            marginTop: "20px",
+          }}>
+          {this.props.storeAccount && (
+            <Image
+              src={
+                this.props.storeObject && this.props.storeObject.storeHeader
+                  ? this.props.storeObject.storeHeader
+                  : `https://images.unsplash.com/photo-1536590158209-e9d615d525e4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1534&q=80`
+              }
+              fluid
+              style={{
+                height: "200px",
+                padding: "0px",
+                borderStyle: "dashed",
+                borderWidth: "thin",
+                borderColor: "#000000",
+                width: "100%",
+                objectFit: "cover",
+                display: "block",
+                filter: "grayscale(50%)",
+              }}
+            />
+          )}
+          {this.props.storeAccount && (
+            <Container
+              style={{ position: "absolute", bottom: "-25%", margin: "0px" }}>
+              <Image
+                src={
+                  this.props.storeObject && this.props.storeObject.storeAvatar
+                    ? this.props.storeObject.storeAvatar
+                    : makeBlockie(this.props.storeAccount)
+                }
+                alt="Avatar"
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  borderStyle: "dashed",
+                  borderWidth: "thin",
+                  borderColor: "#000000",
+                }}
+                roundedCircle
+              />
+            </Container>
+          )}
+        </Container>
         {this.props.storeAccount && (
           <h1 className="brand-font">
-            {this.props.storeProfile && this.props.storeProfile.name
-              ? this.props.storeProfile.name
-              : `${this.props.storeAccount.substring(
-                  0,
-                  5
-                )}...${this.props.storeAccount.substring(
-                  this.props.storeAccount.length - 5,
-                  this.props.storeAccount.length
-                )}`}
+            {this.props.storeObject && this.props.storeObject.storeName
+              ? this.props.storeObject.storeName
+              : this.props.storeAccount}
           </h1>
         )}
         {!this.props.match && <h1 className="brand-font">Store not found</h1>}
-        <p className="brand-font">Storefront</p>
+        {this.props.storeAccount && (
+          <p className="brand-font">
+            {this.props.storeObject && this.props.storeObject.storeDescription
+              ? this.props.storeObject.storeDescription
+              : `Another amazing store on 3Bay!`}
+          </p>
+        )}
         <div className="row" style={{ marginTop: "50px" }}>
           {this.props.match &&
             this.props.params &&
@@ -88,10 +140,15 @@ export default class Store extends Component {
                 })}
               {this.props.storePosts.length === 0 && (
                 <p className="brand-font" style={{ textAlign: "left" }}>
-                  Nothing here yet!
+                  Nothing for sale here yet!
                 </p>
               )}
             </CardColumns>
+          )}
+          {!this.props.storePosts && (
+            <p className="brand-font" style={{ textAlign: "left" }}>
+              Nothing for sale here yet!
+            </p>
           )}
         </div>
       </div>

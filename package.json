@@ -9,6 +9,7 @@
     "3box-profile-edit-react": "0.0.9",
     "blob-util": "^2.0.2",
     "bootstrap": "^4.5.0",
+    "ethereum-blockies-base64": "^1.0.2",
     "image-exists": "^1.1.0",
     "profile-hover": "^1.1.2",
     "react": "^16.13.1",
