@@ -118,7 +118,7 @@ class InboxMessages extends Component {
                 alignItems: "center",
                 justifyContent: "space-between",
               }}>
-              <Col>
+              <Col sm={11}>
                 <pre style={styles.price}>
                   <b>from:</b> {this.props.post.author}
                 </pre>
