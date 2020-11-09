@@ -329,7 +329,7 @@ export default class ListingDetails extends Component {
 
       // Just gas
       // const gasPrice = await window.web3.eth.getGasPrice();
-      const gasLimit = 60000;
+      // const gasLimit = 60000;
 
       // Step 1: Import the contract ABI and address
       const contractDAI = new window.web3.eth.Contract(
@@ -345,7 +345,7 @@ export default class ListingDetails extends Component {
       // call transfer function
       contractDAI.methods
         .transfer(toAddress, value)
-        .send({ from: fromAddress, gas: gasLimit })
+        .send({ from: fromAddress })
         .on("transactionHash", async function(hash) {
           handleStatusChange("Transaction sent... (2/5)");
 
