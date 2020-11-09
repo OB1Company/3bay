@@ -438,4 +438,7 @@ export const contractABIDAI = [
   },
 ];
 
-export const fontFamily = 'monospace';
+export const fontFamily = "monospace";
+
+export const placeholderImage =
+  "https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60";

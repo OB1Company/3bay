@@ -119,6 +119,7 @@ export default class App extends Component {
       members: true,
     });
     this.setState({ thread }, () => this.getListingsThread());
+    await this.getMyStoreObject();
 
     // Status update
     this.setState({ status: "Checking your mail... [5/6]" });
@@ -274,7 +275,6 @@ export default class App extends Component {
   }
 
   // Get a post from a thread without joining the thread
-  // Todo: Fix problem fetching listing
   async getPost(postId) {
     // Fetch the post and add it to state
     const ipfs = await Box.getIPFS();
@@ -321,6 +321,28 @@ export default class App extends Component {
       const testnetReceiptItems = await this.state.testnetReceipts.getPosts();
       this.setState({ testnetReceiptItems });
     });
+  }
+
+  // Get the user's store details
+  async getMyStoreObject() {
+    if (!this.state.space) {
+      console.error("space isn't there");
+      return;
+    }
+
+    const storeName = await this.state.space.public.get("storeName");
+    const storeDescription = await this.state.space.public.get(
+      "storeDescription"
+    );
+    const storeAvatar = await this.state.space.public.get("storeAvatar");
+    const storeHeader = await this.state.space.public.get("storeHeader");
+    const myStoreObject = {
+      storeName: storeName,
+      storeDescription: storeDescription,
+      storeAvatar: storeAvatar,
+      storeHeader: storeHeader,
+    };
+    this.setState({ myStoreObject: myStoreObject });
   }
 
   render() {
@@ -465,11 +487,13 @@ export default class App extends Component {
                 submarketPosts={this.state.submarketPosts}
                 getSubmarketThread={this.getSubmarketThread.bind(this)}
                 space={this.state.space}
+                getMyStoreObject={this.getMyStoreObject.bind(this)}
                 box={this.state.box}
                 getListingsThread={this.getListingsThread.bind(this)}
                 usersAddress={
                   this.state.accounts ? this.state.accounts[0] : null
                 }
+                myStoreObject={this.state.myStoreObject}
                 threadId={this.state.threadId}
                 walletConnected={this.state.walletConnected}
               />

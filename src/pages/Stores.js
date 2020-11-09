@@ -3,11 +3,13 @@ import { CardColumns, Col, Container, Image } from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
 import makeBlockie from "ethereum-blockies-base64";
 
+import { placeholderImage } from "../Constants";
 import ListingCard from "../components/ListingCard.js";
 
 const styles = {
   column: {
     width: "100%",
+    columnCount: "3",
   },
   background: {
     textAlign: "center",
@@ -44,7 +46,7 @@ export default class Store extends Component {
               src={
                 this.props.storeObject && this.props.storeObject.storeHeader
                   ? this.props.storeObject.storeHeader
-                  : `https://images.unsplash.com/photo-1536590158209-e9d615d525e4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1534&q=80`
+                  : placeholderImage
               }
               fluid
               style={{
@@ -76,6 +78,7 @@ export default class Store extends Component {
                   borderStyle: "dashed",
                   borderWidth: "thin",
                   borderColor: "#000000",
+                  objectFit: "cover",
                 }}
                 roundedCircle
               />
