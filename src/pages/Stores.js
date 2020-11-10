@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { CardColumns, Col, Container, Image } from "react-bootstrap";
+import { CardColumns, Col, Container, Image, Row } from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
 import makeBlockie from "ethereum-blockies-base64";
 
@@ -9,7 +9,7 @@ import ListingCard from "../components/ListingCard.js";
 const styles = {
   column: {
     width: "100%",
-    columnCount: "3",
+    columnCount: "4",
   },
   background: {
     textAlign: "center",
@@ -33,58 +33,64 @@ export default class Store extends Component {
 
   render() {
     return (
-      <div className="container" style={styles.background}>
-        <Container
+      <Container fluid style={styles.background}>
+        <Row
           style={{
-            position: "relative",
-            padding: "0px",
-            marginBottom: "60px",
-            marginTop: "20px",
+            justifyContent: "center",
+            marginTop: "5px",
           }}>
-          {this.props.storeAccount && (
-            <Image
-              src={
-                this.props.storeObject && this.props.storeObject.storeHeader
-                  ? this.props.storeObject.storeHeader
-                  : placeholderImage
-              }
-              fluid
-              style={{
-                height: "200px",
-                padding: "0px",
-                borderStyle: "dashed",
-                borderWidth: "thin",
-                borderColor: "#000000",
-                width: "100%",
-                objectFit: "cover",
-                display: "block",
-                filter: "grayscale(50%)",
-              }}
-            />
-          )}
-          {this.props.storeAccount && (
-            <Container
-              style={{ position: "absolute", bottom: "-25%", margin: "0px" }}>
+          <Container
+            style={{
+              position: "relative",
+              padding: "0px",
+              marginBottom: "60px",
+              marginTop: "20px",
+            }}>
+            {this.props.storeAccount && (
               <Image
                 src={
-                  this.props.storeObject && this.props.storeObject.storeAvatar
-                    ? this.props.storeObject.storeAvatar
-                    : makeBlockie(this.props.storeAccount)
+                  this.props.storeObject && this.props.storeObject.storeHeader
+                    ? this.props.storeObject.storeHeader
+                    : placeholderImage
                 }
-                alt="Avatar"
+                fluid
                 style={{
-                  width: "100px",
-                  height: "100px",
+                  height: "200px",
+                  padding: "0px",
                   borderStyle: "dashed",
                   borderWidth: "thin",
                   borderColor: "#000000",
+                  width: "100%",
                   objectFit: "cover",
+                  display: "block",
+                  filter: "grayscale(50%)",
                 }}
-                roundedCircle
               />
-            </Container>
-          )}
-        </Container>
+            )}
+            {this.props.storeAccount && (
+              <Container
+                style={{ position: "absolute", bottom: "-25%", margin: "0px" }}>
+                <Image
+                  src={
+                    this.props.storeObject && this.props.storeObject.storeAvatar
+                      ? this.props.storeObject.storeAvatar
+                      : makeBlockie(this.props.storeAccount)
+                  }
+                  alt="Avatar"
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    borderStyle: "dashed",
+                    borderWidth: "thin",
+                    borderColor: "#000000",
+                    objectFit: "cover",
+                  }}
+                  roundedCircle
+                />
+              </Container>
+            )}
+          </Container>
+        </Row>
         {this.props.storeAccount && (
           <h1 className="brand-font">
             {this.props.storeObject && this.props.storeObject.storeName
@@ -154,7 +160,7 @@ export default class Store extends Component {
             </p>
           )}
         </div>
-      </div>
+      </Container>
     );
   }
 }
