@@ -349,7 +349,7 @@ export default class ListingDetails extends Component {
         .on("transactionHash", async function(hash) {
           handleStatusChange("Transaction sent... (2/5)");
 
-          // 1. Create a thread for the order [DONE]
+          // 1. Create a thread for the purchase [DONE]
           const orderNumber = new Date().getTime();
           const orderThread = await space.joinThread(orderNumber, {
             firstModerator: userAddress,
@@ -374,18 +374,18 @@ export default class ListingDetails extends Component {
             shippingAddress: shippingAddress,
           };
 
-          // 2. Add transaction to order history [DONE]
+          // 2. Add transaction to purchase history [DONE]
           const addTestnetReceipt = await testnetReceipts.post(receipt);
           console.log(addTestnetReceipt);
           getTestnetReceipts();
           handleStatusChange("Purchase order saved... (3/5)");
 
-          // 3. Add transaction to order thread [DONE]
+          // 3. Add transaction to purchase thread [DONE]
           const addReceiptToOrder = await orderThread.post(receipt);
           console.log(addReceiptToOrder);
           handleStatusChange("Order details saved... (4/5)");
 
-          // 4. Add order message to inbox of the seller [DONE]
+          // 4. Add purchase message to inbox of the seller [DONE]
           let message = {
             messageId: orderThreadAddress,
             type: "order",

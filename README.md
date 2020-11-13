@@ -45,13 +45,14 @@
 
 #### Key-value store
 
-| Key                      |   Type    |                               Description                                |
-| :----------------------- | :-------: | :----------------------------------------------------------------------: |
-| `storeName`              | `public`  |                         Name of the user's store                         |
-| `storeDescription`       | `public`  |                     Description of the user's store                      |
-| `storeAvatar`            | `public`  |                     URL to the store's avatar image                      |
-| `storeHeader`            | `public`  |                     URL to the store's header image                      |
-| `testnetReceiptsAddress` | `private` | Address for the _private_ thread containing the user's purchase history. |
+| Key                      |   Type    |                                    Description                                    |
+| :----------------------- | :-------: | :-------------------------------------------------------------------------------: |
+| `storeName`              | `public`  |                             Name of the user's store                              |
+| `storeDescription`       | `public`  |                          Description of the user's store                          |
+| `storeAvatar`            | `public`  |                          URL to the store's avatar image                          |
+| `storeHeader`            | `public`  |                          URL to the store's header image                          |
+| `inboxTestnetAddress`    | `public`  | Address for the user's `inboxTestnet` that users can send chat/order messages to. |
+| `testnetReceiptsAddress` | `private` |     Address for the _private_ thread containing the user's purchase history.      |
 
 #### Threads
 

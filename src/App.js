@@ -4,10 +4,10 @@ import Box from "3box";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container } from "react-bootstrap";
+
 import Nav from "./components/Nav";
 import history from "./utils/history";
 // import ChatBox from "3box-chatbox-react";
-
 import ConnectWallet from "./pages/ConnectWallet";
 import MyStore from "./pages/MyStore";
 import Store from "./pages/Stores";
@@ -131,7 +131,16 @@ export default class App extends Component {
       ghost: false,
       confidential: false,
     });
+    const inboxTestnetAddress = inboxThread.address;
     this.setState({ inboxThread }, () => this.getInboxThread());
+    this.setState({ inboxTestnetAddress });
+
+    // Check if there is a public key-value for the inbox address
+    // If not, create one
+    const inboxAddress = await space.public.get("inboxTestnetAddress");
+    if (!inboxAddress) {
+      await space.public.set("inboxTestnetAddress", inboxTestnetAddress);
+    }
 
     // Status update
     this.setState({ status: "Loading purchases... [6/6]" });
@@ -262,6 +271,7 @@ export default class App extends Component {
     const storeDescription = space.storeDescription;
     const storeHeader = space.storeHeader;
     const storeAvatar = space.storeAvatar;
+    const inboxTestnetAddress = space.inboxTestnetAddress;
     this.setState({
       storeProfile: storeProfile,
       storeAccount: storeAccount,
@@ -270,8 +280,10 @@ export default class App extends Component {
         storeDescription: storeDescription,
         storeHeader: storeHeader,
         storeAvatar: storeAvatar,
+        inboxTestnetAddress: inboxTestnetAddress,
       },
     });
+    console.log(this.state.storeObject);
   }
 
   // Get a post from a thread without joining the thread
