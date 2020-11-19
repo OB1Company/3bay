@@ -368,7 +368,7 @@ export default class ListingDetails extends Component {
             price: post.message.price,
             listingImage: post.message.listingImage,
             needsAddress: post.message.needsAddress,
-            inboxThreadAddress: post.message.inboxThreadAddress,
+            salesThreadAddress: post.message.salesThreadAddress,
             orderThreadAddress: orderThreadAddress,
             txHash: hash,
             shippingAddress: shippingAddress,
@@ -385,16 +385,16 @@ export default class ListingDetails extends Component {
           console.log(addReceiptToOrder);
           handleStatusChange("Order details saved... (4/5)");
 
-          // 4. Add purchase message to inbox of the seller [DONE]
+          // 4. Add purchase message to sales inbox of the seller [DONE]
           let message = {
             messageId: orderThreadAddress,
             type: "order",
           };
 
-          const sellerInbox = await space.joinThreadByAddress(
-            post.message.inboxThreadAddress
+          const storeSalesInbox = await space.joinThreadByAddress(
+            post.message.salesThreadAddress
           );
-          const addMessageToInbox = await sellerInbox.post(message);
+          const addMessageToInbox = await storeSalesInbox.post(message);
           console.log(addMessageToInbox);
           handleStatusChange("Purchase order message sent... (5/5)");
           handlePurchased();

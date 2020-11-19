@@ -279,7 +279,7 @@ export default class Home extends Component {
           getListingsThread={this.props.getListingsThread}
           threadId={this.props.threadId}
           saveListing={this.saveListing}
-          inboxThreadAddress={this.props.inboxThreadAddress}
+          salesThreadAddress={this.props.salesThreadAddress}
         />
         <div className="row" style={{ marginTop: "10px" }}>
           {!this.props.submarketPosts && (

@@ -121,7 +121,7 @@ export default class Home extends Component {
 
   render() {
     return (
-      <Container fluid style={styles.background}>
+      <Container style={styles.background}>
         <Row style={{ paddingBottom: "0px", justifyContent: "center" }}>
           <p className="brand-font" style={styles.submarkets}>
             Submarkets
@@ -252,7 +252,7 @@ export default class Home extends Component {
           getListingsThread={this.props.getListingsThread}
           threadId={this.props.threadId}
           saveListing={this.saveListing}
-          inboxThreadAddress={this.props.inboxThreadAddress}
+          salesThreadAddress={this.props.salesThreadAddress}
         />
         <Row style={{ marginTop: "10px" }}>
           {!this.props.submarketPosts && (

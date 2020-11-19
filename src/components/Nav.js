@@ -97,6 +97,22 @@ export default class Nav extends Component {
               <li className="nav-item" style={styles.navStyle}>
                 <Link
                   className="nav-link brand-font"
+                  to="/sales"
+                  style={styles.navHeading}>
+                  Sales
+                  {this.props.salesMessages &&
+                    this.props.salesMessages.length > 0 && (
+                      <span
+                        className="brand-font"
+                        style={{ paddingLeft: "2px", color: "red" }}>
+                        [{this.props.salesMessages.length}]
+                      </span>
+                    )}
+                </Link>
+              </li>
+              <li className="nav-item" style={styles.navStyle}>
+                <Link
+                  className="nav-link brand-font"
                   to="/inbox"
                   style={styles.navHeading}>
                   Inbox

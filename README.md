@@ -40,29 +40,31 @@
 - 3Bay is built on top of [3Box](https://3box.io), a decentralized user identity and data storage system built with [IPFS](https://ipfs.io/) and [OrbitDB](https://github.com/orbitdb/orbit-db)
   - 3Box leverages popular web3 wallets to create decentralized identity and storage provision over IPFS and OrbitDB, the latter enabling serverless storage and messaging for decentralized applications
   - In short, using a web3 wallet like Metamask allows you to create public and private storage/messaging spaces for your account and for decentralized applications
-- 3Bay is using temporary a decentralized storage space during its testing phase: `demo_marketplace`
+- 3Bay is using temporary a decentralized storage space during its testing phase: `demo_marketplace-v2`
 - Within this space, data as key-value pairs and threads in both public and private spaces.
 
 #### Key-value store
 
-| Key                      |   Type    |                                    Description                                    |
-| :----------------------- | :-------: | :-------------------------------------------------------------------------------: |
-| `storeName`              | `public`  |                             Name of the user's store                              |
-| `storeDescription`       | `public`  |                          Description of the user's store                          |
-| `storeAvatar`            | `public`  |                          URL to the store's avatar image                          |
-| `storeHeader`            | `public`  |                          URL to the store's header image                          |
-| `inboxTestnetAddress`    | `public`  | Address for the user's `inboxTestnet` that users can send chat/order messages to. |
-| `testnetReceiptsAddress` | `private` |     Address for the _private_ thread containing the user's purchase history.      |
+| Key                      |   Type    |                                     Description                                     |
+| :----------------------- | :-------: | :---------------------------------------------------------------------------------: |
+| `storeName`              | `public`  |                              Name of the user's store                               |
+| `storeDescription`       | `public`  |                           Description of the user's store                           |
+| `storeAvatar`            | `public`  |                           URL to the store's avatar image                           |
+| `storeHeader`            | `public`  |                           URL to the store's header image                           |
+| `salesThreadAddress`     | `public`  | Address for the user's sales inbox that users can send chat/order notifications to. |
+| `inboxThreadAddress`     | `public`  | Address for the user's mail inbox that users can send chat/order notifications to.  |
+| `testnetReceiptsAddress` | `private` |      Address for the _private_ thread containing the user's purchase history.       |
 
 #### Threads
 
-| Name                            |   Type    |                                                      Description                                                      |   Write-access   |
-| :------------------------------ | :-------: | :-------------------------------------------------------------------------------------------------------------------: | :--------------: |
-| `listing_list`                  | `public`  |                                      A _thread_ containing the user's listings.                                       |       User       |
-| `inboxTestnet`                  | `public`  | A _thread_ containing message notifications for _private_ threads the user has been added to, created by other users. |       All        |
-| `demo-testnet-receipts-private` | `private` |                                  A _thread_ containing the user's purchase history.                                   |       User       |
-| `globalListChat`                | `public`  |                     A _thread_ containing the global trollbox chat messages for the marketplace.                      |       All        |
-| `_order_[timestamp]`            | `public`  |         A _thread_ containing an individual order's purchase order and messages between the buyer and seller.         | Buyer and seller |
+| Name                            |   Type    |                                                     Description                                                     |   Write-access   |
+| :------------------------------ | :-------: | :-----------------------------------------------------------------------------------------------------------------: | :--------------: |
+| `listing_list`                  | `public`  |                                     A _thread_ containing the user's listings.                                      |       User       |
+| `salesThread`                   | `public`  | A _thread_ containing sales notifications for _private_ threads the user has been added to, created by other users. |       All        |
+| `inboxThread`                   | `public`  | A _thread_ containing mail notifications for _private_ threads the user has been added to, created by other users.  |       All        |
+| `demo-testnet-receipts-private` | `private` |                                 A _thread_ containing the user's purchase history.                                  |       User       |
+| `globalListChat`                | `public`  |                    A _thread_ containing the global trollbox chat messages for the marketplace.                     |       All        |
+| `_order_[timestamp]`            | `public`  |        A _thread_ containing an individual order's purchase order and messages between the buyer and seller.        | Buyer and seller |
 
 ⭐️ Both `demo-orders-public` and <s>`demo-testnet-receipts-public`</s> need to be switched to `private` encrypted threads prior to launch.
 

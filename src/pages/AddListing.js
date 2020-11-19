@@ -41,7 +41,7 @@ export default class AddListing extends Component {
         {this.props.thread && this.props.submarketThread && (
           <ListingForm
             saveListing={this.saveListing}
-            inboxThreadAddress={this.props.inboxThreadAddress}
+            salesThreadAddress={this.props.salesThreadAddress}
           />
         )}
       </div>

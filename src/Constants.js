@@ -1,4 +1,4 @@
-export const SPACE_NAME = "demo-marketplace";
+export const SPACE_NAME = "demo-marketplace-v2";
 
 export const multipayAddressRopsten =
   "0x19054018704Bf85101eE221937dfc3632b532870";

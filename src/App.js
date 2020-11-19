@@ -16,6 +16,7 @@ import Thread from "./pages/Thread";
 import Profile from "./pages/Profile";
 import Orders from "./pages/Orders";
 import Inbox from "./pages/Inbox";
+import Sales from "./pages/Sales";
 import About from "./pages/About";
 import ListingDetails from "./pages/ListingDetails";
 import { SPACE_NAME } from "./Constants";
@@ -85,7 +86,7 @@ export default class App extends Component {
     }
 
     // Status update
-    this.setState({ status: "fetching 3Box profile... [1/6]" });
+    this.setState({ status: "fetching 3Box profile... [1/7]" });
 
     // Get 3Box profile of the ethereum account
     if (this.state.accounts) {
@@ -96,7 +97,7 @@ export default class App extends Component {
     this.setState({ userMod });
 
     // Status update
-    this.setState({ status: "syncing 3Box... [2/6]" });
+    this.setState({ status: "syncing 3Box... [2/7]" });
 
     // Open the 3Box object of the user's account
     const box = await Box.openBox(this.state.accounts[0], window.ethereum);
@@ -104,14 +105,14 @@ export default class App extends Component {
     this.setState({ box });
 
     // Status update
-    this.setState({ status: "Opening '3Bay'... [3/6]" });
+    this.setState({ status: "Opening '3Bay'... [3/7]" });
 
     // Open the demo marketplace 'space' of the user
     const space = await this.state.box.openSpace(SPACE_NAME);
     this.setState({ space });
 
     // Status update
-    this.setState({ status: "Loading your store... [4/6]" });
+    this.setState({ status: "Loading your store... [4/7]" });
 
     // Create and fetch the listings thread of the user's store
     const thread = await space.joinThread("listing_list", {
@@ -122,28 +123,42 @@ export default class App extends Component {
     await this.getMyStoreObject();
 
     // Status update
-    this.setState({ status: "Checking your mail... [5/6]" });
+    this.setState({ status: "Checking for sales... [5/7]" });
 
-    // Create a public inbox for the user
-    const inboxThread = await space.joinThread("inboxTestnet", {
+    // Create a public sales inbox for the user
+    const salesThread = await space.joinThread("salesThread", {
       firstModerator: userMod,
       members: false,
       ghost: false,
       confidential: false,
     });
-    const inboxTestnetAddress = inboxThread.address;
+    const salesThreadAddress = salesThread.address;
+    this.setState({ salesThread }, () => this.getSalesThread());
+    this.setState({ salesThreadAddress });
+
+    // Status update
+    this.setState({ status: "Checking your mail... [6/7]" });
+
+    // Create a public mail inbox for the user
+    const inboxThread = await space.joinThread("inboxThread", {
+      firstModerator: userMod,
+      members: false,
+      ghost: false,
+      confidential: false,
+    });
+    const inboxThreadAddress = inboxThread.address;
     this.setState({ inboxThread }, () => this.getInboxThread());
-    this.setState({ inboxTestnetAddress });
+    this.setState({ inboxThreadAddress });
 
     // Check if there is a public key-value for the inbox address
     // If not, create one
     const inboxAddress = await space.public.get("inboxTestnetAddress");
     if (!inboxAddress) {
-      await space.public.set("inboxTestnetAddress", inboxTestnetAddress);
+      await space.public.set("inboxThreadAddress", inboxThreadAddress);
     }
 
     // Status update
-    this.setState({ status: "Loading purchases... [6/6]" });
+    this.setState({ status: "Loading purchases... [7/7]" });
 
     // Create and fetch the testnet receipts
     const testnetReceiptsAddress = await space.private.get(
@@ -317,6 +332,28 @@ export default class App extends Component {
     });
   }
 
+  // Get sales in the user's sales thread
+  async getSalesThread() {
+    if (!this.state.salesThread) {
+      console.error("messages in inbox thread not in react state");
+      return;
+    }
+
+    // Save the thread address
+    const salesThreadAddress = this.state.salesThread.address;
+    this.setState({ salesThreadAddress });
+
+    // Fetch the messages and add them to state
+    const salesMessages = await this.state.salesThread.getPosts();
+    this.setState({ salesMessages });
+
+    // Update the state when new messages are added
+    await this.state.salesThread.onUpdate(async () => {
+      const salesMessages = await this.state.salesThread.getPosts();
+      this.setState({ salesMessages });
+    });
+  }
+
   // Get posts in the user's purchases thread
   async getTestnetReceipts() {
     if (!this.state.testnetReceipts) {
@@ -363,6 +400,7 @@ export default class App extends Component {
         <Container fluid>
           <Nav
             inboxMessages={this.state.inboxMessages}
+            salesMessages={this.state.salesMessages}
             style={{ background: "#ffffff" }}
             handleWalletConnectModalShow={
               this.state.handleWalletConnectModalShow
@@ -440,6 +478,9 @@ export default class App extends Component {
                   getStorePosts={this.getStorePosts.bind(this)}
                   getStoreProfile={this.getStoreProfile.bind(this)}
                   walletConnected={this.state.walletConnected}
+                  salessThread={this.state.salesThread}
+                  salesThreadAddress={this.state.salesThreadAddress}
+                  getSalesThread={this.getSalesThread.bind(this)}
                 />
               )}></Route>
             <Route
@@ -523,6 +564,19 @@ export default class App extends Component {
                 walletConnected={this.state.walletConnected}
               />
             </Route>
+            <Route path="/sales">
+              <Sales
+                space={this.state.space}
+                box={this.state.box}
+                salesThread={this.state.salesThread}
+                salesMessages={this.state.salesMessages}
+                getSalesThread={this.getSalesThread.bind(this)}
+                usersAddress={
+                  this.state.accounts ? this.state.accounts[0] : null
+                }
+                walletConnected={this.state.walletConnected}
+              />
+            </Route>
             <Route path="/inbox">
               <Inbox
                 space={this.state.space}
@@ -554,7 +608,10 @@ export default class App extends Component {
                 testnetReceipts={this.state.testnetReceipts}
                 testnetReceiptItems={this.state.testnetReceiptItems}
                 getTestnetReceipts={this.getTestnetReceipts.bind(this)}
+                salessThread={this.state.salessThread}
                 inboxThread={this.state.inboxThread}
+                salesThreadAddress={this.state.salesThreadAddress}
+                getSalesThread={this.getSalesThread.bind(this)}
                 inboxMessages={this.state.inboxMessages}
                 inboxThreadAddress={this.state.inboxThreadAddress}
                 getInboxThread={this.getInboxThread.bind(this)}

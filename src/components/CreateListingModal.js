@@ -77,7 +77,7 @@ export default class CreateListingModal extends Component {
       listingImage: this.state.listingImage,
       description: this.state.description,
       needsAddress: this.state.needsAddress,
-      inboxThreadAddress: this.props.inboxThreadAddress,
+      salesThreadAddress: this.props.salesThreadAddress,
     });
 
     this.setState(Object.assign({}, blankState, { submitted: true }));
